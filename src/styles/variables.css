@@ -1,0 +1,75 @@
+/* FarmDirect Global Design Tokens & CSS Variables */
+
+:root {
+  /* Brand Agri Green */
+  --color-primary: #15803d;
+  --color-primary-hover: #166534;
+  --color-primary-light: #f0fdf4;
+  --color-primary-dark: #14532d;
+  --color-primary-subtle: #dcfce7;
+
+  /* Warm Saffron / Amber Accent */
+  --color-accent: #ea580c;
+  --color-accent-hover: #c2410c;
+  --color-accent-light: #fff7ed;
+  --color-accent-subtle: #ffedd5;
+
+  /* Earth Neutrals */
+  --color-background: #fbfbf9;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f6f5f0;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e7e5e4;
+  --color-border-subtle: #f0ede6;
+
+  /* Typography Colors */
+  --color-text-main: #1c1917;
+  --color-text-muted: #57534e;
+  --color-text-light: #a8a29e;
+  --color-text-inverse: #ffffff;
+
+  /* Semantic Colors */
+  --color-success: #16a34a;
+  --color-success-bg: #f0fdf4;
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+  --color-info: #2563eb;
+  --color-info-bg: #eff6ff;
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(20, 83, 45, 0.08);
+  --shadow-lg: 0 10px 30px rgba(20, 83, 45, 0.12);
+
+  /* Spacing Scale */
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Layout Constraints */
+  --max-width-page: 1200px;
+  --header-height: 64px;
+  --bottom-nav-height: 58px;
+
+  /* Mobile Ergonomics */
+  --touch-target-min: 44px;
+}

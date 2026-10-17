@@ -1,0 +1,46 @@
+/* Auth Feature Stylesheet */
+
+.auth-container {
+  max-width: 440px;
+  margin: var(--space-8) auto;
+  padding: 0 var(--space-4);
+}
+
+.auth-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.auth-role-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  background-color: var(--color-surface-subtle);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+}
+
+.auth-role-btn {
+  padding: 8px 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.auth-role-btn.active {
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
+  box-shadow: var(--shadow-xs);
+}
