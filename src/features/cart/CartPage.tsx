@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, MapPin, Truck, AlertCircle, ArrowRight } from 'lucide-react';
 import { useCart } from './CartContext';
 import { formatPaise } from '../../utils/currency';
