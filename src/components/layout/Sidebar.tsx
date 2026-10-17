@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Store, ShoppingBag, PackageCheck, Tractor, ShieldCheck } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useCart } from '../../features/cart/cart.context';
+import { useCart } from '../../features/cart/CartContext';
 import { useAuth } from '../../features/auth/AuthContext';
 import './layout.css';
 

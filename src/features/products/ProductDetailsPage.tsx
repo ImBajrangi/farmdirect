@@ -5,7 +5,7 @@ import { productService } from './product.service';
 import { Product } from './product.types';
 import { formatPaise, formatWeight } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useCart } from '../cart/cart.context';
+import { useCart } from '../cart/CartContext';
 import { Button } from '../../components/common/Button';
 import { Loader } from '../../components/common/Loader';
 import { notificationService } from '../../services/notifications';

@@ -2,7 +2,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TranslationProvider } from '../hooks/useTranslation';
 import { AuthProvider } from '../features/auth/AuthContext';
-import { CartProvider } from '../features/cart/cart.context';
+import { CartProvider } from '../features/cart/CartContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   ArrowLeft,
 } from 'lucide-react';
-import { useCart } from '../cart/cart.context';
+import { useCart } from '../cart/CartContext';
 import { useAuth } from '../auth/AuthContext';
 import { formatPaise } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';

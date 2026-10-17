@@ -4,7 +4,7 @@ import { Plus, Minus, MapPin, Calendar, Award } from 'lucide-react';
 import { Product } from './product.types';
 import { formatPaise, formatWeight } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useCart } from '../cart/cart.context';
+import { useCart } from '../cart/CartContext';
 import './products.css';
 
 interface ProductCardProps {

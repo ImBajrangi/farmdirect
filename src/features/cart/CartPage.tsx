@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, MapPin, Truck, AlertCircle, ArrowRight } from 'lucide-react';
-import { useCart } from './cart.context';
+import { useCart } from './CartContext';
 import { formatPaise } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Button } from '../../components/common/Button';

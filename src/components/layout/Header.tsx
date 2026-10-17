@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../features/auth/AuthContext';
-import { useCart } from '../../features/cart/cart.context';
+import { useCart } from '../../features/cart/CartContext';
 import { UserRole } from '../../types';
 import './layout.css';
 
