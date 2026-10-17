@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Minus, MapPin, Calendar, Award } from 'lucide-react';
 import { Product } from './product.types';
@@ -11,7 +11,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { language, t } = useTranslation();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
 

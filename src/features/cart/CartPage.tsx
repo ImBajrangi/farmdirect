@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, MapPin, Truck, AlertCircle, ArrowRight } from 'lucide-react';
 import { useCart } from './CartContext';
@@ -8,7 +8,7 @@ import { Button } from '../../components/common/Button';
 import { EmptyState } from '../../components/common/EmptyState';
 import './cart.css';
 
-export const CartPage: React.FC = () => {
+export const CartPage: FC = () => {
   const { t, language } = useTranslation();
   const navigate = useNavigate();
   const {
