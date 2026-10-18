@@ -1,12 +1,21 @@
 import React from 'react';
-import { ArrowLeft, Phone, MessageCircle, HelpCircle, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import {
+  ArrowLeft,
+  Phone,
+  MessageCircle,
+  HelpCircle,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+  ArrowRight
+} from 'lucide-react';
 
 export const Support: React.FC = () => {
   const faqs = [
     {
       q: 'How does FarmDirect guarantee farmgate freshness?',
-      a: 'Farmers do not store produce in prolonged cold storage. Once your order is confirmed, produce is harvested from the field and packed within hours for local dispatch.'
+      a: 'Farmers do not store produce in prolonged cold storage. Once your order is confirmed, produce is harvested directly from the field and packed within hours for local dispatch.'
     },
     {
       q: 'Can I order from multiple farmers at the same time?',
@@ -14,7 +23,7 @@ export const Support: React.FC = () => {
     },
     {
       q: 'What is the delivery fee policy?',
-      a: 'Orders above ₹500 from a farm qualify for FREE local delivery. Standard delivery is ₹40 for smaller orders, or ₹0 if you choose farmgate pickup.'
+      a: 'Orders above ₹500 from a farm qualify for FREE local delivery. Standard delivery is ₹40 for smaller orders, or ₹0 if you choose direct farmgate pickup.'
     },
     {
       q: 'How does FarmDirect verify organic claims?',
@@ -23,65 +32,82 @@ export const Support: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8 pb-24 sm:pb-12 text-stone-700">
-      <Link to="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-stone-900">
-        <ArrowLeft className="w-4 h-4" />
+    <div className="lp-page-wrapper">
+      <Link to="/" className="lp-back-link">
+        <ArrowLeft size={14} />
         <span>Return to Home</span>
       </Link>
 
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+      <div className="lp-header">
+        <div className="lp-kicker-pill">
+          <span>💬</span>
+          <span>Helpline & Field Desk</span>
+        </div>
+        <h1 className="lp-title">
           Help Desk & FAQs
         </h1>
-        <p className="text-xs text-stone-500 mt-1">Frequently asked questions and direct assistance</p>
+        <p className="lp-subtitle">
+          Direct assistance for conscious households and rural growers across the Nashik and Western Pune corridors.
+        </p>
       </div>
 
-      {/* Support Channels */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white p-5 rounded-3xl border border-earth-200 shadow-soft space-y-2">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-            <MessageCircle className="w-5 h-5" />
+      {/* Support Channels Grid */}
+      <div className="lp-grid-2" style={{ marginBottom: 28 }}>
+        <div className="lp-feature-card" style={{ padding: 24 }}>
+          <div className="lp-icon-squircle">
+            <MessageCircle size={20} />
           </div>
-          <h3 className="font-bold text-sm text-stone-900">WhatsApp Helpline</h3>
-          <p className="text-xs text-stone-500">Fast assistance for orders, farmer inquiries, and returns.</p>
+          <h3 className="lp-feature-title">WhatsApp Help Desk</h3>
+          <p className="lp-feature-desc">
+            Fast assistance for live order tracking, farmer inquiries, and doorstep freshness replacement.
+          </p>
           <a
-            href="https://wa.me/919822000000?text=Hello%20FarmDirect%20Support"
+            href="https://wa.me/9199XXXXXXXXX?text=Hello%20FarmDirect%20Support"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-xs font-bold text-emerald-700 hover:underline pt-1"
+            className="lp-feature-link"
           >
-            Chat with Desk (+91 98220 00000) →
+            <span>Chat on WhatsApp (+91 9XXXX XXXXX)</span>
+            <ArrowRight size={13} />
           </a>
         </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-earth-200 shadow-soft space-y-2">
-          <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
-            <Phone className="w-5 h-5" />
+        <div className="lp-feature-card" style={{ padding: 24 }}>
+          <div className="lp-icon-squircle blue">
+            <Phone size={20} />
           </div>
-          <h3 className="font-bold text-sm text-stone-900">Voice Support</h3>
-          <p className="text-xs text-stone-500">Operating hours: 7:00 AM - 8:00 PM IST (All 7 days).</p>
+          <h3 className="lp-feature-title">Voice Support Desk</h3>
+          <p className="lp-feature-desc">
+            Direct farmer and consumer phone line. Operational 7:00 AM – 8:00 PM IST (All 7 days).
+          </p>
           <a
-            href="tel:+919822000000"
-            className="inline-block text-xs font-bold text-blue-700 hover:underline pt-1"
+            href="tel:+919XXXXXXXXX"
+            className="lp-feature-link"
+            style={{ color: '#2563eb' }}
           >
-            Call Support Desk →
+            <span>Call (+91 9XXXXXXXXX)</span>
+            <ArrowRight size={13} />
           </a>
         </div>
       </div>
 
-      {/* FAQ Accordion List */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-earth-200 shadow-soft space-y-5">
-        <h2 className="font-extrabold text-sm text-stone-900 uppercase tracking-wider">
+      {/* FAQ Accordion Card */}
+      <div className="lp-card">
+        <h2 className="lp-section-title">
           Frequently Asked Questions
         </h2>
-        <div className="divide-y divide-earth-100 space-y-4">
+        <p className="lp-text">
+          Everything you need to know about farmgate orders, direct payments, and transparent fulfillment:
+        </p>
+
+        <div>
           {faqs.map((faq, i) => (
-            <div key={i} className="pt-4 first:pt-0 space-y-1 text-xs sm:text-sm">
-              <h4 className="font-bold text-stone-900 flex items-start gap-2">
-                <HelpCircle className="w-4 h-4 text-agri-600 shrink-0 mt-0.5" />
+            <div key={i} className="lp-faq-item">
+              <h4 className="lp-faq-question">
+                <HelpCircle size={16} color="#15803d" style={{ flexShrink: 0, marginTop: 2 }} />
                 <span>{faq.q}</span>
               </h4>
-              <p className="text-stone-600 pl-6 text-xs leading-relaxed">{faq.a}</p>
+              <p className="lp-faq-answer">{faq.a}</p>
             </div>
           ))}
         </div>

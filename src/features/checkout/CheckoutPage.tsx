@@ -15,6 +15,7 @@ import { useAuth } from '../auth/AuthContext';
 import { formatPaise } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';
 import { checkoutService } from './checkout.service';
+import { RazorpayModal } from '../payments/RazorpayModal';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { Address } from '../../types';
@@ -34,6 +35,7 @@ export const CheckoutPage: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<'razorpay_online' | 'cod'>('razorpay_online');
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showRazorpayModal, setShowRazorpayModal] = useState(false);
 
   // New Address inline form state
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
@@ -82,12 +84,7 @@ export const CheckoutPage: React.FC = () => {
     setShowNewAddressForm(false);
   };
 
-  const handlePlaceOrder = async () => {
-    if (!selectedAddress) {
-      alert('Please select or add a delivery address');
-      return;
-    }
-
+  const completeCheckout = async (method: 'razorpay_online' | 'cod', paymentId?: string) => {
     setIsProcessing(true);
     try {
       const res = await checkoutService.executeCheckout({
@@ -102,7 +99,8 @@ export const CheckoutPage: React.FC = () => {
         },
         address: selectedAddress,
         deliveryType,
-        paymentMethod,
+        paymentMethod: method,
+        paymentId,
         deliveryNotes,
         items: items.map((i) => ({ product: i.product, quantity: i.quantity })),
       });
@@ -114,6 +112,19 @@ export const CheckoutPage: React.FC = () => {
       alert(`Checkout failed: ${errorMsg}`);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!selectedAddress) {
+      alert('Please select or add a delivery address');
+      return;
+    }
+
+    if (paymentMethod === 'razorpay_online') {
+      setShowRazorpayModal(true);
+    } else {
+      await completeCheckout('cod');
     }
   };
 
@@ -348,6 +359,21 @@ export const CheckoutPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <RazorpayModal
+        isOpen={showRazorpayModal}
+        amountPaise={finalTotalPaise}
+        onSuccess={async (paymentId) => {
+          setShowRazorpayModal(false);
+          await completeCheckout('razorpay_online', paymentId);
+        }}
+        onFailure={(reason) => {
+          setShowRazorpayModal(false);
+          alert(`Payment failed: ${reason}. Your items remain safely in your cart.`);
+        }}
+        onClose={() => setShowRazorpayModal(false)}
+      />
     </div>
   );
 };
+

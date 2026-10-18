@@ -114,17 +114,14 @@ export const ProductDetails: React.FC = () => {
             />
 
             {/* Badges */}
-            <div className="absolute top-3 left-3 flex flex-col gap-2">
-              {product.is_certified_organic && (
+            {product.is_certified_organic && (
+              <div className="absolute top-3 left-3 flex flex-col gap-2">
                 <span className="bg-emerald-800/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
                   <Award className="w-4 h-4" />
                   <span>{t.common.organicCertified}</span>
                 </span>
-              )}
-              <span className="bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                {t.common.directFromFarm}
-              </span>
-            </div>
+              </div>
+            )}
 
             {isOutOfStock && (
               <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center">
@@ -206,7 +203,7 @@ export const ProductDetails: React.FC = () => {
                     >
                       <Minus className="w-4 h-4" />
                     </button>
-                    <span className="px-4 font-bold text-sm text-stone-900 min-w-[50px] text-center">
+                    <span className="px-4 font-bold text-sm text-stone-900 min-w-[50px] text-center h-10 flex items-center justify-center leading-none">
                       {quantity}
                     </span>
                     <button

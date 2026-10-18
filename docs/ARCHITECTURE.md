@@ -165,3 +165,48 @@ Use clear exports and avoid unnecessary barrel files that make code navigation h
 - Do not add Redux, Zustand, or another state library unless a documented requirement cannot be handled cleanly with the existing architecture.
 - Avoid duplicating server data in React Context or maintaining competing sources of truth.
 - Define clear ownership for authentication, cart state, product data, and order data.
+
+### N. Live Backend and Fixture Fallback
+- Prefer live Supabase reads when valid public client credentials are configured.
+- Use local fixtures only according to an explicit fallback policy.
+- Distinguish empty query results, permission errors, network failures, and missing configuration.
+- Never silently present stale fixture data as confirmed live data.
+- Display appropriate loading, empty, offline, and error states.
+- Keep cached data timestamps and invalidate or refresh stale records predictably.
+
+### O. Supabase Security Boundary
+- Never expose the Supabase service-role key or other privileged secrets through Vite environment variables prefixed with `VITE_`.
+- Use the publishable key or legacy anon key for browser clients, protected by correctly configured RLS policies.
+- Perform privileged operations in trusted server-side functions.
+- Validate authorization, prices, inventory, and payment status server-side.
+- Never rely on frontend role checks as the sole authorization mechanism.
+- Never log credentials, access tokens, or sensitive customer information.
+
+### P. Performance and Mobile Budgets
+- Measure performance using production builds and representative low-end Android devices.
+- Configure code splitting for major routes and heavy features.
+- Prefer static imports and tree-shakeable icon imports.
+- Define and enforce a documented JavaScript bundle budget, distinguishing initial-load JavaScript from total assets.
+- Use profiling to identify unnecessary renders before adding memoization.
+- Test slow networks, offline recovery, cache expiration, and repeated navigation.
+- Treat performance targets as verified only after measurement.
+
+### Q. Mobbin Design Language Enforcement
+- **Monochrome Gallery Canvas**: Maintain a pure white canvas (`#ffffff`) with near-black ink (`#141414`) typography and UI chrome. Saturated color belongs strictly to produce photography and farmer imagery.
+- **Stadium-Pill Controls**: Every interactive element (buttons, floating nav, segmented controls, filter badges) must use stadium-pill geometry (`border-radius: 9999px`). Rectangular buttons are prohibited.
+- **Shadow-Free Elevation**: Prohibit blurry drop shadows (`box-shadow: none`). Structure and elevation must be achieved strictly through the neutral tint ladder (`#ffffff` canvas, `#f3f3f3` canvas-soft, `#f0f0f0` field) and 1px hairlines (`#f0f0f0` soft, `#e0e0e0` control).
+- **Geometric Primitives**: Use `24px` (`border-radius: 24px`) for card and modal surfaces, `16px` (`border-radius: 16px`) for inputs and media tiles, and iOS-style `30%` squircles (`border-radius: 30%`) for category icons and badges.
+- **Commercial Accent Scarcity**: Reserve electric blue (`#0066ff`) strictly for commercial signals (direct harvest savings, featured badges). Never use it for standard CTAs or decorative flourishes.
+- **Variable Weight Typographic Voice**: Headings must use 650/652 weight with tight 1.0–1.15 line-height and end with terminal periods. Subtitles must use an airy 300 light weight. Running body copy must use 450 weight.
+- **Polarity Inversion Footer**: Every page must conclude with the full-bleed near-black (`#141414`) footer featuring `24px` rounded top corners.
+
+## R. Dayos-Inspired Design Language Enforcement
+
+- **Dark Cinematic Surfaces**: Deep background canvas (`#0A0B0F`), elevated surface (`#12141A`), and card surface (`#171A22`) with `1px rgba(255,255,255,0.10)` hairlines.
+- **Single Electric Accent**: Cobalt accent (`#5B8CFF`) is reserved for primary CTAs, active tab indicators, and focus rings.
+- **Show, Don't Tell**: Complex features must include interactive demo players with play/pause and speed toggles (1.5×).
+- **Narrative Triptychs**: Key value propositions must follow the 3-column period-terminated pattern (e.g. `DIRECT.`, `FAIR.`, `FRESH.`).
+- **1:1 Square Category Cards**: Department/category showcase cards must enforce square 1:1 aspect ratio (`aspect-ratio: 1 / 1;`).
+- **Infinite Logo Marquee**: Partner networks must render via smooth CSS marquee with pause-on-hover and reduced-motion fallbacks.
+- **Outcome-First Typography**: Display headlines must be bold and concise; H2 section titles must be uppercase; secondary links must use the `→` arrow glyph.
+

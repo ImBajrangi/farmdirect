@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, ArrowRight, Store, Clock } from 'lucide-react';
+import { Store, Clock, ArrowRight, Sprout, ShoppingBag, Sunrise, ShieldCheck, Truck } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
+import { useCart } from '../cart/CartContext';
 import { orderService } from './order.service';
 import { Order } from './order.types';
 import { formatPaise } from '../../utils/currency';
 import { Button } from '../../components/common/Button';
 import { Loader } from '../../components/common/Loader';
-import { EmptyState } from '../../components/common/EmptyState';
 import './orders.css';
 
 export const OrderHistoryPage: React.FC = () => {
   const { user } = useAuth();
+  const { itemCount } = useCart();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,7 +35,7 @@ export const OrderHistoryPage: React.FC = () => {
       <div className="orders-header">
         <h1 className="orders-title">My Orders</h1>
         <p className="orders-subtitle">
-          Track active deliveries and review previous farm-fresh orders
+          Real-time farmgate harvest tracking and dispatch history
         </p>
       </div>
 
@@ -43,13 +44,69 @@ export const OrderHistoryPage: React.FC = () => {
           <Loader size="lg" text="Loading your orders..." />
         </div>
       ) : orders.length === 0 ? (
-        <EmptyState
-          icon={<Package size={48} />}
-          title="No orders yet"
-          description="You haven't ordered from any local farms yet. Explore today's freshly harvested produce!"
-          actionLabel="Browse Fresh Produce"
-          onAction={() => window.location.assign('/products')}
-        />
+        <div className="orders-empty-card">
+          <div className="orders-empty-icon-wrap">
+            <Sprout size={22} />
+          </div>
+
+          <h2 className="orders-empty-title">Your Harvest Basket is Clear</h2>
+          <p className="orders-empty-desc">
+            No active or past harvest orders yet. When you order from Patil Agro Orchards and local family farms, morning harvest progress, grading, and live delivery routes will appear right here.
+          </p>
+
+          {itemCount > 0 && (
+            <div className="orders-cart-bridge">
+              <div className="cart-bridge-info">
+                <ShoppingBag size={15} className="text-emerald-700" />
+                <span>You have <strong>{itemCount} {itemCount === 1 ? 'crop' : 'crops'}</strong> in your cart ready for morning harvest</span>
+              </div>
+              <Link to="/cart" className="cart-bridge-btn">
+                <span>View Cart</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          )}
+
+          <div className="orders-empty-actions">
+            <Link to="/products" className="orders-explore-btn">
+              <Sprout size={15} />
+              <span>Explore Today's Harvests</span>
+            </Link>
+          </div>
+
+          {/* Minimal Relatable FarmDirect Lifecycle */}
+          <div className="orders-farmgate-pipeline">
+            <div className="pipeline-item">
+              <span className="pipeline-icon-wrap">
+                <Sunrise size={14} />
+              </span>
+              <div className="pipeline-text">
+                <strong>Sunrise Harvest</strong>
+                <span>Cut fresh to order</span>
+              </div>
+            </div>
+            <div className="pipeline-separator" />
+            <div className="pipeline-item">
+              <span className="pipeline-icon-wrap">
+                <ShieldCheck size={14} />
+              </span>
+              <div className="pipeline-text">
+                <strong>PGS Natural Tested</strong>
+                <span>Graded at farm gate</span>
+              </div>
+            </div>
+            <div className="pipeline-separator" />
+            <div className="pipeline-item">
+              <span className="pipeline-icon-wrap">
+                <Truck size={14} />
+              </span>
+              <div className="pipeline-text">
+                <strong>Direct Delivery</strong>
+                <span>Doorstep in hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="orders-list">
           {orders.map((order) => (

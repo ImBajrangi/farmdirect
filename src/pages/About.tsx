@@ -1,61 +1,154 @@
 import React from 'react';
-import { ShieldCheck, HeartHandshake, Scale, Award, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  ArrowLeft,
+  Scale,
+  Award,
+  Truck,
+  Clock,
+  AlertCircle,
+  ShieldCheck,
+  CheckCircle2,
+  Coins
+} from 'lucide-react';
 
 export const About: React.FC = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8 pb-24 sm:pb-12">
-      <div className="text-center space-y-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-agri-700 bg-agri-100 px-3 py-1 rounded-full">
-          Our Agricultural Mission
-        </span>
-        <h1 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">
-          About FarmDirect (फार्मडायरेक्ट)
+    <div className="lp-page-wrapper">
+      <Link to="/" className="lp-back-link">
+        <ArrowLeft size={14} />
+        <span>Return to Home</span>
+      </Link>
+
+      <div className="lp-header centered">
+        <div className="lp-kicker-pill">
+          <span>🌱</span>
+          <span>Our Agricultural Mission</span>
+        </div>
+        <h1 className="lp-title">
+          About FarmDirect
         </h1>
-        <p className="text-xs sm:text-sm text-stone-500 max-w-xl mx-auto">
+        <p className="lp-subtitle">
           Reinventing farmgate-to-fork commerce for rural farmers and conscious urban households in India.
         </p>
       </div>
 
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-earth-200 shadow-soft space-y-6 text-stone-700 text-xs sm:text-sm leading-relaxed">
-        <div className="space-y-3">
-          <h2 className="text-lg font-bold text-stone-900">The Problem with Traditional Produce Supply Chains</h2>
-          <p>
-            In conventional Indian agriculture, a tomato or onion travels through 4 to 6 tiers of middlemen—village commission agents, wholesale APMC traders, secondary transport distributors, and local cart vendors. By the time it arrives on a customer's plate 48 to 72 hours later:
-          </p>
-          <ul className="list-disc pl-5 space-y-1 text-stone-600">
-            <li>The farmer receives barely <strong>20% to 35%</strong> of the end retail price.</li>
-            <li>Produce has lost its natural vitality, crispness, and nutritional value in transit.</li>
-            <li>Unsubstantiated claims of "organic" are stamped on food without verifiable proof.</li>
-          </ul>
+      {/* High-Impact Agricultural Metrics Strip */}
+      <div className="lp-stats-strip">
+        <div className="lp-stat-pill">
+          <div className="lp-stat-num">85%+</div>
+          <div className="lp-stat-label">Farmgate Share</div>
         </div>
+        <div className="lp-stat-pill">
+          <div className="lp-stat-num">0</div>
+          <div className="lp-stat-label">Mandi Middlemen</div>
+        </div>
+        <div className="lp-stat-pill">
+          <div className="lp-stat-num">&lt;12h</div>
+          <div className="lp-stat-label">Harvest to Plate</div>
+        </div>
+        <div className="lp-stat-pill">
+          <div className="lp-stat-num">100%</div>
+          <div className="lp-stat-label">7/12 Land Verified</div>
+        </div>
+      </div>
 
-        <div className="space-y-3 border-t border-earth-100 pt-6">
-          <h2 className="text-lg font-bold text-stone-900">The FarmDirect Commitment</h2>
-          <p>
-            FarmDirect was established in the fertile agriculture corridor of Maharashtra (Nashik – Pune) to restore direct dignity and transparency to agriculture:
+      {/* Main Document Content Card */}
+      <div className="lp-card">
+        {/* Section 1: The Problem (Warm Earth Amber Agricultural Theme) */}
+        <section className="lp-section">
+          <h2 className="lp-section-title">
+            The Problem with Traditional Produce Supply Chains
+          </h2>
+          <p className="lp-text">
+            In conventional Indian agriculture, every harvest travels through 4 to 6 tiers of intermediary commission cartels—village brokers, wholesale APMC mandis, transport loaders, secondary city distributors, and roadside cart vendors. By the time it arrives on a customer's plate 48 to 72 hours later:
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-2xl bg-earth-50 border border-earth-200 space-y-1.5">
-              <span className="font-bold text-stone-900 flex items-center gap-1.5">
-                <Scale className="w-4 h-4 text-agri-700" />
-                <span>85%+ Direct Farmgate Realization</span>
-              </span>
-              <p className="text-xs text-stone-500">
-                Payment goes straight into verified farmer bank/UPI accounts with minimal platform maintenance overhead.
+
+          <div className="lp-grid-3">
+            <div className="lp-feature-card problem">
+              <div className="lp-icon-squircle amber">
+                <Coins size={18} />
+              </div>
+              <h3 className="lp-feature-title">🌾 APMC Middlemen Margin Loss</h3>
+              <p className="lp-feature-desc">
+                Growers receive barely ₹20 to ₹35 of every ₹100 paid by consumers. 4 to 6 tiers of commission agents siphon up to 70% of crop value.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-earth-50 border border-earth-200 space-y-1.5">
-              <span className="font-bold text-stone-900 flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-emerald-700" />
-                <span>Honest Verification Policy</span>
-              </span>
-              <p className="text-xs text-stone-500">
-                Never call produce "certified organic" without laboratory verification documents. Farmers submit 7/12 land records.
+            <div className="lp-feature-card problem">
+              <div className="lp-icon-squircle amber">
+                <Clock size={18} />
+              </div>
+              <h3 className="lp-feature-title">⏳ 48–72h Mandi Transit Delay</h3>
+              <p className="lp-feature-desc">
+                Perishable crops sit for days in humid holding yards and transit trucks, losing natural morning dew crispness and vital nutrition.
+              </p>
+            </div>
+
+            <div className="lp-feature-card problem">
+              <div className="lp-icon-squircle amber">
+                <AlertCircle size={18} />
+              </div>
+              <h3 className="lp-feature-title">⚠️ Unverified 'Organic' Markup</h3>
+              <p className="lp-feature-desc">
+                Produce is stamped with uncertified 'organic' stickers in city stores with zero authentic lab testing or genuine farm traceability.
               </p>
             </div>
           </div>
-        </div>
+        </section>
+
+        <hr className="lp-section-divider" />
+
+        {/* Section 2: FarmDirect Commitment (Lush Farmgate Emerald Green) */}
+        <section className="lp-section">
+          <h2 className="lp-section-title">
+            The FarmDirect Commitment
+          </h2>
+          <p className="lp-text">
+            FarmDirect was established in the fertile agriculture corridor of Maharashtra (Nashik – Pune) to restore direct dignity, honesty, and financial equity to Indian cultivation:
+          </p>
+
+          <div className="lp-grid-3">
+            <div className="lp-feature-card solution">
+              <div className="lp-icon-squircle emerald">
+                <CheckCircle2 size={18} />
+              </div>
+              <h3 className="lp-feature-title">🌱 85%+ Straight to Kisan</h3>
+              <p className="lp-feature-desc">
+                Customer payments flow directly into verified farmer bank/UPI accounts with transparent, negligible platform overhead.
+              </p>
+            </div>
+
+            <div className="lp-feature-card solution">
+              <div className="lp-icon-squircle emerald">
+                <Award size={18} />
+              </div>
+              <h3 className="lp-feature-title">📜 Authentic 7/12 & Lab Proof</h3>
+              <p className="lp-feature-desc">
+                We never label produce 'certified organic' without authentic NPOP/PGS lab documents. Farmers verify genuine 7/12 land records.
+              </p>
+            </div>
+
+            <div className="lp-feature-card solution">
+              <div className="lp-icon-squircle emerald">
+                <Truck size={18} />
+              </div>
+              <h3 className="lp-feature-title">🌅 Dawn Harvest Express</h3>
+              <p className="lp-feature-desc">
+                Crops are harvested at sunrise and dispatched directly to your doorstep in active Maharashtra corridors within 12 hours.
+              </p>
+            </div>
+          </div>
+
+          <div className="lp-trust-box">
+            <div className="lp-trust-box-icon">
+              <ShieldCheck size={20} />
+            </div>
+            <div className="lp-trust-box-content">
+              <strong>Pilot Agricultural Corridor:</strong> Currently empowering direct grower collectives across Nashik, Sinnar, Niphad, and Western Pune. Every grower is authentic and verifiable under genuine Mahabhulekh 7/12 records.
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

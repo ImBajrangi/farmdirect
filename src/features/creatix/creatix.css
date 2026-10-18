@@ -1,0 +1,1248 @@
+/* ==========================================================================
+   Creatix Design Agency Landing Page Stylesheet
+   Faithful replication of Creatix UI (White Hero Scoop, Dark Body, Neon Lime Highlights)
+   ========================================================================== */
+
+:root {
+  --creatix-neon-green: #8cf828;
+  --creatix-neon-green-hover: #7be01f;
+  --creatix-dark-bg: #0b0c10;
+  --creatix-dark-card: #13141a;
+  --creatix-dark-elevated: #1a1c24;
+  --creatix-dark-border: rgba(255, 255, 255, 0.12);
+  --creatix-white: #ffffff;
+  --creatix-black: #0c0d11;
+  --creatix-gray: #8e919e;
+  --creatix-gray-light: #e5e7eb;
+}
+
+.creatix-page {
+  background-color: var(--creatix-dark-bg);
+  color: var(--creatix-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ─── 0. Mode Switcher Floating Badge ───────────────────────────────────── */
+.creatix-mode-switcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(12, 13, 17, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.creatix-mode-switcher a {
+  color: var(--creatix-neon-green);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s ease;
+}
+
+.creatix-mode-switcher a:hover {
+  opacity: 0.85;
+}
+
+/* ─── 1. Floating Nav Island ─────────────────────────────────────────────── */
+.creatix-nav-container {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  pointer-events: none;
+}
+
+.creatix-nav-island {
+  pointer-events: auto;
+  background-color: rgba(12, 13, 17, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 3vw, 36px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.creatix-nav-link {
+  color: #c5cad6;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.creatix-nav-link:hover {
+  color: var(--creatix-white);
+}
+
+.creatix-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--creatix-white);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+
+.creatix-sunburst-icon {
+  color: var(--creatix-neon-green);
+  animation: rotateSunburst 25s linear infinite;
+  display: inline-flex;
+}
+
+@keyframes rotateSunburst {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── 2. Hero Section (White Canvas with Scoop Bottom) ───────────────────── */
+.creatix-hero-section {
+  background-color: var(--creatix-white);
+  color: var(--creatix-black);
+  padding: 100px 24px 60px;
+  border-bottom-left-radius: 54px;
+  border-bottom-right-radius: 54px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 768px) {
+  .creatix-hero-section {
+    padding: 110px 48px 80px;
+    border-bottom-left-radius: 72px;
+    border-bottom-right-radius: 72px;
+  }
+}
+
+.creatix-hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.creatix-hero-sparkle-left {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: var(--creatix-neon-green);
+}
+
+.creatix-hero-headline {
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: #111111;
+  margin-bottom: 40px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.creatix-accent-bracket {
+  color: var(--creatix-neon-green);
+  font-weight: 300;
+  margin-left: 4px;
+  display: inline-block;
+}
+
+/* 3-Part Hero Body Grid */
+.creatix-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .creatix-hero-grid {
+    grid-template-columns: 1fr 1.3fr 1fr;
+    gap: 24px;
+  }
+}
+
+/* Left Hero Column */
+.creatix-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.creatix-hero-arrow-badge {
+  color: var(--creatix-neon-green);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.creatix-hero-left p {
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.55;
+  max-width: 320px;
+}
+
+.btn-hero-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-hero-outline:hover {
+  border-color: #111827;
+  background-color: #f9fafb;
+}
+
+/* Center Hero Visual */
+.creatix-hero-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.creatix-doodle-swirl {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  height: 80%;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.creatix-hero-portrait-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 420px;
+  border-radius: 36px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #f3f4f6 0%, #e5e7eb 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.creatix-hero-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Floating Dual CTA Pill */
+.creatix-hero-dual-cta {
+  position: absolute;
+  bottom: -20px;
+  display: flex;
+  align-items: center;
+  background-color: var(--creatix-black);
+  border-radius: 9999px;
+  padding: 5px;
+  gap: 4px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+
+.btn-neon-pill {
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.btn-neon-pill:hover {
+  background-color: var(--creatix-neon-green-hover);
+}
+
+.btn-dark-pill {
+  background-color: transparent;
+  color: var(--creatix-white);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.btn-dark-pill:hover {
+  color: var(--creatix-neon-green);
+}
+
+/* Right Hero Column */
+.creatix-hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+@media (min-width: 960px) {
+  .creatix-hero-right {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.creatix-stars-row {
+  display: flex;
+  gap: 3px;
+  color: var(--creatix-neon-green);
+  font-size: 1.125rem;
+}
+
+.creatix-hero-exp-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.creatix-hero-exp-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* ─── 3. Stats Strip (Dark Canvas) ───────────────────────────────────────── */
+.creatix-stats-section {
+  padding: 60px 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.creatix-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .creatix-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.creatix-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.creatix-stat-val {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: var(--creatix-white);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.creatix-stat-lbl {
+  font-size: 0.8125rem;
+  color: var(--creatix-gray);
+  letter-spacing: 0.02em;
+}
+
+/* ─── 4. "Turning Ideas Into Masterpieces" Section ────────────────────────── */
+.creatix-masterpiece-section {
+  padding: 40px 24px 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.creatix-masterpiece-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 840px) {
+  .creatix-masterpiece-header {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: flex-end;
+  }
+}
+
+.creatix-masterpiece-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--creatix-white);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.creatix-green-star {
+  color: var(--creatix-neon-green);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.creatix-masterpiece-desc {
+  font-size: 0.9375rem;
+  color: var(--creatix-gray);
+  line-height: 1.6;
+}
+
+.creatix-masterpiece-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 840px) {
+  .creatix-masterpiece-cards {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.creatix-card-left {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  height: 380px;
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+}
+
+.creatix-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.creatix-agency-pill-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.creatix-barcode-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+
+.creatix-barcode-bars span {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background-color: var(--creatix-black);
+}
+
+.creatix-card-right {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  height: 380px;
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+}
+
+.creatix-lightbulb-doodle {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  filter: drop-shadow(0 0 12px rgba(255, 100, 100, 0.6));
+}
+
+/* ─── 5. "Our Services" Section with Side Sticker ────────────────────────── */
+.creatix-services-section {
+  position: relative;
+  padding: 60px 24px 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* Rotated Left Edge Sticker: WHAT WE DO */
+.creatix-side-sticker {
+  position: absolute;
+  left: -12px;
+  top: 140px;
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 4px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  z-index: 10;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .creatix-side-sticker {
+    display: block;
+  }
+}
+
+.creatix-services-header {
+  margin-bottom: 48px;
+}
+
+.creatix-services-title {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  color: var(--creatix-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pill-highlight-green {
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  border-radius: 9999px;
+  padding: 2px 18px;
+  font-weight: 800;
+  display: inline-block;
+}
+
+.creatix-services-subtitle {
+  font-size: 0.9375rem;
+  color: var(--creatix-gray);
+  max-width: 480px;
+}
+
+.creatix-services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 880px) {
+  .creatix-services-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.creatix-services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.creatix-service-row {
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 9999px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.creatix-service-row:hover,
+.creatix-service-row.active {
+  background-color: var(--creatix-dark-elevated);
+  border-color: var(--creatix-neon-green);
+  transform: translateX(6px);
+}
+
+.creatix-service-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--creatix-white);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.creatix-service-num {
+  font-family: monospace;
+  font-size: 0.8125rem;
+  color: var(--creatix-neon-green);
+  font-weight: 700;
+}
+
+.creatix-service-arrow {
+  color: var(--creatix-gray);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.creatix-service-row:hover .creatix-service-arrow,
+.creatix-service-row.active .creatix-service-arrow {
+  color: var(--creatix-neon-green);
+  transform: translateX(4px);
+}
+
+/* Service Media Showcase Right Column */
+.creatix-service-media-card {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  height: 440px;
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+}
+
+.creatix-watermark-wheel {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+  animation: rotateSunburst 20s linear infinite;
+  opacity: 0.75;
+}
+
+.floating-badge-top-dark {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: rgba(12, 13, 17, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  color: var(--creatix-white);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.floating-badge-top-dark:hover {
+  border-color: var(--creatix-neon-green);
+}
+
+.floating-badge-bottom-neon {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.15s ease;
+}
+
+.floating-badge-bottom-neon:hover {
+  background-color: var(--creatix-neon-green-hover);
+}
+
+.circle-arrow-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--creatix-black);
+  color: var(--creatix-neon-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── 6. Big Typography Ticker Banner ────────────────────────────────────── */
+.creatix-ticker-banner {
+  padding: 60px 24px;
+  border-top: 1px solid var(--creatix-dark-border);
+  border-bottom: 1px solid var(--creatix-dark-border);
+  text-align: center;
+}
+
+.creatix-ticker-text {
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--creatix-white);
+  line-height: 1;
+}
+
+.creatix-ticker-star {
+  display: block;
+  margin: 20px auto 0;
+  color: var(--creatix-neon-green);
+}
+
+/* ─── 7. "Meet the Team" Section ─────────────────────────────────────────── */
+.creatix-team-section {
+  padding: 80px 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.creatix-team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.creatix-team-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--creatix-white);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.creatix-toggle-pill {
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 9999px;
+  padding: 4px;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.creatix-toggle-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--creatix-gray);
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.creatix-toggle-btn.active {
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+}
+
+.creatix-team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .creatix-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .creatix-team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.creatix-team-card {
+  background-color: var(--creatix-white);
+  color: var(--creatix-black);
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.creatix-team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+}
+
+.creatix-team-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.creatix-avatar-squircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 28%;
+  background-color: var(--creatix-neon-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 1.75rem;
+}
+
+.creatix-team-social {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.creatix-team-social:hover {
+  background-color: var(--creatix-neon-green);
+}
+
+.creatix-team-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+
+.creatix-team-role {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.creatix-team-bio {
+  font-size: 0.8125rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* ─── 8. Testimonials Section ────────────────────────────────────────────── */
+.creatix-reviews-section {
+  padding: 40px 24px 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.creatix-reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .creatix-reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.creatix-review-card {
+  background-color: var(--creatix-dark-card);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 28px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.creatix-quote-icon {
+  font-size: 2.5rem;
+  font-family: serif;
+  color: var(--creatix-neon-green);
+  line-height: 1;
+}
+
+.creatix-review-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--creatix-white);
+}
+
+.creatix-review-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--creatix-dark-border);
+  padding-top: 16px;
+}
+
+.creatix-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.creatix-author-name {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--creatix-white);
+}
+
+.creatix-author-role {
+  font-size: 0.75rem;
+  color: var(--creatix-gray);
+}
+
+.creatix-reviews-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.circle-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--creatix-dark-border);
+  background-color: var(--creatix-dark-card);
+  color: var(--creatix-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.circle-nav-btn:hover {
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  border-color: var(--creatix-neon-green);
+}
+
+/* ─── 9. Infinite Marquee Ribbon Tape ────────────────────────────────────── */
+.creatix-marquee-ribbon {
+  background-color: var(--creatix-white);
+  color: var(--creatix-black);
+  padding: 18px 0;
+  overflow: hidden;
+  transform: rotate(-1deg);
+  margin: 40px -20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.creatix-ribbon-track {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+  white-space: nowrap;
+}
+
+.creatix-ribbon-item {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.ribbon-star {
+  color: var(--creatix-neon-green);
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+}
+
+/* ─── 10. "Get in Touch Today!" CTA Section ──────────────────────────────── */
+.creatix-contact-section {
+  padding: 60px 24px 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.creatix-contact-card {
+  background: linear-gradient(135deg, #13141b 0%, #171922 100%);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 36px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 880px) {
+  .creatix-contact-card {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+.creatix-contact-left {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.creatix-contact-title {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: var(--creatix-white);
+  letter-spacing: -0.02em;
+}
+
+.creatix-contact-desc {
+  font-size: 0.9375rem;
+  color: var(--creatix-gray);
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+.creatix-contact-form {
+  display: flex;
+  align-items: center;
+  background-color: var(--creatix-dark-elevated);
+  border: 1px solid var(--creatix-dark-border);
+  border-radius: 9999px;
+  padding: 6px;
+  max-width: 440px;
+  margin-top: 12px;
+}
+
+.creatix-contact-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+  color: var(--creatix-white);
+  font-size: 0.875rem;
+}
+
+.creatix-contact-input::placeholder {
+  color: #6b7280;
+}
+
+.creatix-contact-right {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  min-height: 320px;
+  background: radial-gradient(circle at 50% 60%, rgba(140, 248, 40, 0.12) 0%, transparent 70%);
+}
+
+.creatix-contact-img {
+  max-height: 380px;
+  object-fit: contain;
+}
+
+/* ─── 11. Footer (Full Neon Lime Green Card) ─────────────────────────────── */
+.creatix-footer-wrapper {
+  padding: 0 16px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.creatix-neon-footer {
+  background-color: var(--creatix-neon-green);
+  color: var(--creatix-black);
+  border-radius: 40px;
+  padding: 60px 32px 32px;
+  box-shadow: 0 20px 60px rgba(140, 248, 40, 0.25);
+}
+
+@media (min-width: 768px) {
+  .creatix-neon-footer {
+    padding: 80px 48px 40px;
+  }
+}
+
+.creatix-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  border-bottom: 1px solid rgba(12, 13, 17, 0.18);
+  padding-bottom: 48px;
+}
+
+@media (min-width: 640px) {
+  .creatix-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .creatix-footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
+  }
+}
+
+.creatix-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.creatix-footer-logo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--creatix-black);
+}
+
+.creatix-footer-tagline {
+  font-size: 0.8125rem;
+  color: rgba(12, 13, 17, 0.75);
+  line-height: 1.5;
+  max-width: 240px;
+}
+
+.creatix-footer-col-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--creatix-black);
+  margin-bottom: 16px;
+}
+
+.creatix-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.creatix-footer-link {
+  color: rgba(12, 13, 17, 0.8);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.creatix-footer-link:hover {
+  color: #000000;
+  font-weight: 700;
+}
+
+.creatix-newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.creatix-newsletter-input-pill {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 9999px;
+  padding: 4px;
+}
+
+.creatix-newsletter-input-pill input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  color: #111;
+}
+
+.btn-newsletter-subscribe {
+  background-color: var(--creatix-black);
+  color: var(--creatix-white);
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.creatix-footer-bottom {
+  padding-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.8125rem;
+  color: rgba(12, 13, 17, 0.75);
+}
+
+.creatix-social-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.creatix-social-icon {
+  color: var(--creatix-black);
+  transition: transform 0.15s ease;
+  display: flex;
+  align-items: center;
+}
+
+.creatix-social-icon:hover {
+  transform: scale(1.2);
+}

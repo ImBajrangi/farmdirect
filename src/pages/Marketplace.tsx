@@ -153,11 +153,10 @@ export const Marketplace: React.FC = () => {
           {/* Organic Only Toggle */}
           <button
             onClick={() => setOnlyOrganic(!onlyOrganic)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition ${
-              onlyOrganic
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition ${onlyOrganic
                 ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs'
                 : 'bg-white text-stone-600 border-earth-300 hover:border-emerald-600'
-            }`}
+              }`}
           >
             <Award className="w-3.5 h-3.5" />
             <span>{t.common.organicCertified}</span>
@@ -167,11 +166,10 @@ export const Marketplace: React.FC = () => {
           {/* In Stock Only Toggle */}
           <button
             onClick={() => setInStockOnly(!inStockOnly)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition ${
-              inStockOnly
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition ${inStockOnly
                 ? 'bg-agri-800 text-white border-agri-800 shadow-xs'
                 : 'bg-white text-stone-600 border-earth-300 hover:border-agri-600'
-            }`}
+              }`}
           >
             <span>{t.common.inStock}</span>
             {inStockOnly && <Check className="w-3 h-3 ml-0.5" />}

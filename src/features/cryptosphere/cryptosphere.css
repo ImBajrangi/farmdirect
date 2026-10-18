@@ -1,0 +1,1035 @@
+/* ==========================================================================
+   CryptoSphere - Landing Page Stylesheet
+   Faithful replication of the desktop & mobile reference design
+   Theme: Electric Neon Lime (#c2f418) & Dark Luxury Bento Canvas (#0e0f13)
+   ========================================================================== */
+
+:root {
+  --crypto-bg: #0c0d11;
+  --crypto-bg-elevated: #15171d;
+  --crypto-card-dark: #1e2027;
+  --crypto-card-white: #ffffff;
+  --crypto-lime: #c2f418;
+  --crypto-lime-hover: #b1df12;
+  --crypto-lime-soft: rgba(194, 244, 24, 0.15);
+  --crypto-ink: #111216;
+  --crypto-ink-muted: #5a5d68;
+  --crypto-text-light: #ffffff;
+  --crypto-text-muted: #8e93a0;
+  --crypto-text-faint: #595e6d;
+  --crypto-border-dark: rgba(255, 255, 255, 0.08);
+  --crypto-border-light: rgba(0, 0, 0, 0.06);
+  --crypto-shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.2);
+  --crypto-shadow-card: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* ─── Page Container ─────────────────────────────────────────────────────── */
+.crypto-page-wrapper {
+  background-color: var(--crypto-bg);
+  color: var(--crypto-text-light);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.crypto-container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .crypto-container {
+    padding: 0 16px;
+  }
+}
+
+/* ─── 1. Header & Navigation ─────────────────────────────────────────────── */
+.crypto-header {
+  position: relative;
+  z-index: 50;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.crypto-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Logo */
+.crypto-logo {
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.crypto-logo-lime {
+  color: var(--crypto-lime);
+}
+
+.crypto-logo-white {
+  color: #ffffff;
+}
+
+/* Nav Links (Desktop) */
+.crypto-nav {
+  display: none;
+  align-items: center;
+  gap: 32px;
+}
+
+@media (min-width: 860px) {
+  .crypto-nav {
+    display: flex;
+  }
+}
+
+.crypto-nav-link {
+  color: #c5cad6;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.crypto-nav-link:hover {
+  color: var(--crypto-lime);
+}
+
+/* Header Right CTA */
+.crypto-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crypto-btn-trial {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.crypto-btn-trial:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Mobile Hamburger */
+.crypto-mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+@media (min-width: 860px) {
+  .crypto-mobile-toggle {
+    display: none;
+  }
+}
+
+/* ─── 2. Hero Section ────────────────────────────────────────────────────── */
+.crypto-hero-section {
+  position: relative;
+  padding: 40px 0 60px;
+  background-image: radial-gradient(circle at 50% 20%, rgba(194, 244, 24, 0.06) 0%, transparent 60%);
+}
+
+.crypto-hero-bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 420px;
+  background-image: url('/images/crypto_hero_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.28;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crypto-hero-grid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .crypto-hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 48px;
+    padding-bottom: 20px;
+  }
+}
+
+/* Headline */
+.crypto-hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.crypto-lime-text {
+  color: var(--crypto-lime);
+  position: relative;
+  display: inline-block;
+}
+
+/* Hero Right Social Proof & CTA */
+.crypto-hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+@media (min-width: 860px) {
+  .crypto-hero-right {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.crypto-hero-social-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crypto-hero-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.crypto-hero-avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--crypto-bg);
+  object-fit: cover;
+  margin-left: -8px;
+}
+
+.crypto-hero-avatar-img:first-child {
+  margin-left: 0;
+}
+
+.crypto-hero-count-badge {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-left: 6px;
+}
+
+.crypto-hero-social-text {
+  font-size: 0.8125rem;
+  color: var(--crypto-text-muted);
+  max-width: 220px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Main CTA Button: Lime Pill with Arrow Icon */
+.crypto-hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 10px 8px 24px;
+  border-radius: 9999px;
+  background-color: var(--crypto-lime);
+  color: var(--crypto-ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(194, 244, 24, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.crypto-hero-cta-btn:hover {
+  background-color: var(--crypto-lime-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(194, 244, 24, 0.5);
+}
+
+.crypto-hero-cta-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--crypto-ink);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── 3. Floating Notch & Bento Section ───────────────────────────────────── */
+.crypto-bento-section {
+  position: relative;
+  z-index: 20;
+  padding: 50px 0 60px;
+}
+
+/* Bento Container Grid */
+.crypto-bento-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+/* Bento Card 1: Top Large White Card with Integrated SVG Notch Crest */
+.crypto-bento-white-card {
+  background-color: var(--crypto-card-white);
+  color: var(--crypto-ink);
+  border-radius: 28px;
+  padding: 32px 28px 28px;
+  box-shadow: var(--crypto-shadow-card);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+  position: relative;
+  overflow: visible; /* Seamlessly hosts the SVG notch crest rising into dark hero */
+}
+
+/* Continuous SVG Notch Crest with Organic C2 Bezier Fillets */
+.crypto-notch-crest-container {
+  position: absolute;
+  top: -53px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(180px, 46vw, 240px);
+  height: auto;
+  pointer-events: none;
+  z-index: 30;
+}
+
+@media (min-width: 860px) {
+  .crypto-notch-crest-container {
+    width: 240px;
+    top: -53px;
+  }
+}
+
+.crypto-notch-crest-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 -4px 14px rgba(0, 0, 0, 0.16));
+}
+
+@media (min-width: 768px) {
+  .crypto-bento-white-card {
+    grid-template-columns: 0.9fr 1.1fr;
+    padding: 32px 36px;
+    gap: 36px;
+  }
+}
+
+.crypto-student-photo-frame {
+  width: 100%;
+  height: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #f1f2f5;
+}
+
+@media (min-width: 768px) {
+  .crypto-student-photo-frame {
+    height: 260px;
+  }
+}
+
+.crypto-student-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.crypto-bento-white-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.crypto-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background-color: var(--crypto-lime);
+  color: var(--crypto-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.crypto-bento-white-title {
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--crypto-ink);
+  margin: 0;
+}
+
+.crypto-bento-white-desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--crypto-ink-muted);
+  margin: 0;
+}
+
+/* Bento Row 2: Split 2 Cards (Dark & Lime) */
+.crypto-bento-split-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .crypto-bento-split-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Left Dark Card */
+.crypto-bento-dark-card {
+  background-color: var(--crypto-card-dark);
+  color: #ffffff;
+  border-radius: 28px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  border: 1px solid var(--crypto-border-dark);
+}
+
+.crypto-dark-block-top {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crypto-dark-label {
+  font-size: 0.75rem;
+  color: var(--crypto-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.crypto-dark-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.crypto-dark-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--crypto-border-dark);
+}
+
+.crypto-dark-block-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crypto-dark-subdesc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--crypto-text-muted);
+  margin: 0;
+}
+
+/* Right Neon Lime Card */
+.crypto-bento-lime-card {
+  background-color: var(--crypto-lime);
+  color: var(--crypto-ink);
+  border-radius: 28px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(194, 244, 24, 0.25);
+}
+
+.crypto-lime-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+}
+
+.crypto-lime-label {
+  font-size: 0.75rem;
+  color: rgba(17, 18, 22, 0.7);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.crypto-lime-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--crypto-ink);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Floating Sticker Pills Cluster */
+.crypto-stickers-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+  z-index: 10;
+}
+
+.crypto-sticker {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.crypto-sticker:hover {
+  transform: scale(1.06) rotate(0deg) !important;
+}
+
+.crypto-sticker.black {
+  background-color: #111216;
+  color: #ffffff;
+}
+
+.crypto-sticker.white {
+  background-color: #ffffff;
+  color: #111216;
+}
+
+/* ─── 4. Reviews & Live Portfolio Phone Showcase ─────────────────────────── */
+.crypto-reviews-showcase-section {
+  position: relative;
+  padding: 80px 0 60px;
+  overflow: hidden;
+}
+
+.crypto-reviews-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 48px;
+}
+
+.crypto-reviews-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+  color: #ffffff;
+}
+
+.crypto-reviews-subtitle {
+  font-size: 0.9375rem;
+  color: var(--crypto-text-muted);
+  margin: 0;
+}
+
+/* Showcase Stage */
+.crypto-showcase-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  margin-top: 20px;
+}
+
+/* Decorative 3D Floating Elements */
+.crypto-deco-knot {
+  position: absolute;
+  left: 20px;
+  top: 60px;
+  width: 90px;
+  height: 90px;
+  opacity: 0.85;
+  animation: floatKnot 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.crypto-deco-orb {
+  position: absolute;
+  right: 20px;
+  bottom: 80px;
+  width: 80px;
+  height: 80px;
+  opacity: 0.85;
+  animation: floatOrb 7s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes floatKnot {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes floatOrb {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-14px) scale(1.05); }
+}
+
+/* Center iPhone Mockup Frame */
+.crypto-iphone-frame {
+  width: 280px;
+  height: 460px;
+  border-radius: 44px;
+  background: #111216;
+  border: 8px solid #23252e;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.crypto-iphone-notch {
+  width: 84px;
+  height: 20px;
+  background-color: #000000;
+  border-radius: 0 0 12px 12px;
+  margin: 0 auto;
+}
+
+.crypto-iphone-screen {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.crypto-iphone-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6875rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.crypto-iphone-investing {
+  font-size: 0.75rem;
+  color: var(--crypto-text-muted);
+  margin-top: 10px;
+}
+
+.crypto-iphone-balance {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.crypto-iphone-gain {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--crypto-lime);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.crypto-iphone-chart-svg {
+  width: 100%;
+  height: 90px;
+  margin: 12px 0;
+}
+
+.crypto-iphone-assets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.crypto-asset-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.04);
+  font-size: 0.6875rem;
+}
+
+/* Floating Testimonial Speech Bubbles around Phone */
+.crypto-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 10px;
+  border-radius: 9999px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  z-index: 15;
+  transition: transform 0.25s ease;
+  max-width: 290px;
+}
+
+.crypto-bubble:hover {
+  transform: scale(1.04);
+  z-index: 20;
+}
+
+.crypto-bubble-tail-svg {
+  position: absolute;
+  bottom: -6px;
+  left: 20px;
+  display: block;
+  pointer-events: none;
+}
+
+.crypto-bubble-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.crypto-bubble.white {
+  background-color: #ffffff;
+  color: #111216;
+}
+
+.crypto-bubble.lime {
+  background-color: var(--crypto-lime);
+  color: #111216;
+}
+
+/* Bubble Positions */
+.crypto-bubble-1 {
+  top: 40px;
+  left: 20%;
+}
+
+.crypto-bubble-2 {
+  top: 130px;
+  left: 10%;
+}
+
+.crypto-bubble-3 {
+  top: 70px;
+  right: 18%;
+}
+
+.crypto-bubble-4 {
+  bottom: 120px;
+  left: 12%;
+}
+
+.crypto-bubble-5 {
+  bottom: 80px;
+  right: 14%;
+}
+
+@media (max-width: 860px) {
+  .crypto-bubble {
+    position: static;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  .crypto-showcase-stage {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .crypto-deco-knot, .crypto-deco-orb {
+    display: none;
+  }
+}
+
+/* ─── 5. Tariffs / Pricing Section ───────────────────────────────────────── */
+.crypto-pricing-section {
+  position: relative;
+  padding: 60px 0 100px;
+}
+
+.crypto-pricing-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 48px;
+}
+
+.crypto-pricing-title {
+  font-size: clamp(1.75rem, 3.8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.crypto-pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+@media (min-width: 860px) {
+  .crypto-pricing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Pricing Card Base */
+.crypto-price-card {
+  border-radius: 28px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: var(--crypto-shadow-card);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.crypto-price-card:hover {
+  transform: translateY(-4px);
+}
+
+/* White Cards (Базовый, Стандартный) */
+.crypto-price-card.white {
+  background-color: var(--crypto-card-white);
+  color: var(--crypto-ink);
+}
+
+/* Lime Card (Премиум - Featured) */
+.crypto-price-card.lime {
+  background-color: var(--crypto-lime);
+  color: var(--crypto-ink);
+  box-shadow: 0 24px 60px rgba(194, 244, 24, 0.3);
+}
+
+.crypto-badge-recommended {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #111216;
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.crypto-price-card-header {
+  text-align: center;
+}
+
+.crypto-plan-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: rgba(17, 18, 22, 0.7);
+  margin-bottom: 8px;
+}
+
+.crypto-plan-price {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.crypto-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crypto-plan-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--crypto-ink);
+  font-weight: 500;
+}
+
+.crypto-plan-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9999px;
+  background-color: #111216;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.crypto-plan-btn:hover {
+  opacity: 0.88;
+  transform: scale(1.02);
+}
+
+/* ─── 6. Footer & Bottom Bar ─────────────────────────────────────────────── */
+.crypto-footer {
+  border-top: 1px solid var(--crypto-border-dark);
+  padding: 32px 0 48px;
+  font-size: 0.8125rem;
+  color: var(--crypto-text-muted);
+}
+
+.crypto-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.crypto-return-link {
+  color: var(--crypto-lime);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crypto-return-link:hover {
+  text-decoration: underline;
+}
+
+/* ─── 7. Interactive Modals ──────────────────────────────────────────────── */
+.crypto-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.crypto-modal-card {
+  background-color: #161820;
+  border: 1px solid var(--crypto-border-dark);
+  border-radius: 28px;
+  padding: 32px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+  position: relative;
+  color: #ffffff;
+}
+
+.crypto-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--crypto-text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 4px;
+}
+
+.crypto-modal-close:hover {
+  color: #ffffff;
+}
+
+.crypto-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--crypto-border-dark);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 0.9375rem;
+  box-sizing: border-box;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.crypto-input:focus {
+  border-color: var(--crypto-lime);
+}

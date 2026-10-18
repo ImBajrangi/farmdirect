@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
               <span className="text-xl font-bold tracking-tight text-white">FarmDirect</span>
             </div>
             <p className="text-xs text-earth-300 leading-relaxed">
-              Bridging the gap between hardworking Indian farmers and mindful buyers. 
+              Bridging the gap between hardworking Indian farmers and mindful buyers.
               Fresh harvest at fair farmgate rates with zero predatory middlemen.
             </p>
             <div className="pt-2 text-xs text-agri-400 flex items-center gap-1.5 font-medium">
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
               <p className="text-earth-400">Field Operations & Support Desk:</p>
               <div className="flex items-center gap-2 text-white font-medium">
                 <Phone className="w-4 h-4 text-agri-400" />
-                <span>+91 98220 00000 (7 AM - 8 PM)</span>
+                <span>+91 9XXXX XXXXX</span>
               </div>
               <div className="bg-earth-800/80 p-3 rounded-xl border border-earth-700/60 mt-2">
                 <div className="flex items-center gap-1.5 text-agri-400 font-semibold text-[11px] mb-1">

@@ -187,6 +187,7 @@ export interface Order {
   dispatched_at?: string;
   delivered_at?: string;
   cancelled_at?: string;
+  payment_id?: string;
   created_at: string;
   updated_at: string;
   

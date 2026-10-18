@@ -74,34 +74,51 @@ export const ProductDetailsPage: React.FC = () => {
   );
 
   return (
-    <div className="page-container page-content">
-      <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm" style={{ marginBottom: 16, paddingLeft: 0 }}>
-        <ArrowLeft size={16} />
+    <div className="product-detail-container">
+      {/* Back button */}
+      <button onClick={() => navigate(-1)} className="detail-back-link">
+        <ArrowLeft size={15} />
         <span>Back to listings</span>
       </button>
 
       <div className="product-details-grid">
-        {/* Left: Media */}
-        <div>
+        {/* Left Column: Media & Freshness Proof */}
+        <div className="detail-media-column">
           <div className="product-detail-img-box">
-            <img src={imageUrl} alt={productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={imageUrl} alt={productName} className="product-detail-img" />
+
+            {/* Badges on Image */}
+            {product.is_certified_organic && (
+              <div className="detail-image-badges">
+                <span className="detail-badge-organic">
+                  <Award size={13} />
+                  <span>{t.common.organicCertified}</span>
+                </span>
+              </div>
+            )}
+
+            {/* Bottom Olive Harvest Ribbon */}
+            <div className="detail-image-ribbon">
+              <span>{product.harvest_date ? `Free Delivery · Harvested ${product.harvest_date}` : 'Free Delivery · Fresh Morning Harvest'}</span>
+            </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
+          {/* Freshness Metrics Cards */}
+          <div className="detail-metrics-row">
             {product.harvest_date && (
-              <div className="card card-padded" style={{ padding: 12 }}>
-                <span className="text-caption" style={{ display: 'block' }}>{t.common.harvestedOn}</span>
-                <span className="font-bold flex-row items-center gap-1" style={{ fontSize: '0.8125rem' }}>
-                  <Calendar size={13} style={{ color: 'var(--color-primary)' }} />
+              <div className="detail-metric-card">
+                <span className="detail-metric-label">{t.common.harvestedOn}</span>
+                <span className="detail-metric-value">
+                  <Calendar size={14} style={{ color: '#15803d' }} />
                   <span>{product.harvest_date}</span>
                 </span>
               </div>
             )}
             {product.shelf_life_days && (
-              <div className="card card-padded" style={{ padding: 12 }}>
-                <span className="text-caption" style={{ display: 'block' }}>{t.common.shelfLife}</span>
-                <span className="font-bold flex-row items-center gap-1" style={{ fontSize: '0.8125rem' }}>
-                  <Clock size={13} style={{ color: 'var(--color-accent)' }} />
+              <div className="detail-metric-card">
+                <span className="detail-metric-label">{t.common.shelfLife}</span>
+                <span className="detail-metric-value">
+                  <Clock size={14} style={{ color: '#d97706' }} />
                   <span>{product.shelf_life_days} {t.common.days}</span>
                 </span>
               </div>
@@ -109,104 +126,104 @@ export const ProductDetailsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Info & Purchase */}
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ marginBottom: 12 }}>
-              {product.is_certified_organic && (
-                <span className="badge badge-organic" style={{ marginBottom: 8 }}>
-                  <Award size={12} />
-                  <span>{t.common.organicCertified}</span>
-                </span>
-              )}
-              <h1 className="heading-2">{productName}</h1>
-              <div className="flex-row items-center gap-2" style={{ marginTop: 8 }}>
-                <span style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--color-primary-dark)' }}>
-                  {formatPaise(product.price_paise, language)}
-                </span>
-                <span className="text-subtle">/ {formatWeight(1, product.unit, language)}</span>
-              </div>
+        {/* Right Column: Info & Purchase Section */}
+        <div className="detail-info-column">
+          <div className="detail-header-block">
+            <h1 className="detail-product-title">{productName}</h1>
+
+            <div className="detail-price-row">
+              <span className="detail-price-amount">
+                {formatPaise(product.price_paise, language)}
+              </span>
+              <span className="detail-price-unit">/ {formatWeight(1, product.unit, language)}</span>
             </div>
 
-            <p className="text-body" style={{ color: 'var(--color-text-muted)', marginBottom: 20 }}>
-              {description}
-            </p>
-
-            {/* Stepper Quantity */}
-            {!isOutOfStock && (
-              <div style={{ marginBottom: 20 }}>
-                <label className="form-label" style={{ marginBottom: 6, display: 'block' }}>
-                  Choose Quantity ({product.unit}):
-                </label>
-                <div className="flex-row items-center gap-3">
-                  <div className="product-stepper" style={{ borderRadius: 'var(--radius-lg)' }}>
-                    <button
-                      type="button"
-                      onClick={() => setQuantity(Math.max(product.min_order_quantity, quantity - (product.unit_step || 1)))}
-                      disabled={quantity <= product.min_order_quantity}
-                      className="stepper-btn"
-                      style={{ width: 38, height: 38 }}
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <span className="stepper-value" style={{ minWidth: 44, fontSize: '0.875rem' }}>
-                      {quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setQuantity(Math.min(availableQty, quantity + (product.unit_step || 1)))}
-                      disabled={quantity >= availableQty}
-                      className="stepper-btn"
-                      style={{ width: 38, height: 38 }}
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                  <span className="text-subtle">
-                    Subtotal: <strong>{formatPaise(product.price_paise * quantity, language)}</strong>
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {addedToast && (
-              <div style={{ backgroundColor: 'var(--color-success-bg)', color: 'var(--color-success)', padding: 10, borderRadius: 'var(--radius-md)', fontWeight: 700, fontSize: '0.75rem', marginBottom: 12 }}>
-                ✓ Added {quantity} {product.unit} to your basket!
-              </div>
-            )}
-
-            {/* Actions */}
-            {!isOutOfStock && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <Button variant="outline" onClick={handleAdd}>
-                  <Plus size={16} />
-                  <span>{t.common.addToCart}</span>
-                </Button>
-                <Button variant="primary" onClick={handleBuyNow}>
-                  <span>{t.common.buyNow}</span>
-                </Button>
-              </div>
-            )}
+            <div className="detail-stock-status">
+              <span className="detail-stock-dot" />
+              <span>
+                {isOutOfStock
+                  ? t.common.outOfStock
+                  : `${availableQty} ${product.unit} available directly from farmgate`}
+              </span>
+            </div>
           </div>
 
-          {/* Farmer Card */}
+          <p className="detail-description">{description}</p>
+
+          {/* Quantity Stepper & Subtotal */}
+          {!isOutOfStock && (
+            <div className="detail-purchase-box">
+              <span className="detail-stepper-label">
+                Choose Quantity ({product.unit}):
+              </span>
+
+              <div className="detail-stepper-row">
+                <div className="detail-stepper-control">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.max(product.min_order_quantity, quantity - (product.unit_step || 1)))}
+                    disabled={quantity <= product.min_order_quantity}
+                    className="detail-stepper-btn"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus size={13} strokeWidth={2.5} />
+                  </button>
+                  <span className="detail-stepper-val">{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.min(availableQty, quantity + (product.unit_step || 1)))}
+                    disabled={quantity >= availableQty}
+                    className="detail-stepper-btn"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus size={13} strokeWidth={2.5} />
+                  </button>
+                </div>
+
+                <div className="detail-subtotal-val">
+                  Subtotal: <strong>{formatPaise(product.price_paise * quantity, language)}</strong>
+                </div>
+              </div>
+
+              {addedToast && (
+                <div className="detail-toast-alert">
+                  ✓ Added {quantity} {product.unit} to your basket!
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="detail-actions-row">
+                <button type="button" className="detail-add-btn" onClick={handleAdd}>
+                  <Plus size={16} />
+                  <span>{t.common.addToCart}</span>
+                </button>
+                <button type="button" className="detail-buy-btn" onClick={handleBuyNow}>
+                  <span>{t.common.buyNow}</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Farmer Provenance Card */}
           {product.farmer && (
-            <div className="card card-padded" style={{ marginTop: 24, backgroundColor: 'var(--color-surface-subtle)' }}>
-              <div className="flex-row items-center justify-between" style={{ marginBottom: 8 }}>
-                <span className="text-caption font-bold">PRODUCER</span>
-                <Link to={`/farmer/${product.farmer.id}`} className="text-caption font-bold" style={{ color: 'var(--color-primary)' }}>
+            <div className="detail-farmer-card">
+              <div className="detail-farmer-header">
+                <span className="detail-farmer-pill">Verified Producer</span>
+                <Link to={`/farmer/${product.farmer.id}`} className="detail-farm-profile-link">
                   View Farm Profile →
                 </Link>
               </div>
 
-              <div className="flex-row items-center gap-3">
-                <div style={{ width: 44, height: 44, borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-                  <img src={product.farmer.user?.avatar_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
+              <div className="detail-farmer-row">
+                <img
+                  src={product.farmer.user?.avatar_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'}
+                  alt={product.farmer.farm_name}
+                  className="detail-farmer-avatar"
+                />
                 <div>
-                  <h4 className="heading-4">{product.farmer.farm_name}</h4>
-                  <span className="text-caption flex-row items-center gap-1">
-                    <MapPin size={11} />
+                  <h4 className="detail-farmer-name">{product.farmer.farm_name}</h4>
+                  <span className="detail-farmer-location">
+                    <MapPin size={12} />
                     <span>{product.farmer.village}, {product.farmer.district}</span>
                   </span>
                 </div>
@@ -216,10 +233,9 @@ export const ProductDetailsPage: React.FC = () => {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm"
-                style={{ backgroundColor: '#25d366', color: '#ffffff', width: '100%', marginTop: 12 }}
+                className="detail-whatsapp-btn"
               >
-                <MessageCircle size={14} />
+                <MessageCircle size={15} />
                 <span>Contact Farmer on WhatsApp</span>
               </a>
             </div>

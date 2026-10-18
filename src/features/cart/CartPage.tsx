@@ -1,11 +1,12 @@
-import type { FC } from 'react';
+import { useState, useEffect, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, MapPin, Truck, AlertCircle, ArrowRight } from 'lucide-react';
+import { Trash2, Plus, Minus, MapPin, Truck, AlertCircle, ArrowRight, ShoppingBag, Sparkles } from 'lucide-react';
 import { useCart } from './CartContext';
 import { formatPaise } from '../../utils/currency';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Button } from '../../components/common/Button';
-import { EmptyState } from '../../components/common/EmptyState';
+import { marketplaceService } from '../../services/marketplaceService';
+import { Product } from '../../types';
 import './cart.css';
 
 export const CartPage: FC = () => {
@@ -14,6 +15,7 @@ export const CartPage: FC = () => {
   const {
     items,
     cartGroups,
+    addToCart,
     updateQuantity,
     removeFromCart,
     clearCart,
@@ -22,25 +24,133 @@ export const CartPage: FC = () => {
     grandTotalPaise,
   } = useCart();
 
+  const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    marketplaceService.getProducts().then((all) => {
+      setSuggestedProducts(all.slice(0, 4));
+    });
+  }, []);
+
   if (items.length === 0) {
     return (
-      <div className="page-container page-content">
-        <EmptyState
-          icon="🛒"
-          title="Your Basket is Empty"
-          description="Explore our local Maharashtra farmers to get fresh produce delivered direct."
-          action={
-            <Button variant="primary" onClick={() => navigate('/marketplace')}>
-              Explore Produce
-            </Button>
-          }
-        />
+      <div className="page-container page-content" style={{ maxWidth: 960 }}>
+        <div className="cart-empty-wrapper">
+          <div className="cart-empty-card">
+            <div className="cart-empty-icon-wrap">
+              <ShoppingBag size={34} style={{ color: 'var(--accent)' }} />
+            </div>
+            <h2 className="heading-2" style={{ marginBottom: 8 }}>Your Farm Basket is Empty</h2>
+            <p className="cart-empty-text">
+              Direct farm-to-table produce picked at dawn from verified Maharashtra growers with 100% fair farmgate pricing.
+            </p>
+            <div className="flex-row items-center justify-center gap-3" style={{ marginBottom: 28 }}>
+              <Button variant="primary" size="lg" onClick={() => navigate('/marketplace')}>
+                <span>Explore Produce</span>
+                <ArrowRight size={18} />
+              </Button>
+            </div>
+
+            {/* Quick Category Badges */}
+            <div className="cart-quick-categories">
+              <span className="cart-quick-label">Browse by harvest</span>
+              <div className="cart-quick-pills">
+                <button type="button" onClick={() => navigate('/marketplace?category=cat-veg')} className="cart-quick-pill">
+                  🥬 Fresh Vegetables
+                </button>
+                <button type="button" onClick={() => navigate('/marketplace?category=cat-fruit')} className="cart-quick-pill">
+                  🍇 Orchard Fruits
+                </button>
+                <button type="button" onClick={() => navigate('/marketplace?category=cat-grains')} className="cart-quick-pill">
+                  🌾 Native Grains
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Trending Dawn Harvest Section */}
+          {suggestedProducts.length > 0 && (
+            <div className="cart-suggested-section">
+              <div className="flex-row items-center justify-between" style={{ marginBottom: 18 }}>
+                <div>
+                  <h3 className="heading-3 flex-row items-center gap-2">
+                    <Sparkles size={18} style={{ color: 'var(--accent)' }} />
+                    <span>Picked at Dawn Today</span>
+                  </h3>
+                  <p className="text-caption" style={{ color: 'var(--text-muted)' }}>
+                    Fresh arrivals from certified Nashik & Pune farm gates
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate('/marketplace')}
+                  className="text-caption font-bold flex-row items-center gap-1"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  <span>View all</span>
+                  <ArrowRight size={14} />
+                </button>
+              </div>
+
+              <div className="cart-suggested-grid">
+                {suggestedProducts.map((p) => {
+                  const pName = language === 'hi' && p.name_hi ? p.name_hi : p.name;
+                  return (
+                    <div key={p.id} className="cart-suggested-card">
+                      <img
+                        src={p.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=300&q=80'}
+                        alt={pName}
+                        className="cart-suggested-img"
+                      />
+                      <div className="cart-suggested-info">
+                        <div>
+                          <span className="cart-suggested-farm">{p.farmer?.farm_name || 'Verified Farm'}</span>
+                          <h4 className="cart-suggested-title">{pName}</h4>
+                        </div>
+                        <div className="flex-row items-center justify-between" style={{ marginTop: 10 }}>
+                          <span className="cart-suggested-price">
+                            {formatPaise(p.price_paise, language)} <span className="cart-suggested-unit">/ {p.unit}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => addToCart(p, p.min_order_quantity || 1)}
+                            className="cart-add-btn"
+                          >
+                            + Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="page-container page-content" style={{ maxWidth: 840 }}>
+      {/* Software Checkout Pipeline Stepper */}
+      <div className="cart-software-stepper">
+        <div className="cart-step active">
+          <span className="cart-step-num">1</span>
+          <span className="cart-step-name">Review Basket</span>
+        </div>
+        <div className="cart-step-divider" />
+        <div className="cart-step">
+          <span className="cart-step-num">2</span>
+          <span className="cart-step-name">Delivery Address</span>
+        </div>
+        <div className="cart-step-divider" />
+        <div className="cart-step">
+          <span className="cart-step-num">3</span>
+          <span className="cart-step-name">Payment & Dispatch</span>
+        </div>
+      </div>
+
       <div className="flex-row items-center justify-between" style={{ marginBottom: 20 }}>
         <div>
           <h1 className="heading-2">{t.nav.cart}</h1>
@@ -48,7 +158,7 @@ export const CartPage: FC = () => {
             {cartGroups.length} {cartGroups.length > 1 ? 'Farm Producers' : 'Farm Producer'} in this basket
           </p>
         </div>
-        <button onClick={clearCart} className="text-caption font-bold" style={{ color: 'var(--color-danger)' }}>
+        <button onClick={clearCart} className="cart-clear-btn">
           Clear All
         </button>
       </div>
@@ -168,7 +278,7 @@ export const CartPage: FC = () => {
 
       {/* Summary Card */}
       <div className="cart-summary-card">
-        <h3 className="heading-4" style={{ textTransform: 'uppercase', marginBottom: 12 }}>
+        <h3 className="heading-4" style={{ marginBottom: 14, fontWeight: 700 }}>
           Bill Details
         </h3>
         <div className="cart-summary-line">

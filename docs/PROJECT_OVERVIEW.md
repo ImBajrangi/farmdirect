@@ -1,7 +1,7 @@
 # FarmDirect — Project Overview
 
 ## 1. Executive Summary
-**FarmDirect** (फार्मडायरेक्ट) is an ethical, mobile-first, farmer-to-consumer hyperlocal marketplace engineered for India. It connects local farmers directly with households, restaurants, and grocery buyers without predatory middlemen.
+**FarmDirect** is an ethical, mobile-first, farmer-to-consumer hyperlocal marketplace engineered for India. It connects local farmers directly with households, restaurants, and grocery buyers without predatory middlemen.
 
 ## 2. Core Business Problem
 In conventional Indian agricultural supply chains:

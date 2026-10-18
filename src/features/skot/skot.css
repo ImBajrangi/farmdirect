@@ -1,0 +1,731 @@
+/* ==========================================================================
+   Skot. Electric Moped Hero Section Stylesheet
+   Pixel-perfect replication of the reference design
+   ========================================================================== */
+
+:root {
+  --skot-canvas-outer: #d0d5d8;
+  --skot-card-bg: #eaecee;
+  --skot-pill-bg: #cbd0d1;
+  --skot-panel-bg: #cecfd1;
+  --skot-white: #ffffff;
+  --skot-ink: #111216;
+  --skot-ink-muted: #5e626e;
+  --skot-ink-faint: #8e93a0;
+  --skot-red: #e54440;
+  --skot-red-glow: rgba(229, 68, 64, 0.45);
+  --skot-yellow: #f5a623;
+  --skot-border: rgba(0, 0, 0, 0.08);
+  --skot-shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.06);
+  --skot-shadow-card: 0 24px 60px -10px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Dark mode overrides when toggled */
+body.skot-dark-mode,
+.skot-hero-wrapper.dark {
+  --skot-canvas-outer: #0a0b0e;
+  --skot-card-bg: #14161b;
+  --skot-pill-bg: #1d2027;
+  --skot-panel-bg: #21252d;
+  --skot-white: #1a1c23;
+  --skot-ink: #f5f6f8;
+  --skot-ink-muted: #9fa4b2;
+  --skot-ink-faint: #696e7c;
+  --skot-border: rgba(255, 255, 255, 0.1);
+  --skot-shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --skot-shadow-card: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Outer Presentation Canvas (Matches Mockup Studio Frame) ───────────── */
+.skot-hero-wrapper {
+  background-color: var(--skot-canvas-outer);
+  color: var(--skot-ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+  .skot-hero-wrapper {
+    padding: 32px 40px;
+  }
+}
+
+/* ─── Main Hero Card Container ───────────────────────────────────────────── */
+.skot-hero-frame {
+  width: 100%;
+  max-width: 1140px;
+  background-color: var(--skot-card-bg);
+  border-radius: 36px;
+  box-shadow: var(--skot-shadow-card);
+  padding: 24px 36px 32px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .skot-hero-frame {
+    padding: 20px 20px 28px;
+    border-radius: 28px;
+  }
+}
+
+/* ─── 1. Navigation Header ───────────────────────────────────────────────── */
+.skot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0 28px;
+  width: 100%;
+  position: relative;
+  z-index: 20;
+}
+
+.skot-header-left {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.skot-search-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #111216;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.skot-search-btn:hover {
+  transform: scale(1.06);
+}
+
+.skot-nav-links {
+  display: none;
+  align-items: center;
+  gap: 28px;
+}
+
+@media (min-width: 860px) {
+  .skot-nav-links {
+    display: flex;
+  }
+}
+
+.skot-nav-link {
+  color: var(--skot-ink-muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.skot-nav-link:hover {
+  color: var(--skot-ink);
+}
+
+/* Center Brand Logo */
+.skot-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.skot-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.skot-brand-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--skot-ink);
+}
+
+/* Right Controls */
+.skot-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.skot-theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--skot-border);
+  background-color: var(--skot-white);
+  color: var(--skot-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.skot-theme-toggle:hover {
+  border-color: var(--skot-ink);
+  transform: scale(1.05);
+}
+
+.skot-theme-dots-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.skot-theme-crescent {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: -2.5px 0 0 1px var(--skot-ink);
+  display: inline-block;
+}
+
+.skot-theme-center-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--skot-ink);
+  display: inline-block;
+}
+
+.skot-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: var(--skot-white);
+  border: 1px solid var(--skot-border);
+  color: var(--skot-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.skot-contact-btn:hover {
+  border-color: var(--skot-ink);
+  transform: translateY(-1px);
+}
+
+.skot-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px 6px 16px;
+  border-radius: 9999px;
+  background-color: var(--skot-white);
+  border: 1px solid var(--skot-border);
+  color: var(--skot-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.skot-cart-btn:hover {
+  border-color: var(--skot-ink);
+  transform: translateY(-1px);
+}
+
+.skot-cart-icon-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #111216;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+}
+
+/* ─── 2. Hero Body & Layered Background Cutouts ─────────────────────────── */
+.skot-hero-body {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .skot-hero-body {
+    min-height: 560px;
+  }
+}
+
+/* Layer 1: Background Horizontal Rounded Pill Card */
+.skot-backdrop-layer-horizontal {
+  position: absolute;
+  top: 170px;
+  left: 0;
+  width: 58%;
+  height: 165px;
+  background-color: var(--skot-pill-bg);
+  border-radius: 9999px;
+  z-index: 1;
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Layer 2: Background Right Rounded Organic Panel */
+.skot-backdrop-layer-right {
+  position: absolute;
+  top: 110px;
+  right: 0;
+  width: 34%;
+  height: 480px;
+  background-color: var(--skot-panel-bg);
+  border-radius: 36px;
+  z-index: 1;
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+@media (max-width: 860px) {
+  .skot-backdrop-layer-horizontal {
+    width: 95%;
+    top: 190px;
+  }
+  .skot-backdrop-layer-right {
+    display: none;
+  }
+}
+
+/* Top Row: Headline (Left) & Reviews Social Proof (Right) */
+.skot-hero-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  z-index: 10;
+  position: relative;
+}
+
+.skot-headline {
+  font-size: clamp(2.25rem, 4.4vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--skot-ink);
+  margin: 0;
+  max-width: 580px;
+}
+
+.skot-headline-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.badge-planet,
+.badge-bolt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-icon-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Reviews Counter (Top Right) */
+.skot-reviews-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.skot-avatars-cluster {
+  display: flex;
+  align-items: center;
+}
+
+.skot-avatars-cluster-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.skot-reviews-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--skot-ink-muted);
+  text-align: right;
+  line-height: 1.35;
+}
+
+.skot-reviews-line1 {
+  white-space: nowrap;
+}
+
+.skot-reviews-line2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.skot-stars {
+  color: var(--skot-yellow);
+  letter-spacing: -1px;
+}
+
+/* ─── Layer 3: Center Photorealistic Moped Stage ─────────────────────────── */
+.skot-moped-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.skot-moped-img-container {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  pointer-events: auto;
+  margin-top: -20px;
+}
+
+.skot-moped-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.12));
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+/* Floating Red Spec Hotspot Badge 1 */
+.skot-red-badge-hotspot {
+  position: absolute;
+  bottom: 85px;
+  left: 95px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--skot-red);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--skot-red-glow);
+  animation: pulseBadge 2.4s infinite;
+  z-index: 15;
+  border: none;
+}
+
+@keyframes pulseBadge {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 68, 64, 0.6);
+  }
+  70% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 12px rgba(229, 68, 64, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 68, 64, 0);
+  }
+}
+
+/* Spec Hotspot Interactive Popover */
+.skot-spec-popover {
+  position: absolute;
+  bottom: 130px;
+  left: 50px;
+  background-color: var(--skot-white);
+  border: 1px solid var(--skot-border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 250px;
+  box-shadow: var(--skot-shadow-card);
+  z-index: 25;
+  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skot-popover-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--skot-ink);
+  margin-bottom: 6px;
+}
+
+.skot-popover-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--skot-ink-muted);
+  display: flex;
+  padding: 2px;
+}
+
+/* ─── Bottom Row: C45 Typography Left & DB50QT Switcher Right ───────────── */
+.skot-hero-bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  z-index: 10;
+  position: relative;
+  margin-top: 340px;
+}
+
+@media (min-width: 1024px) {
+  .skot-hero-bottom-row {
+    margin-top: 370px;
+  }
+}
+
+/* C45 Model Description Block (Clean, minimalist typography without border) */
+.skot-c45-block {
+  max-width: 210px;
+  position: relative;
+  z-index: 10;
+}
+
+.skot-c45-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--skot-ink);
+  line-height: 1;
+  margin: 0;
+}
+
+.skot-c45-model-tag {
+  font-size: 0.8125rem;
+  color: var(--skot-ink-muted);
+  margin-top: 4px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.skot-c45-desc {
+  font-size: 0.8125rem;
+  line-height: 1.48;
+  color: var(--skot-ink-muted);
+  margin: 0;
+}
+
+/* DB50QT Model Switcher Pill Card (Bottom-Right) */
+.skot-model-switcher-card {
+  background-color: var(--skot-white);
+  border: 1px solid var(--skot-border);
+  border-radius: 20px;
+  padding: 6px 14px 6px 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.skot-model-switcher-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--skot-ink);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.skot-model-thumb-frame {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background-color: #0d0e12;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.skot-model-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.skot-model-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.skot-model-code {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--skot-ink);
+  letter-spacing: -0.01em;
+}
+
+.skot-model-name {
+  font-size: 0.75rem;
+  color: var(--skot-ink-faint);
+  font-weight: 500;
+}
+
+.skot-model-progress-bar {
+  width: 2px;
+  height: 32px;
+  background-color: rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+  position: relative;
+  margin-left: 6px;
+}
+
+.skot-hero-wrapper.dark .skot-model-progress-bar {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.skot-model-progress-fill {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px #111216;
+  position: absolute;
+  left: -2px;
+  transition: top 0.3s ease;
+}
+
+/* ─── 3. Bottom Corridor Bar ─────────────────────────────────────────────── */
+.skot-bottom-corridor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid var(--skot-border);
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 10;
+}
+
+.skot-marketplace-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--skot-ink-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.skot-marketplace-link:hover {
+  color: var(--skot-ink);
+}
+
+.skot-order-cta-btn {
+  background-color: #111216;
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.skot-order-cta-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* ─── Responsive Mobile Adjustments ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .skot-header-left {
+    gap: 12px;
+  }
+
+  .skot-headline {
+    font-size: 2rem;
+  }
+
+  .skot-hero-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 280px;
+  }
+
+  .skot-red-badge-hotspot {
+    bottom: 60px;
+    left: 40px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .skot-spec-popover {
+    left: 20px;
+    width: 220px;
+  }
+}

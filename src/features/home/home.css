@@ -1,169 +1,617 @@
-/* features/home/home.css */
+/* ==========================================================================
+   FarmDirect Home Feature Stylesheet
+   Dayos Design System Implementation (Cinematic Dark Architecture)
+   ========================================================================== */
 
-.home-hero {
-  background: linear-gradient(135deg, #0f4a25 0%, #15803d 60%, #166534 100%);
-  color: #ffffff;
-  padding: var(--space-12) var(--space-4) var(--space-16);
-  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
-  box-shadow: var(--shadow-lg);
+/* ─── 1. Hero Section ────────────────────────────────────────────────────── */
+.dayos-hero {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-section);
   position: relative;
   overflow: hidden;
 }
 
-.home-hero-container {
-  max-width: var(--container-width-desktop);
-  margin: 0 auto;
+.hero-eyebrow-wrapper {
+  margin-bottom: var(--space-md);
 }
 
-.home-hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  color: #dcfce7;
-  margin-bottom: var(--space-4);
+.dayos-hero-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: var(--space-lg);
+  max-width: 960px;
 }
 
-.home-hero-dot {
-  width: 8px;
-  height: 8px;
-  background: #4ade80;
-  border-radius: var(--radius-full);
+.dayos-hero-desc {
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 1.8vw, 1.35rem);
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: var(--lh-body);
+  max-width: 720px;
+  margin-bottom: var(--space-md);
 }
 
-.home-hero-title {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: var(--space-4);
-  max-width: 650px;
-}
-
-.home-hero-desc {
-  font-size: var(--font-size-base);
-  color: #e2e8f0;
-  max-width: 550px;
-  line-height: 1.5;
-  margin-bottom: var(--space-6);
-}
-
-.home-hero-actions {
+.dayos-proof-line {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-xl);
   display: flex;
-  gap: var(--space-3);
+  align-items: center;
+  gap: var(--space-xs);
   flex-wrap: wrap;
 }
 
-/* Value Props Grid */
-.home-features-grid {
+.dayos-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xxl);
+}
+
+/* ─── 2. Hero Demo Player Frame (Section 6.3) ────────────────────────────── */
+.hero-player-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.player-top-bar {
+  background-color: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.player-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.player-btn:hover {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.player-btn.active {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.player-screen {
+  position: relative;
+  min-height: 280px;
+  background: radial-gradient(circle at 50% 20%, #1a2030 0%, #0d1017 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-xl);
+}
+
+@media (min-width: 768px) {
+  .player-screen {
+    min-height: 380px;
+    padding: var(--space-xxl);
+  }
+}
+
+.player-grid-simulation {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
-  margin-top: calc(-1 * var(--space-8));
-  margin-bottom: var(--space-12);
-  position: relative;
-  z-index: 10;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 840px;
 }
 
 @media (min-width: 640px) {
-  .home-features-grid {
+  .player-grid-simulation {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.home-feature-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-md);
-  text-align: center;
+.player-metric-card {
+  background-color: rgba(18, 20, 26, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
+  gap: 6px;
 }
 
-.home-feature-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--color-primary-light);
-  color: var(--color-primary);
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-1);
-}
-
-.home-feature-title {
-  font-size: var(--font-size-base);
+.player-metric-val {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--accent);
 }
 
-.home-feature-desc {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  line-height: 1.4;
+.player-metric-lbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-/* Category Slider/Pills */
-.category-pill-row {
+.player-caption-bar {
+  background-color: var(--bg-elevated);
+  border-top: 1px solid var(--border-subtle);
+  padding: 12px 20px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
   display: flex;
-  gap: var(--space-2);
-  overflow-x: auto;
-  padding-bottom: var(--space-3);
-  margin-bottom: var(--space-6);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.category-pill-item {
-  display: inline-flex;
+/* ─── 3. Demo Example Tabs (Section 6.4) ─────────────────────────────────── */
+.demo-tabs-section {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.demo-tabs-list {
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  gap: var(--space-sm);
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.demo-tabs-list::-webkit-scrollbar {
+  display: none;
+}
+
+.demo-tab-btn {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--color-text);
-  text-decoration: none;
+  cursor: pointer;
   white-space: nowrap;
   transition: all var(--transition-fast);
 }
 
-.category-pill-item:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: var(--color-primary-light);
+.demo-tab-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text);
 }
 
-/* Farmers Banner */
-.home-farmer-banner {
-  background: linear-gradient(135deg, #78350f 0%, #9a3412 100%);
+.demo-tab-btn.active {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.demo-tab-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: 1px 7px;
+}
+
+.demo-tab-btn.active .demo-tab-badge {
+  background-color: rgba(10, 11, 15, 0.2);
+  color: var(--on-accent);
+}
+
+/* ─── 4. Partnered With Strip (Section 6.8 & Section 4) ──────────────────── */
+.partner-strip {
+  padding: var(--space-xl) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.partner-strip-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.partner-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  flex-wrap: wrap;
+}
+
+.partner-badge {
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.partner-badge:hover {
+  opacity: 1;
   color: #ffffff;
+}
+
+/* ─── 5. Triptych Section (Section 6.5) ──────────────────────────────────── */
+.triptych-section {
+  padding: var(--space-section) 0;
+}
+
+.triptych-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  align-items: center;
-  text-align: center;
-  margin-top: var(--space-12);
-  margin-bottom: var(--space-12);
-  box-shadow: var(--shadow-md);
+  justify-content: space-between;
+  min-height: 260px;
+  transition: border-color var(--transition-fast);
 }
 
-@media (min-width: 768px) {
-  .home-farmer-banner {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+.triptych-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.triptych-body {
+  font-size: 1rem;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  max-width: 320px;
+}
+
+.triptych-footer {
+  margin-top: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ─── 6. Manifesto Block & Looping Flywheel (Section 6.6) ────────────────── */
+.manifesto-section {
+  padding: var(--space-section) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .manifesto-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-xxl);
   }
+}
+
+.manifesto-statements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.manifesto-item {
+  padding: var(--space-md) var(--space-lg);
+  border-left: 2px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.manifesto-item.active {
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, rgba(91, 140, 255, 0.08) 0%, transparent 100%);
+}
+
+.manifesto-number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.manifesto-text {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.flywheel-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  min-height: 320px;
+}
+
+.flywheel-orb {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px dashed var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotateFlywheel 20s linear infinite;
+  margin-bottom: var(--space-md);
+}
+
+@keyframes rotateFlywheel {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flywheel-orb {
+    animation: none;
+  }
+}
+
+/* ─── 7. Use-Case Carousel (Section 6.7) ─────────────────────────────────── */
+.carousel-section {
+  padding: var(--space-section) 0;
+}
+
+.carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.carousel-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-height: 240px;
+  transition: all var(--transition-fast);
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.carousel-dot.active {
+  background-color: var(--accent);
+  width: 24px;
+}
+
+/* ─── 8. Department / Category Square Cards (Section 6.9 & 5) ───────────── */
+.department-section {
+  padding: var(--space-section) 0;
+}
+
+.department-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .department-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .department-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-md);
+  }
+}
+
+.department-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.department-card:hover {
+  border-color: rgba(21, 128, 61, 0.25);
+  box-shadow: 0 8px 24px -4px rgba(15, 46, 34, 0.08);
+}
+
+.department-image-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Dayos 1:1 Square Card Ratio */
+  position: relative;
+  background-color: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  overflow: hidden;
+}
+
+.department-info {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.department-title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.department-desc {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: var(--space-xs);
+  flex: 1;
+}
+
+/* ─── 9. Department List Version (Section 6.10) ──────────────────────────── */
+.department-list-section {
+  padding: var(--space-md) 0 var(--space-section);
+}
+
+.department-list-row {
+  border-top: 1px solid var(--border);
+}
+
+.department-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), padding var(--transition-fast);
+}
+
+.department-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.department-list-item:hover .department-title {
+  color: var(--accent);
+}
+
+/* ─── 10. CTA Band (Section 6.10 & 2) ────────────────────────────────────── */
+.dayos-cta-band {
+  background: linear-gradient(135deg, #0F2E22 0%, #15803D 100%);
+  border: 1px solid rgba(21, 128, 61, 0.2);
+  border-radius: var(--radius-lg);
+  padding: clamp(2rem, 5vw, 4rem);
+  margin: var(--space-section) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  box-shadow: 0 20px 48px -12px rgba(15, 46, 34, 0.2);
+}
+
+@media (min-width: 840px) {
+  .dayos-cta-band {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.cta-band-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: var(--space-xs);
+}
+
+.cta-band-desc {
+  font-size: 1rem;
+  color: #d1fae5;
+  max-width: 540px;
+}
+
+.cta-band-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
 }

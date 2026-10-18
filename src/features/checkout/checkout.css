@@ -1,21 +1,25 @@
-/* features/checkout/checkout.css */
+/* ==========================================================================
+   FarmDirect Checkout Feature Stylesheet
+   Mobbin 24px Card Geometry, Tint Highlight Rows, Stadium Actions
+   ========================================================================== */
 
 .checkout-page {
-  padding-bottom: var(--space-12);
+  padding-bottom: var(--space-xxl);
 }
 
 .checkout-header {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-xl);
 }
 
 .checkout-header-back {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-xs);
   color: var(--color-text-muted);
   text-decoration: none;
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
   cursor: pointer;
   background: none;
   border: none;
@@ -23,25 +27,28 @@
 }
 
 .checkout-header-back:hover {
-  color: var(--color-primary);
+  color: var(--color-ink);
 }
 
 .checkout-title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: var(--space-1);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--color-ink);
+  margin-bottom: var(--space-xxs);
 }
 
 .checkout-subtitle {
   color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+  font-size: 0.9375rem;
+  font-weight: 300;
 }
 
 .checkout-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
+  gap: var(--space-lg);
 }
 
 @media (min-width: 900px) {
@@ -52,38 +59,39 @@
 }
 
 .checkout-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
-  margin-bottom: var(--space-5);
+  background-color: #ffffff;
+  border: 1px solid var(--border, rgba(15, 46, 34, 0.1));
+  border-radius: var(--radius-card, 20px);
+  padding: var(--space-xl);
+  box-shadow: 0 4px 20px -4px rgba(15, 46, 34, 0.05);
+  margin-bottom: var(--space-lg);
 }
 
 .checkout-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-subtle, rgba(15, 46, 34, 0.06));
 }
 
 .checkout-card-title {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text);
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  color: var(--color-ink);
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-xs);
 }
 
 /* Address List & Cards */
 .address-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 @media (min-width: 600px) {
@@ -94,156 +102,147 @@
 
 .address-item {
   position: relative;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
+  border: 1px solid var(--border, rgba(15, 46, 34, 0.12));
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
   cursor: pointer;
-  background: var(--color-surface);
-  transition: all var(--transition-fast);
+  background-color: #ffffff;
+  transition: all 0.15s ease;
 }
 
 .address-item:hover {
-  border-color: var(--color-border-hover);
+  border-color: var(--accent, #15803d);
 }
 
-.address-item.selected {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
+.address-item.active {
+  border: 2px solid var(--accent, #15803d);
+  background-color: var(--bg-elevated, #f8faf8);
 }
 
-.address-item-tag {
+.address-label {
   display: inline-block;
-  font-size: var(--font-size-xs);
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  background: var(--color-background-subtle);
-  color: var(--color-text-muted);
+  color: var(--color-ink);
+  background-color: #f4f7f4;
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-xxs);
 }
 
-.address-item.selected .address-item-tag {
-  background: var(--color-primary);
-  color: #ffffff;
-}
-
-.address-item-name {
-  font-weight: 600;
-  color: var(--color-text);
-  font-size: var(--font-size-base);
+.address-recipient {
+  font-weight: 650;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
   margin-bottom: 2px;
 }
 
-.address-item-phone {
+.address-text {
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-2);
-}
-
-.address-item-text {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
   line-height: 1.4;
 }
 
 /* Delivery Options */
 .delivery-options-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
 }
 
-.delivery-option-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
+@media (min-width: 600px) {
+  .delivery-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.delivery-option-card {
+  border: 1px solid var(--border, rgba(15, 46, 34, 0.12));
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
   cursor: pointer;
-  text-align: center;
-  transition: all var(--transition-fast);
-  color: var(--color-text);
+  background-color: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  transition: all 0.15s ease;
 }
 
-.delivery-option-btn:hover {
-  border-color: var(--color-border-hover);
+.delivery-option-card:hover {
+  border-color: var(--accent, #15803d);
 }
 
-.delivery-option-btn.active {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+.delivery-option-card.active {
+  border: 2px solid var(--accent, #15803d);
+  background-color: var(--bg-elevated, #f8faf8);
 }
 
 .delivery-option-title {
-  font-weight: 600;
-  font-size: var(--font-size-base);
+  font-weight: 650;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  margin-bottom: 2px;
 }
 
 .delivery-option-desc {
-  font-size: var(--font-size-xs);
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
+  line-height: 1.35;
 }
 
 /* Payment Options */
 .payment-options-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  gap: var(--space-sm);
 }
 
 .payment-option-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  background: var(--color-surface);
+  border: 1px solid var(--border, rgba(15, 46, 34, 0.12));
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  background-color: #ffffff;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.15s ease;
 }
 
 .payment-option-row:hover {
-  border-color: var(--color-border-hover);
+  border-color: var(--accent, #15803d);
 }
 
 .payment-option-row.active {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
+  border: 2px solid var(--accent, #15803d);
+  background-color: var(--bg-elevated, #f8faf8);
 }
 
 .payment-option-left {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-md);
 }
 
 .payment-option-title {
-  font-weight: 600;
-  font-size: var(--font-size-base);
-  color: var(--color-text);
+  font-weight: 650;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
 }
 
 .payment-option-desc {
-  font-size: var(--font-size-xs);
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
 /* Order Summary Box */
 .order-summary-box {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
+  background-color: #ffffff;
+  border: 1px solid var(--border, rgba(15, 46, 34, 0.1));
+  border-radius: var(--radius-card, 20px);
+  padding: var(--space-xl);
+  box-shadow: 0 4px 20px -4px rgba(15, 46, 34, 0.05);
   position: sticky;
   top: 84px;
 }
@@ -252,58 +251,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-size-sm);
+  font-size: 0.875rem;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-sm);
 }
 
 .summary-row.total-row {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
-  color: var(--color-text);
-  border-top: 1px dashed var(--color-border);
-  padding-top: var(--space-3);
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-5);
-}
-
-.summary-row .total-amount {
-  color: var(--color-primary);
+  border-top: 1px solid var(--color-hairline-soft);
+  padding-top: var(--space-md);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-lg);
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: var(--color-ink);
 }
 
 .checkout-badge-free {
-  color: var(--color-primary);
-  font-weight: 600;
+  background-color: var(--color-accent); /* Electric blue free badge */
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
 }
 
 .checkout-trust-banner {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
   justify-content: center;
-}
-
-/* New Address Form */
-.new-address-form {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  background: var(--color-background-subtle);
-  margin-bottom: var(--space-4);
-}
-
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-}
-
-.form-actions-row {
-  display: flex;
-  gap: var(--space-3);
-  margin-top: var(--space-4);
-  justify-content: flex-end;
+  gap: var(--space-xs);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-md);
+  text-align: center;
 }

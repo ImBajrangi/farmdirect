@@ -1,0 +1,665 @@
+/* ==========================================================================
+   Dog Training Section (Draultrien Platform)
+   Replication of modern editorial canine training landing page layout
+   ========================================================================== */
+
+.dog-section-wrapper {
+  width: 100%;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 88px 28px 110px;
+  position: relative;
+  z-index: 15;
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.dog-container {
+  width: 100%;
+  max-width: 1200px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* ─── Part 1: Top Light Hero ─────────────────────────────────────────────── */
+.dog-hero-top {
+  padding: 0 0 44px;
+}
+
+@media (max-width: 768px) {
+  .dog-section-wrapper {
+    padding: 60px 18px 80px;
+  }
+  .dog-hero-top {
+    padding: 0 0 32px;
+  }
+}
+
+/* ─── Editorial Section Eyebrow Bar ───────────────────────────────────────── */
+.dog-section-eyebrow-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.dog-section-index-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #0c0d11;
+  text-transform: uppercase;
+}
+
+.dog-index-num {
+  font-weight: 800;
+  color: #0c0d11;
+}
+
+.dog-index-sep {
+  color: #cfcdc5;
+}
+
+.dog-index-title {
+  letter-spacing: 0.06em;
+  color: #4a4a52;
+}
+
+.dog-section-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f7f6f1;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4d4d55;
+  letter-spacing: -0.01em;
+}
+
+.dog-kicker-paw {
+  color: #0c0d11;
+}
+
+/* Hero Row */
+.dog-hero-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .dog-hero-row {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+  }
+}
+
+.dog-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dog-eyebrow-tag {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #c77a28;
+  text-transform: uppercase;
+}
+
+.dog-hero-title {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  color: #0c0d11;
+  margin: 0;
+}
+
+.dog-hero-subtitle {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #5d5d67;
+  max-width: 440px;
+  margin: 0;
+}
+
+.dog-hero-cta-wrap {
+  margin-top: 8px;
+}
+
+.dog-cta-primary {
+  background-color: #0c0d11;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(12, 13, 17, 0.2);
+  transition: all 0.2s ease;
+}
+
+.dog-cta-primary:hover {
+  background-color: #262730;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(12, 13, 17, 0.3);
+}
+
+/* Right Beagle Dog Frame */
+.dog-hero-right {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.dog-photo-frame {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4 / 3.4;
+  border-radius: 36px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.1);
+  background-color: #f6f5f1;
+}
+
+.dog-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dog-verified-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0c0d11;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.dog-check-icon {
+  color: #16a34a;
+}
+
+/* ─── Part 2: Middle Dramatic Dark Organic Section ───────────────────────── */
+.dog-dark-card {
+  background: radial-gradient(circle at 70% 30%, #1c1d25 0%, #0c0d11 100%);
+  color: #ffffff;
+  margin: 0 16px 16px;
+  border-radius: 36px;
+  padding: 44px 40px 36px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 768px) {
+  .dog-dark-card {
+    margin: 0 10px 10px;
+    padding: 30px 20px;
+    border-radius: 28px;
+    gap: 28px;
+  }
+}
+
+.dog-dark-top-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .dog-dark-top-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.dog-dark-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dog-dark-title {
+  font-size: clamp(2rem, 3.8vw, 2.85rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dog-dark-desc {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #a4a7b5;
+  margin: 0;
+  max-width: 400px;
+}
+
+.dog-dark-btns {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.dog-btn-white {
+  background-color: #ffffff;
+  color: #0c0d11;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+}
+
+.dog-btn-white:hover {
+  background-color: #f1f2f5;
+  transform: translateY(-2px);
+}
+
+.dog-btn-outline {
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dog-btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Laptop Mockup */
+.dog-dark-right {
+  display: flex;
+  justify-content: center;
+}
+
+.dog-laptop-mockup {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, 0.6));
+}
+
+.dog-laptop-lid {
+  width: 100%;
+  aspect-ratio: 16 / 10.5;
+  background: #1a1b22;
+  border: 6px solid #282a34;
+  border-radius: 16px 16px 4px 4px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.dog-laptop-cam {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.dog-laptop-screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #111216;
+}
+
+.dog-laptop-stream-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dog-call-overlay-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 5;
+}
+
+.dog-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(220, 38, 38, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+}
+
+.dog-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  animation: pulseDot 1.4s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.dog-trainer-tag {
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dog-call-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(12, 13, 17, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  z-index: 5;
+}
+
+.dog-call-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dog-call-btn.end-call {
+  background-color: #ef4444;
+}
+
+.dog-laptop-base {
+  width: 110%;
+  height: 10px;
+  background: linear-gradient(to bottom, #303340, #1c1d25);
+  border-radius: 0 0 12px 12px;
+  margin-top: -2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* ─── Part 3: 3 Bento Feature Cards ──────────────────────────────────────── */
+.dog-bento-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .dog-bento-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dog-bento-card {
+  background-color: #ffffff;
+  color: #0c0d11;
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.dog-bento-card:hover {
+  transform: translateY(-3px);
+}
+
+.dog-bento-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #0c0d11;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.dog-bento-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #0c0d11;
+}
+
+.dog-bento-card-text {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #64646e;
+  margin: 0;
+}
+
+/* ─── Part 4: Bottom Testimonial & Social Dock ───────────────────────────── */
+.dog-dark-footer-row {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .dog-dark-footer-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.dog-testimonial-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 520px;
+}
+
+.dog-test-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a4a7b5;
+}
+
+.dog-test-quote {
+  font-size: 0.84375rem;
+  line-height: 1.5;
+  color: #ffffff;
+  margin: 0;
+  font-style: italic;
+}
+
+.dog-test-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: #8c8f9f;
+  margin-top: 4px;
+}
+
+.dog-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Pill Icons Dock */
+.dog-icons-dock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 9999px;
+}
+
+.dog-dock-item {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #a4a7b5;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.dog-dock-item:hover,
+.dog-dock-item.active {
+  background-color: #ffffff;
+  color: #0c0d11;
+  transform: scale(1.08);
+}
+
+/* ─── Dark Theme Transitions & Variants ───────────────────────────────────── */
+.dog-section-wrapper {
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.dog-section-wrapper.dog-dark-theme {
+  background-color: #161720;
+  box-shadow: 0 -24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.dog-dark-theme .dog-section-eyebrow-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.dog-dark-theme .dog-section-index-pill {
+  color: #ffffff;
+}
+
+.dog-dark-theme .dog-index-sep {
+  color: #4f5060;
+}
+
+.dog-dark-theme .dog-index-title {
+  color: #ffffff;
+}
+
+.dog-dark-theme .dog-section-status-chip {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #dededf;
+}
+
+.dog-dark-theme .dog-hero-title {
+  color: #ffffff;
+}
+
+.dog-dark-theme .dog-hero-subtitle {
+  color: #9c9ca8;
+}
+
+.dog-dark-theme .dog-photo-frame {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+.dog-dark-theme .dog-verified-badge {
+  background: rgba(22, 23, 32, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.dog-dark-theme .dog-cta-primary {
+  background-color: #f8aa3c;
+  color: #0c0d11;
+}
+
+.dog-dark-theme .dog-cta-primary:hover {
+  background-color: #ffffff;
+  color: #0c0d11;
+}

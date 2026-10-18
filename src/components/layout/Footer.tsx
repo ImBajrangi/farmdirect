@@ -1,54 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Phone, Heart, CheckCircle2 } from 'lucide-react';
-import { useTranslation } from '../../hooks/useTranslation';
+import { ShieldCheck, Phone, ArrowUp, MessageSquare } from 'lucide-react';
 import './layout.css';
 
 export const Footer: React.FC = () => {
-  const { t } = useTranslation();
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="app-footer">
       <div className="page-container">
         <div className="footer-grid">
-          {/* Brand & Mission */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div className="flex-row items-center gap-2">
-              <span style={{ fontSize: '1.5rem' }}>🌱</span>
-              <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#ffffff' }}>FarmDirect</span>
-            </div>
-            <p className="text-subtle" style={{ color: '#a8a29e' }}>
-              Bridging the gap between hardworking Indian farmers and mindful buyers. 
-              Fresh harvest at fair farmgate rates with zero predatory middlemen.
+          {/* Brand & Wordmark */}
+          <div className="flex-col gap-2">
+            <div className="footer-wordmark">FarmDirect.</div>
+            <p className="footer-tagline">
+              Born for the direct agriculture era. Not bolted onto legacy middlemen cartels.
+              Direct farm-to-table supply network with 100% fair farmgate pricing and verified harvest integrity.
             </p>
-            <div className="flex-row items-center gap-2" style={{ color: '#4ade80', fontSize: '0.75rem', fontWeight: 600 }}>
-              <ShieldCheck size={16} />
+            <div className="flex-row items-center gap-2 mt-2" style={{ color: 'var(--text)', fontSize: '0.8125rem' }}>
+              <ShieldCheck size={16} style={{ color: 'var(--accent)' }} />
               <span>Pilot Corridor: Nashik & Western Pune</span>
+            </div>
+            <div className="flex-row items-center gap-2 mt-2">
+              <a
+                href="https://whatsapp.com"
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-pill-soft btn-sm"
+                style={{ fontSize: '0.75rem', gap: 6 }}
+              >
+                <MessageSquare size={13} style={{ color: 'var(--accent)' }} />
+                <span>Join Grower Community</span>
+              </a>
             </div>
           </div>
 
-          {/* Marketplace Navigation */}
+          {/* Column 1: Marketplace */}
           <div>
-            <h4 className="heading-4" style={{ color: '#ffffff', marginBottom: 12, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-              Marketplace
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="footer-col-title">Marketplace</div>
+            <div className="flex-col gap-2">
               <Link to="/marketplace" className="footer-link">Browse All Produce</Link>
               <Link to="/marketplace?category=cat-veg" className="footer-link">Fresh Vegetables</Link>
               <Link to="/marketplace?category=cat-fruit" className="footer-link">Orchard Fruits</Link>
               <Link to="/marketplace?category=cat-grains" className="footer-link">Native Grains & Cereals</Link>
-              <Link to="/farmer/register" className="footer-link" style={{ color: 'var(--color-accent)', fontWeight: 700 }}>
-                Producer Registration (शेतकरी नोंदणी)
+              <Link to="/farmer/register" className="footer-link" style={{ color: 'var(--accent)', fontWeight: 600 }}>
+                Producer Registration (शेतकरी नोंदणी) →
               </Link>
             </div>
           </div>
 
-          {/* Policies */}
+          {/* Column 2: Trust & Policies */}
           <div>
-            <h4 className="heading-4" style={{ color: '#ffffff', marginBottom: 12, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-              Trust & Policies
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="footer-col-title">Platform & Trust</div>
+            <div className="flex-col gap-2">
               <Link to="/about" className="footer-link">About FarmDirect</Link>
               <Link to="/cancellation-refund" className="footer-link">Cancellation & Refunds</Link>
               <Link to="/privacy" className="footer-link">Privacy Policy (DPDP)</Link>
@@ -57,36 +63,43 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Column 3: Field Operations */}
           <div>
-            <h4 className="heading-4" style={{ color: '#ffffff', marginBottom: 12, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-              Farmer Helpline
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <span className="text-subtle" style={{ color: '#a8a29e' }}>Support & Field Operations:</span>
-              <div className="flex-row items-center gap-2" style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.8125rem' }}>
-                <Phone size={16} style={{ color: '#4ade80' }} />
-                <span>+91 98220 00000 (7 AM - 8 PM)</span>
+            <div className="footer-col-title">Helpline & Field Hub</div>
+            <div className="flex-col gap-2">
+              <span className="text-caption" style={{ color: 'var(--text-faint)' }}>Direct Farmer Line:</span>
+              <div className="flex-row items-center gap-2" style={{ color: 'var(--text)', fontWeight: 600, fontSize: '0.875rem' }}>
+                <Phone size={15} style={{ color: 'var(--accent)' }} />
+                <span>+91 9XXXX XXXXX</span>
               </div>
-              <div className="card" style={{ padding: 12, backgroundColor: '#292524', borderColor: '#44403c', marginTop: 8 }}>
-                <div className="flex-row items-center gap-1" style={{ color: '#4ade80', fontSize: '0.6875rem', fontWeight: 700, marginBottom: 4 }}>
-                  <CheckCircle2 size={13} />
-                  <span>Honest Product Guarantee</span>
+              <div
+                style={{
+                  padding: '12px 16px',
+                  backgroundColor: 'var(--bg-elevated)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-sm)',
+                  marginTop: 8,
+                }}
+              >
+                <div style={{ color: 'var(--text)', fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>
+                  NPOP / PGS-India Verified
                 </div>
-                <p style={{ fontSize: '0.6875rem', color: '#d6d3d1' }}>
-                  Products are certified organic only when proven by NPOP / PGS-India laboratory documentation.
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                  Organic produce is certified strictly against authenticated Mahabhulekh 7/12 land records and laboratory reports.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Credits */}
-        <div style={{ paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontSize: '0.75rem', color: '#78716c' }}>
-          <p>© {new Date().getFullYear()} FarmDirect. Built for Indian Farmers & Mindful Consumers.</p>
-          <p className="flex-row items-center gap-1">
-            <span>Crafted for rural empowerment in Maharashtra</span>
-          </p>
+        {/* Bottom Credits & Back to Top */}
+        <div className="footer-bottom-credits">
+          <p>© {new Date().getFullYear()} FarmDirect Inc. Built for Indian Agriculture.</p>
+          <p>Nashik–Pune Regional Agricultural Gateway</p>
+          <button onClick={scrollToTop} className="back-to-top-btn" aria-label="Back to top">
+            <span>Back to top</span>
+            <ArrowUp size={14} />
+          </button>
         </div>
       </div>
     </footer>

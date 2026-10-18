@@ -29,6 +29,67 @@ const STORAGE_KEYS = {
   SERVICE_AREAS: 'farmdirect_service_areas_v1',
 };
 
+// High-Performance 2-Tier Caching System (Memory microcache + LocalStorage)
+export type DataSourceOrigin = 'live_supabase' | 'local_cache' | 'fixture_fallback';
+
+export interface BackendStatus {
+  isConfigured: boolean;
+  status: 'connected' | 'unconfigured' | 'empty_database' | 'permission_error' | 'network_error';
+  lastSyncTimestamp: number | null;
+  lastOrigin: DataSourceOrigin;
+  lastErrorMessage?: string;
+}
+
+const currentBackendStatus: BackendStatus = {
+  isConfigured: isSupabaseConfigured,
+  status: isSupabaseConfigured ? 'connected' : 'unconfigured',
+  lastSyncTimestamp: null,
+  lastOrigin: isSupabaseConfigured ? 'live_supabase' : 'fixture_fallback',
+};
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+const memoryCache = new Map<string, CacheEntry<unknown>>();
+const MEMORY_CACHE_TTL = 120 * 1000; // 2 minutes
+
+function withTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs = 4000): Promise<T> {
+  return Promise.race([
+    Promise.resolve(promiseLike),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`Network timeout after ${timeoutMs}ms`)), timeoutMs)
+    ),
+  ]);
+}
+
+function getCached<T>(key: string): T | null {
+  const item = memoryCache.get(key);
+  if (!item) return null;
+  if (Date.now() - item.timestamp > MEMORY_CACHE_TTL) {
+    memoryCache.delete(key);
+    return null;
+  }
+  return item.data as T;
+}
+
+function setCached<T>(key: string, data: T): void {
+  memoryCache.set(key, { data, timestamp: Date.now() });
+}
+
+export function invalidateMarketplaceCache(prefix?: string): void {
+  if (!prefix) {
+    memoryCache.clear();
+    return;
+  }
+  for (const key of memoryCache.keys()) {
+    if (key.startsWith(prefix)) {
+      memoryCache.delete(key);
+    }
+  }
+}
+
 // Initialize LocalStorage with seed data if absent
 function initializeStorage() {
   if (!localStorage.getItem(STORAGE_KEYS.SERVICE_AREAS)) {
@@ -67,31 +128,120 @@ function initializeStorage() {
 initializeStorage();
 
 export const marketplaceService = {
+  clearCache(): void {
+    invalidateMarketplaceCache();
+  },
+
+  getBackendStatus(): BackendStatus {
+    return { ...currentBackendStatus };
+  },
+
   async getServiceAreas(): Promise<ServiceArea[]> {
+    const cached = getCached<ServiceArea[]>('service_areas');
+    if (cached) return cached;
+
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('service_areas').select('*').eq('is_active', true);
-      if (!error && data) return data as ServiceArea[];
+      try {
+        const { data, error } = await withTimeout(supabase.from('service_areas').select('*').eq('is_active', true));
+        if (!error && data && data.length > 0) {
+          localStorage.setItem(STORAGE_KEYS.SERVICE_AREAS, JSON.stringify(data));
+          setCached('service_areas', data as ServiceArea[]);
+          currentBackendStatus.status = 'connected';
+          currentBackendStatus.lastSyncTimestamp = Date.now();
+          currentBackendStatus.lastOrigin = 'live_supabase';
+          return data as ServiceArea[];
+        } else if (error) {
+          currentBackendStatus.status = error.code === '42501' ? 'permission_error' : 'network_error';
+          currentBackendStatus.lastErrorMessage = error.message;
+        }
+      } catch (err) {
+        console.warn('Supabase service_areas query fallback to local cache:', err);
+        currentBackendStatus.status = 'network_error';
+        currentBackendStatus.lastErrorMessage = err instanceof Error ? err.message : String(err);
+      }
     }
     const raw = localStorage.getItem(STORAGE_KEYS.SERVICE_AREAS);
-    return raw ? JSON.parse(raw) : INITIAL_SERVICE_AREAS;
+    const result = raw ? JSON.parse(raw) : INITIAL_SERVICE_AREAS;
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEYS.SERVICE_AREAS, JSON.stringify(result));
+    }
+    setCached('service_areas', result);
+    return result;
   },
 
   async getCategories(): Promise<Category[]> {
+    const cached = getCached<Category[]>('categories');
+    if (cached) return cached;
+
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('categories').select('*').eq('is_active', true).order('sort_order');
-      if (!error && data) return data as Category[];
+      try {
+        const { data, error } = await withTimeout(supabase.from('categories').select('*').eq('is_active', true).order('sort_order'));
+        if (!error && data && data.length > 0) {
+          localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(data));
+          setCached('categories', data as Category[]);
+          currentBackendStatus.status = 'connected';
+          currentBackendStatus.lastSyncTimestamp = Date.now();
+          currentBackendStatus.lastOrigin = 'live_supabase';
+          return data as Category[];
+        } else if (error) {
+          currentBackendStatus.status = error.code === '42501' ? 'permission_error' : 'network_error';
+          currentBackendStatus.lastErrorMessage = error.message;
+        }
+      } catch (err) {
+        console.warn('Supabase categories query fallback to local cache:', err);
+        currentBackendStatus.status = 'network_error';
+        currentBackendStatus.lastErrorMessage = err instanceof Error ? err.message : String(err);
+      }
     }
     const raw = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
-    return raw ? JSON.parse(raw) : INITIAL_CATEGORIES;
+    const result = raw ? JSON.parse(raw) : INITIAL_CATEGORIES;
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(result));
+    }
+    setCached('categories', result);
+    return result;
   },
 
   async getFarmers(): Promise<FarmerProfile[]> {
+    const cached = getCached<FarmerProfile[]>('farmers');
+    if (cached) return cached;
+
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('farmer_profiles').select('*');
-      if (!error && data) return data as FarmerProfile[];
+      try {
+        const { data, error } = await withTimeout(supabase.from('farmer_profiles').select('*'));
+        if (!error && data && data.length > 0) {
+          localStorage.setItem(STORAGE_KEYS.FARMERS, JSON.stringify(data));
+          setCached('farmers', data as FarmerProfile[]);
+          currentBackendStatus.status = 'connected';
+          currentBackendStatus.lastSyncTimestamp = Date.now();
+          currentBackendStatus.lastOrigin = 'live_supabase';
+          return data as FarmerProfile[];
+        } else if (error) {
+          currentBackendStatus.status = error.code === '42501' ? 'permission_error' : 'network_error';
+          currentBackendStatus.lastErrorMessage = error.message;
+        }
+      } catch (err) {
+        console.warn('Supabase farmer_profiles query fallback to local cache:', err);
+        currentBackendStatus.status = 'network_error';
+        currentBackendStatus.lastErrorMessage = err instanceof Error ? err.message : String(err);
+      }
     }
     const raw = localStorage.getItem(STORAGE_KEYS.FARMERS);
-    return raw ? JSON.parse(raw) : INITIAL_FARMERS;
+    const rawFarmers: FarmerProfile[] = raw ? JSON.parse(raw) : INITIAL_FARMERS;
+    const serviceAreas = await this.getServiceAreas();
+    const result = rawFarmers.map(f => {
+      const sa = serviceAreas.find(s => 
+        s.id === f.service_area_id || 
+        (f.service_area_id === 'sa-nashik' && s.district === 'Nashik') ||
+        (f.service_area_id === 'sa-pune' && s.district === 'Pune')
+      );
+      return {
+        ...f,
+        service_area_id: sa ? sa.id : f.service_area_id
+      };
+    });
+    setCached('farmers', result);
+    return result;
   },
 
   async getFarmerById(farmerId: string): Promise<FarmerProfile | null> {
@@ -100,88 +250,146 @@ export const marketplaceService = {
   },
 
   async getProducts(filters?: MarketplaceFilters): Promise<Product[]> {
+    const filterKey = `products_${JSON.stringify(filters || {})}`;
+    const cached = getCached<Product[]>(filterKey);
+    if (cached) return cached;
+
+    let products: Product[] | null = null;
+
     if (isSupabaseConfigured && supabase) {
-      let query = supabase.from('products').select(`
-        *,
-        category:categories(*),
-        farmer:farmer_profiles(*),
-        images:product_images(*),
-        inventory:inventory(*)
-      `).eq('is_active', true).eq('is_moderated', true);
+      try {
+        let query = supabase.from('products').select(`
+          *,
+          category:categories(*),
+          farmer:farmer_profiles(*),
+          images:product_images(*),
+          inventory:inventory(*)
+        `).eq('is_active', true).eq('is_moderated', true);
 
-      if (filters?.categoryId) query = query.eq('category_id', filters.categoryId);
-      if (filters?.onlyOrganic) query = query.eq('is_certified_organic', true);
+        if (filters?.categoryId && filters.categoryId !== 'all') {
+          query = query.eq('category_id', filters.categoryId);
+        }
+        if (filters?.onlyOrganic) {
+          query = query.eq('is_certified_organic', true);
+        }
 
-      const { data, error } = await query;
-      if (!error && data) return data as unknown as Product[];
+        const { data, error } = await withTimeout(query);
+        if (!error && data && data.length > 0) {
+          products = data as unknown as Product[];
+          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+          currentBackendStatus.status = 'connected';
+          currentBackendStatus.lastSyncTimestamp = Date.now();
+          currentBackendStatus.lastOrigin = 'live_supabase';
+        } else if (!error && data && data.length === 0) {
+          currentBackendStatus.status = 'empty_database';
+          currentBackendStatus.lastOrigin = 'fixture_fallback';
+        } else if (error) {
+          currentBackendStatus.status = error.code === '42501' ? 'permission_error' : 'network_error';
+          currentBackendStatus.lastErrorMessage = error.message;
+          currentBackendStatus.lastOrigin = 'fixture_fallback';
+        }
+      } catch (err) {
+        console.warn('Supabase products fetch fallback to local cache:', err);
+        currentBackendStatus.status = 'network_error';
+        currentBackendStatus.lastErrorMessage = err instanceof Error ? err.message : String(err);
+        currentBackendStatus.lastOrigin = 'fixture_fallback';
+      }
     }
 
-    const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-    let products: Product[] = raw ? JSON.parse(raw) : INITIAL_PRODUCTS;
-    const categories = await this.getCategories();
-    const farmers = await this.getFarmers();
-    const inventoryRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
-    const inventories: Inventory[] = inventoryRaw ? JSON.parse(inventoryRaw) : INITIAL_INVENTORIES;
+    if (!products) {
+      const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+      const fallbackProducts: Product[] = raw ? JSON.parse(raw) : INITIAL_PRODUCTS;
+      const categories = await this.getCategories();
+      const farmers = await this.getFarmers();
+      const inventoryRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
+      const inventories: Inventory[] = inventoryRaw ? JSON.parse(inventoryRaw) : INITIAL_INVENTORIES;
 
-    // Enrich with joins
-    products = products.map(p => ({
-      ...p,
-      category: categories.find(c => c.id === p.category_id),
-      farmer: farmers.find(f => f.id === p.farmer_id),
-      inventory: inventories.find(i => i.product_id === p.id),
-      images: p.images || [{
-        id: `img-${p.id}`,
-        product_id: p.id,
-        image_url: PRODUCT_IMAGE_MAP[p.id] || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
-        sort_order: 0,
-        is_primary: true,
-        created_at: new Date().toISOString()
-      }]
-    }));
+      // Enrich with joins and resolve category IDs across live Supabase & mock seed formats
+      products = fallbackProducts.map(p => {
+        const category = categories.find(c => 
+          c.id === p.category_id || 
+          c.slug === p.category_id ||
+          (p.category_id === 'cat-veg' && c.slug === 'vegetables') ||
+          (p.category_id === 'cat-fruit' && c.slug === 'fruits') ||
+          (p.category_id === 'cat-grains' && c.slug === 'grains') ||
+          (p.category_id === 'cat-pulses' && c.slug === 'pulses') ||
+          (p.category_id === 'cat-spices' && c.slug === 'spices') ||
+          (p.category_id === 'cat-dairy' && c.slug === 'dairy')
+        );
+        const resolvedCategoryId = category ? category.id : p.category_id;
+        const farmer = farmers.find(f => f.id === p.farmer_id || f.farm_name === p.farmer?.farm_name);
+
+        return {
+          ...p,
+          category_id: resolvedCategoryId,
+          category,
+          farmer,
+          inventory: inventories.find(i => i.product_id === p.id),
+          images: p.images || [{
+            id: `img-${p.id}`,
+            product_id: p.id,
+            image_url: PRODUCT_IMAGE_MAP[p.id] || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
+            sort_order: 0,
+            is_primary: true,
+            created_at: new Date().toISOString()
+          }]
+        };
+      });
+    }
 
     // Apply Filters
+    let result = [...products];
     if (filters) {
       if (filters.searchQuery) {
         const q = filters.searchQuery.toLowerCase().trim();
-        products = products.filter(p => 
+        result = result.filter(p => 
           p.name.toLowerCase().includes(q) || 
-          p.name_hi.toLowerCase().includes(q) ||
+          p.name_hi?.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
           p.farmer?.farm_name.toLowerCase().includes(q)
         );
       }
       if (filters.categoryId && filters.categoryId !== 'all') {
-        products = products.filter(p => p.category_id === filters.categoryId);
+        result = result.filter(p => 
+          p.category_id === filters.categoryId || 
+          p.category?.id === filters.categoryId ||
+          p.category?.slug === filters.categoryId
+        );
       }
       if (filters.serviceAreaId && filters.serviceAreaId !== 'all') {
-        products = products.filter(p => p.farmer?.service_area_id === filters.serviceAreaId);
+        result = result.filter(p => 
+          p.farmer?.service_area_id === filters.serviceAreaId ||
+          (filters.serviceAreaId === 'sa-nashik' && p.farmer?.district === 'Nashik') ||
+          (filters.serviceAreaId === 'sa-pune' && p.farmer?.district === 'Pune')
+        );
       }
       if (filters.minPricePaise !== undefined) {
-        products = products.filter(p => p.price_paise >= filters.minPricePaise!);
+        result = result.filter(p => p.price_paise >= filters.minPricePaise!);
       }
       if (filters.maxPricePaise !== undefined) {
-        products = products.filter(p => p.price_paise <= filters.maxPricePaise!);
+        result = result.filter(p => p.price_paise <= filters.maxPricePaise!);
       }
       if (filters.onlyOrganic) {
-        products = products.filter(p => p.is_certified_organic);
+        result = result.filter(p => p.is_certified_organic);
       }
       if (filters.inStockOnly) {
-        products = products.filter(p => (p.inventory?.available_quantity || 0) > 0);
+        result = result.filter(p => (p.inventory?.available_quantity || 0) > 0);
       }
 
       // Sort
       if (filters.sortBy === 'price_asc') {
-        products.sort((a, b) => a.price_paise - b.price_paise);
+        result.sort((a, b) => a.price_paise - b.price_paise);
       } else if (filters.sortBy === 'price_desc') {
-        products.sort((a, b) => b.price_paise - a.price_paise);
+        result.sort((a, b) => b.price_paise - a.price_paise);
       } else if (filters.sortBy === 'rating') {
-        products.sort((a, b) => (b.farmer?.rating || 0) - (a.farmer?.rating || 0));
+        result.sort((a, b) => (b.farmer?.rating || 0) - (a.farmer?.rating || 0));
       } else {
-        products.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       }
     }
 
-    return products;
+    setCached(filterKey, result);
+    return result;
   },
 
   async getProductBySlug(slug: string): Promise<Product | null> {
@@ -263,18 +471,43 @@ export const marketplaceService = {
 
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
     localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inventories));
+    invalidateMarketplaceCache('products');
 
     return newProduct;
   },
 
-  async updateInventory(productId: string, newAvailableQty: number): Promise<void> {
+  async updateProduct(productId: string, updates: Partial<Product>, callerFarmerId?: string): Promise<Product> {
+    const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+    const products: Product[] = raw ? JSON.parse(raw) : INITIAL_PRODUCTS;
+    const prod = products.find(p => p.id === productId);
+    if (!prod) throw new Error('Product not found');
+
+    if (callerFarmerId && prod.farmer_id !== callerFarmerId) {
+      throw new Error('Unauthorized: Farmers cannot modify products belonging to another farm.');
+    }
+
+    Object.assign(prod, updates, { updated_at: new Date().toISOString() });
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+    invalidateMarketplaceCache('products');
+    return prod;
+  },
+
+  async updateInventory(productId: string, newAvailableQty: number, callerFarmerId?: string): Promise<void> {
     const invRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
     const inventories: Inventory[] = invRaw ? JSON.parse(invRaw) : INITIAL_INVENTORIES;
     const item = inventories.find(i => i.product_id === productId);
     if (item) {
-      item.available_quantity = newAvailableQty;
+      if (callerFarmerId) {
+        const products = await this.getProducts();
+        const prod = products.find(p => p.id === productId);
+        if (prod && prod.farmer_id !== callerFarmerId) {
+          throw new Error('Unauthorized: You can only update inventory for your own farm products.');
+        }
+      }
+      item.available_quantity = Math.max(0, newAvailableQty);
       item.updated_at = new Date().toISOString();
       localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inventories));
+      invalidateMarketplaceCache('products');
     }
   },
 
@@ -285,6 +518,7 @@ export const marketplaceService = {
     address: Address;
     deliveryType: 'local_delivery' | 'pickup';
     paymentMethod: 'razorpay_online' | 'cod';
+    paymentId?: string;
     deliveryNotes?: string;
     items: { product: Product; quantity: number }[];
   }): Promise<{ checkoutGroupId: string; orders: Order[] }> {
@@ -293,6 +527,18 @@ export const marketplaceService = {
     const allOrders: Order[] = rawOrders ? JSON.parse(rawOrders) : [];
     const invRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
     const inventories: Inventory[] = invRaw ? JSON.parse(invRaw) : INITIAL_INVENTORIES;
+
+    // Strict Stock Pre-Validation: Prevent overselling before creating any orders
+    for (const item of payload.items) {
+      const inv = inventories.find(i => i.product_id === item.product.id);
+      const available = inv ? inv.available_quantity : (item.product.inventory?.available_quantity ?? 0);
+      if (available < item.quantity) {
+        throw new Error(
+          `Insufficient stock for "${item.product.name}". Requested: ${item.quantity} ${item.product.unit}, Available: ${available} ${item.product.unit}`
+        );
+      }
+    }
+
     const farmers = await this.getFarmers();
 
     // Group items by farmer_id
@@ -320,8 +566,9 @@ export const marketplaceService = {
         customer_id: payload.customerId,
         farmer_id: farmerId,
         status: 'pending_confirmation',
-        payment_status: payload.paymentMethod === 'razorpay_online' ? 'captured' : 'pending',
+        payment_status: payload.paymentMethod === 'razorpay_online' && payload.paymentId ? 'captured' : 'pending',
         payment_method: payload.paymentMethod,
+        payment_id: payload.paymentId,
         delivery_type: payload.deliveryType,
         subtotal_paise: subtotalPaise,
         delivery_fee_paise: deliveryFeePaise,
@@ -347,11 +594,14 @@ export const marketplaceService = {
         }))
       };
 
-      // Decrement Inventory safely
+      // Decrement Inventory strictly (Disallow overselling, no negative values)
       for (const fi of farmerItems) {
         const inv = inventories.find(i => i.product_id === fi.product.id);
         if (inv) {
-          inv.available_quantity = Math.max(0, inv.available_quantity - fi.quantity);
+          if (inv.available_quantity < fi.quantity) {
+            throw new Error(`Item "${fi.product.name}" became unavailable during checkout.`);
+          }
+          inv.available_quantity = inv.available_quantity - fi.quantity;
           inv.updated_at = new Date().toISOString();
         }
       }
@@ -362,6 +612,7 @@ export const marketplaceService = {
 
     localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inventories));
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
+    invalidateMarketplaceCache('products');
 
     return { checkoutGroupId, orders: createdOrders };
   },
@@ -381,12 +632,32 @@ export const marketplaceService = {
     if (userId) {
       return orders.filter(o => o.customer_id === userId);
     }
-    return orders;
+    // Strict isolation: unauthenticated/anonymous visitors cannot view all orders
+    return [];
   },
 
-  async getOrderById(orderId: string): Promise<Order | null> {
+  async getOrderById(orderId: string, currentUserId?: string, userRole?: string): Promise<Order | null> {
     const orders = await this.getOrders(undefined, 'admin');
-    return orders.find(o => o.id === orderId || o.order_number === orderId) || null;
+    const order = orders.find(o => o.id === orderId || o.order_number === orderId) || null;
+    if (!order) return null;
+
+    // Strict Tenant Isolation Guard: Non-admins cannot see other users' orders
+    if (userRole === 'customer') {
+      if (!currentUserId || order.customer_id !== currentUserId) {
+        return null;
+      }
+    } else if (userRole === 'farmer') {
+      if (!currentUserId) return null;
+      const isFarmer = order.farmer_id === currentUserId || order.farmer?.user_id === currentUserId;
+      if (!isFarmer) return null;
+    } else if (currentUserId && userRole !== 'admin') {
+      const isOwner = order.customer_id === currentUserId;
+      const isFarmer = order.farmer_id === currentUserId || order.farmer?.user_id === currentUserId;
+      if (!isOwner && !isFarmer) {
+        return null;
+      }
+    }
+    return order;
   },
 
   async updateOrderStatus(orderId: string, status: OrderStatus, reason?: string): Promise<Order> {
@@ -395,6 +666,7 @@ export const marketplaceService = {
     const order = orders.find(o => o.id === orderId);
     if (!order) throw new Error('Order not found');
 
+    const previousStatus = order.status;
     order.status = status;
     order.updated_at = new Date().toISOString();
 
@@ -406,10 +678,90 @@ export const marketplaceService = {
       if (order.payment_method === 'cod') order.payment_status = 'captured';
     }
     if (status === 'rejected') order.rejection_reason = reason || 'Produce unavailable';
-    if (status === 'cancelled') order.cancellation_reason = reason || 'Customer requested';
+    if (status === 'cancelled') {
+      order.cancellation_reason = reason || 'Customer requested';
+      order.cancelled_at = new Date().toISOString();
+    }
+
+    // Inventory Rollback on Cancellation or Rejection: Restore deducted items back to farm inventory
+    if ((status === 'cancelled' || status === 'rejected') && previousStatus !== 'cancelled' && previousStatus !== 'rejected') {
+      const invRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
+      const inventories: Inventory[] = invRaw ? JSON.parse(invRaw) : INITIAL_INVENTORIES;
+      if (order.items) {
+        for (const item of order.items) {
+          if (item.product_id) {
+            const inv = inventories.find(i => i.product_id === item.product_id);
+            if (inv) {
+              inv.available_quantity += item.quantity;
+              inv.updated_at = new Date().toISOString();
+            }
+          }
+        }
+      }
+      localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inventories));
+      invalidateMarketplaceCache('products');
+    }
 
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
     return order;
+  },
+
+  // Payment Webhook Handler (Idempotent, Handles Delayed & Failed Events)
+  async handlePaymentWebhook(payload: {
+    eventId: string;
+    eventType: 'payment.captured' | 'payment.failed';
+    orderId: string;
+    paymentId?: string;
+    failureReason?: string;
+  }): Promise<{ success: boolean; status: 'processed' | 'already_processed' | 'order_not_found'; order?: Order }> {
+    const WEBHOOK_KEY = 'farmdirect_processed_webhooks';
+    const rawEvents = localStorage.getItem(WEBHOOK_KEY);
+    const processedEvents: string[] = rawEvents ? JSON.parse(rawEvents) : [];
+
+    // Idempotency check 1: Event ID already processed
+    if (processedEvents.includes(payload.eventId)) {
+      return { success: true, status: 'already_processed' };
+    }
+
+    const rawOrders = localStorage.getItem(STORAGE_KEYS.ORDERS);
+    const orders: Order[] = rawOrders ? JSON.parse(rawOrders) : [];
+    const order = orders.find(o => o.id === payload.orderId || o.order_number === payload.orderId);
+
+    if (!order) {
+      return { success: false, status: 'order_not_found' };
+    }
+
+    if (payload.eventType === 'payment.captured') {
+      // Idempotency check 2: Order already marked as captured
+      if (order.payment_status === 'captured') {
+        processedEvents.push(payload.eventId);
+        localStorage.setItem(WEBHOOK_KEY, JSON.stringify(processedEvents));
+        return { success: true, status: 'already_processed', order };
+      }
+
+      order.payment_status = 'captured';
+      if (payload.paymentId) {
+        order.payment_id = payload.paymentId;
+      }
+      order.updated_at = new Date().toISOString();
+    } else if (payload.eventType === 'payment.failed') {
+      // Idempotency check 3: Order already failed or cancelled
+      if (order.payment_status === 'failed') {
+        processedEvents.push(payload.eventId);
+        localStorage.setItem(WEBHOOK_KEY, JSON.stringify(processedEvents));
+        return { success: true, status: 'already_processed', order };
+      }
+
+      order.payment_status = 'failed';
+      // Automatically cancel order and restore inventory on failed payment
+      await this.updateOrderStatus(order.id, 'cancelled', payload.failureReason || 'Online payment failed');
+    }
+
+    processedEvents.push(payload.eventId);
+    localStorage.setItem(WEBHOOK_KEY, JSON.stringify(processedEvents));
+    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+
+    return { success: true, status: 'processed', order };
   },
 
   // Admin Actions
@@ -421,6 +773,8 @@ export const marketplaceService = {
       farmer.verification_status = status;
       farmer.updated_at = new Date().toISOString();
       localStorage.setItem(STORAGE_KEYS.FARMERS, JSON.stringify(farmers));
+      invalidateMarketplaceCache('farmers');
+      invalidateMarketplaceCache('products');
     }
   },
 
@@ -453,6 +807,7 @@ export const marketplaceService = {
     };
     farmers.push(newFarmer);
     localStorage.setItem(STORAGE_KEYS.FARMERS, JSON.stringify(farmers));
+    invalidateMarketplaceCache('farmers');
     return newFarmer;
   }
 };

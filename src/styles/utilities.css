@@ -1,126 +1,220 @@
-/* FarmDirect Layout & Core UI Utilities */
+/* ==========================================================================
+   FarmDirect Core UI Utilities & Surface Primitives
+   Dayos Design System (Dark Surfaces, 20-24px Radii, Marquee & Carousels)
+   ========================================================================== */
 
 .page-container {
   max-width: var(--max-width-page);
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
+  padding-left: clamp(1rem, 4vw, 3rem);
+  padding-right: clamp(1rem, 4vw, 3rem);
   width: 100%;
 }
 
 .page-content {
-  padding-top: var(--space-6);
-  padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
+  padding-top: var(--space-lg);
+  padding-bottom: calc(var(--bottom-nav-height) + var(--space-lg));
 }
 
-@media (min-width: 640px) {
-  .page-container {
-    padding-left: var(--space-6);
-    padding-right: var(--space-6);
-  }
+@media (min-width: 768px) {
   .page-content {
-    padding-bottom: var(--space-12);
+    padding-bottom: var(--space-xxl);
   }
 }
 
-/* Card Foundation */
+/* ─── Cards & Surface Architecture (Dark Elevated) ───────────────────────── */
 .card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: none;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .card:hover {
-  border-color: #bbf7d0;
-  box-shadow: var(--shadow-md);
+  border-color: rgba(15, 46, 34, 0.22);
+  box-shadow: 0 8px 24px -4px rgba(15, 46, 34, 0.08);
+}
+
+.card-soft {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
 }
 
 .card-padded {
-  padding: var(--space-5);
+  padding: var(--space-lg);
 }
 
 @media (min-width: 640px) {
   .card-padded {
-    padding: var(--space-6);
+    padding: var(--space-xl);
   }
 }
 
-/* Badges */
+/* Aspect Ratio Utilities (Dayos 1:1 Department Cards) */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* ─── Badges & Status Chips ──────────────────────────────────────────────── */
+.app-icon-squircle {
+  border-radius: var(--radius-squircle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 3px 8px;
+  gap: var(--space-xxs);
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.33;
+  letter-spacing: 0.02em;
 }
 
-.badge-primary {
-  background-color: var(--color-primary-light);
-  color: var(--color-primary-dark);
-}
-
+.badge-popular,
 .badge-accent {
-  background-color: var(--color-accent-subtle);
-  color: var(--color-accent-hover);
+  background-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
 }
 
-.badge-organic {
-  background-color: #064e3b;
-  color: #ffffff;
-}
-
+.badge-overlay,
 .badge-neutral {
-  background-color: rgba(28, 25, 23, 0.75);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.badge-organic,
+.badge-primary {
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .badge-danger {
-  background-color: var(--color-danger);
-  color: #ffffff;
+  background-color: rgba(255, 107, 107, 0.15);
+  color: var(--danger);
+  border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
-/* Product Responsive Grid */
+/* ─── Segmented Control (Pill Tabs) ─────────────────────────────────────── */
+.segmented-control {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.segmented-control-btn {
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.segmented-control-btn.active {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+/* ─── Triptych Grid (Dayos AI. / GAP. / CLOSED. Pattern) ─────────────────── */
+.triptych-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+  .triptych-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+}
+
+/* ─── Infinite Marquee Animation (Dayos Logo Strip) ──────────────────────── */
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  gap: var(--space-xl);
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* ─── Product Responsive Grid ───────────────────────────────────────────── */
 .grid-products {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
+  gap: var(--space-md);
 }
 
 @media (min-width: 640px) {
   .grid-products {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-5);
+    gap: var(--space-lg);
   }
 }
 
 @media (min-width: 1024px) {
   .grid-products {
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-6);
+    gap: var(--space-lg);
   }
 }
 
-/* Standard Flex Helpers */
+/* Common Layout Helpers */
 .flex-row { display: flex; flex-direction: row; }
 .flex-col { display: flex; flex-direction: column; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
 .justify-center { justify-content: center; }
-.gap-1 { gap: var(--space-1); }
-.gap-2 { gap: var(--space-2); }
-.gap-3 { gap: var(--space-3); }
-.gap-4 { gap: var(--space-4); }
-.gap-6 { gap: var(--space-6); }
+.gap-1 { gap: var(--space-xxs); }
+.gap-2 { gap: var(--space-xs); }
+.gap-3 { gap: var(--space-sm); }
+.gap-4 { gap: var(--space-md); }
 .w-full { width: 100%; }
-
-/* Mobile Touch Target */
-.touch-target {
-  min-height: var(--touch-target-min);
-  min-width: var(--touch-target-min);
-}
+.mb-2 { margin-bottom: var(--space-xs); }
+.mb-3 { margin-bottom: var(--space-sm); }
+.mb-4 { margin-bottom: var(--space-md); }
+.mb-6 { margin-bottom: var(--space-lg); }
+.mb-8 { margin-bottom: var(--space-xl); }
+.mb-12 { margin-bottom: var(--space-xxl); }

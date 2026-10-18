@@ -1,0 +1,530 @@
+/* ==========================================================================
+   AI-Driven Education Section
+   Replication of minimal modern Swiss editorial bento card layout
+   ========================================================================== */
+
+:root {
+  --ai-canvas-bg: #faf8f5;
+  --ai-card-white: #ffffff;
+  --ai-black: #0e0e10;
+  --ai-dark-elevated: #15161b;
+  --ai-lime: #daf758;
+  --ai-gray-soft: #f1f2f6;
+  --ai-gray-muted: #74747c;
+  --ai-border-subtle: rgba(14, 14, 16, 0.08);
+}
+
+.ai-section-wrapper {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 48px 48px 0 0;
+  margin-top: -48px;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 -32px 80px rgba(0, 0, 0, 0.42), 0 -8px 24px rgba(0, 0, 0, 0.18);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.8);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 88px 28px 110px;
+  transition: background-color 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.ai-card-container {
+  width: 100%;
+  max-width: 1200px;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .ai-section-wrapper {
+    padding: 60px 18px 80px;
+    border-radius: 36px 36px 0 0;
+  }
+}
+
+/* ─── Editorial Section Eyebrow Bar ───────────────────────────────────────── */
+.ai-section-eyebrow-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
+}
+
+.ai-section-index-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ai-black);
+  text-transform: uppercase;
+}
+
+.ai-index-num {
+  font-weight: 800;
+  color: var(--ai-black);
+}
+
+.ai-index-sep {
+  color: #cfcdc5;
+}
+
+.ai-index-title {
+  letter-spacing: 0.06em;
+  color: #4a4a52;
+}
+
+.ai-section-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f4f3ee;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4d4d55;
+  letter-spacing: -0.01em;
+}
+
+.ai-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* ─── Hero Content Grid (Headline + Black Waves Card) ─────────────────────── */
+.ai-hero-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .ai-hero-content-grid {
+    grid-template-columns: 1.55fr 0.85fr;
+    gap: 48px;
+  }
+}
+
+.ai-headline-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 0.95;
+}
+
+.ai-title-line {
+  display: flex;
+  align-items: center;
+}
+
+.ai-title-text {
+  font-size: clamp(2.4rem, 5.2vw, 4.5rem);
+  letter-spacing: -0.045em;
+  color: var(--ai-black);
+}
+
+.ai-title-text.light {
+  font-weight: 400;
+}
+
+.ai-title-text.bold {
+  font-weight: 800;
+}
+
+.ai-inline-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--ai-black);
+  border-radius: 9999px;
+  padding: 4px 18px;
+  font-size: clamp(0.9rem, 1.8vw, 1.35rem);
+  font-weight: 600;
+  color: var(--ai-black);
+  letter-spacing: 0.04em;
+  margin-left: 16px;
+  height: fit-content;
+}
+
+/* Right Top Black Waves Card */
+.ai-black-card {
+  background: radial-gradient(circle at 80% 20%, #1c1d24 0%, #0c0d11 100%);
+  color: #ffffff;
+  border-radius: 26px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.ai-black-card-laser-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: auto;
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.ai-black-card-waves {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-radial-gradient(circle at 100% 100%, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 3px, transparent 18px);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ai-black-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 5;
+}
+
+.ai-welcome-pill {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 4px 14px;
+  border-radius: 9999px;
+}
+
+.ai-asterisk-star {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: #ffffff;
+  user-select: none;
+}
+
+.ai-black-card-desc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #c4c7d2;
+  margin: 0;
+  position: relative;
+  z-index: 5;
+  max-width: 210px;
+}
+
+/* ─── Middle & Bottom Bento Grid ─────────────────────────────────────────── */
+.ai-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 860px) {
+  .ai-bento-grid {
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 24px;
+  }
+}
+
+/* Left Bento Column (Rotating Badge + Brain Card + Metrics) */
+.ai-brain-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+/* Rotating Badge */
+.ai-rotating-badge-wrapper {
+  position: absolute;
+  left: -20px;
+  top: -30px;
+  width: 90px;
+  height: 90px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.ai-rotating-badge-svg {
+  width: 100%;
+  height: 100%;
+  animation: spinBadge 20s linear infinite;
+}
+
+@keyframes spinBadge {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ai-rotating-text {
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: #0e0e10;
+  letter-spacing: 0.12em;
+}
+
+.ai-center-star {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Brain Card */
+.ai-brain-card {
+  width: 100%;
+  height: 120px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--ai-gray-soft);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-brain-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Metrics Row */
+.ai-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ai-stat-card {
+  border-radius: 22px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.ai-stat-card.white {
+  background-color: var(--ai-gray-soft);
+  color: var(--ai-black);
+}
+
+.ai-stat-card.dark {
+  background-color: var(--ai-dark-elevated);
+  color: #ffffff;
+}
+
+.ai-stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.ai-stat-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+/* ─── Right Bento: Featured Electric Lime "Flexible" Card ─────────────────── */
+.ai-lime-card {
+  background-color: var(--ai-lime);
+  color: var(--ai-black);
+  border-radius: 28px;
+  padding: 30px 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: 0 16px 40px rgba(218, 247, 88, 0.25);
+}
+
+.ai-lime-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-lime-pill {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(14, 14, 16, 0.35);
+  background-color: transparent;
+  color: var(--ai-black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ai-lime-pill:hover,
+.ai-lime-pill.active {
+  background-color: var(--ai-black);
+  color: #ffffff;
+  border-color: var(--ai-black);
+}
+
+.ai-lime-title {
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 4px 0 0;
+  color: var(--ai-black);
+}
+
+.ai-lime-bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ai-lime-description {
+  font-size: 0.84375rem;
+  line-height: 1.5;
+  color: rgba(14, 14, 16, 0.85);
+  margin: 0;
+  max-width: 320px;
+}
+
+.ai-lime-arrow-btn {
+  color: var(--ai-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.ai-lime-arrow-btn:hover {
+  transform: translate(4px, -4px);
+}
+
+/* ─── Dark Theme Transitions & Variants ───────────────────────────────────── */
+.ai-section-wrapper {
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.ai-section-wrapper.ai-dark-theme {
+  background-color: #121319;
+  box-shadow: 0 -32px 80px rgba(0, 0, 0, 0.65);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.ai-dark-theme .ai-section-eyebrow-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.ai-dark-theme .ai-section-index-pill {
+  color: #ffffff;
+}
+
+.ai-dark-theme .ai-index-sep {
+  color: #4f5060;
+}
+
+.ai-dark-theme .ai-index-title {
+  color: #ffffff;
+}
+
+.ai-dark-theme .ai-section-status-chip {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #dededf;
+}
+
+.ai-dark-theme .ai-title-text.bold {
+  color: #ffffff;
+}
+
+.ai-dark-theme .ai-title-text.light {
+  color: #8c8c9a;
+}
+
+.ai-dark-theme .ai-black-card {
+  background: #181a24;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.ai-dark-theme .ai-black-card-desc {
+  color: #a4a4b4;
+}
+
+.ai-dark-theme .ai-brain-card {
+  background-color: #181a24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ai-dark-theme .ai-rotating-text {
+  fill: #9a9ab0;
+}
+
+.ai-dark-theme .ai-center-star {
+  background-color: #222432;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.ai-dark-theme .ai-center-star svg {
+  fill: #ffffff;
+  color: #ffffff;
+}
+
+.ai-dark-theme .ai-stat-card.white {
+  background-color: #181a24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ai-dark-theme .ai-stat-card.white .ai-stat-number {
+  color: #ffffff;
+}
+
+.ai-dark-theme .ai-stat-card.white .ai-stat-label {
+  color: #8f8f9e;
+}
+
+.ai-dark-theme .ai-stat-card.dark {
+  background-color: #222432;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ai-dark-theme .ai-stat-card.dark .ai-stat-number {
+  color: var(--ai-lime);
+}
+
+.ai-dark-theme .ai-stat-card.dark .ai-stat-label {
+  color: #d6d6e2;
+}

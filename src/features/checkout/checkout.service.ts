@@ -7,6 +7,7 @@ export interface ProcessCheckoutParams {
   address: Address;
   deliveryType: 'local_delivery' | 'pickup';
   paymentMethod: 'razorpay_online' | 'cod';
+  paymentId?: string;
   deliveryNotes?: string;
   items: { product: Product; quantity: number }[];
 }
@@ -31,6 +32,7 @@ export const checkoutService = {
       address: params.address,
       deliveryType: params.deliveryType,
       paymentMethod: params.paymentMethod,
+      paymentId: params.paymentId,
       deliveryNotes: params.deliveryNotes,
       items: params.items,
     });

@@ -1,4 +1,4 @@
-# 🌱 FarmDirect (फार्मडायरेक्ट)
+# 🌱 FarmDirect
 
 > **Direct Farmgate-to-Fork Marketplace for India**  
 > Hyperlocal, mobile-first agricultural commerce connecting verified Maharashtra farmers directly with households, restaurants, and grocery buyers.
