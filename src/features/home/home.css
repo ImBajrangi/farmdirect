@@ -361,14 +361,12 @@
 .xfarm-harvest-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(238, 245, 240, 0.96) 0%,
-    rgba(238, 245, 240, 0.90) 24%,
-    rgba(238, 245, 240, 0.35) 45%,
-    rgba(15, 46, 34, 0.05) 60%,
-    rgba(15, 46, 34, 0.65) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(238, 245, 240, 0.96) 0%,
+      rgba(238, 245, 240, 0.90) 24%,
+      rgba(238, 245, 240, 0.35) 45%,
+      rgba(15, 46, 34, 0.05) 60%,
+      rgba(15, 46, 34, 0.65) 100%);
   z-index: 2;
   pointer-events: none;
 }
@@ -808,8 +806,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.15rem;
+  font-weight: 400;
   color: var(--xfarm-dark);
 }
 

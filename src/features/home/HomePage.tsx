@@ -382,10 +382,10 @@ export const HomePage: React.FC = () => {
 
               <div className="xfarm-lime-banner-footer">
                 <div className="xfarm-font-specimen">
-                  <span>ABC</span>
-                  <span className="xfarm-specimen-pill">Mazzard Light</span>
+                  <span>DAILY</span>
+                  <span className="xfarm-specimen-pill">Fresh Harvest</span>
                 </div>
-                <span className="xfarm-sprouts-tagline">seed sprout + citrus slices</span>
+                <span className="xfarm-sprouts-tagline">crisp leafy greens + seasonal vegetables</span>
               </div>
             </div>
 

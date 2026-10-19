@@ -256,24 +256,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {isOutOfStock ? (
             <span className="product-soldout-b">Sold Out</span>
           ) : currentQty > 0 ? (
-            <div className="product-stepper-b">
+            <div
+              className="product-stepper-b"
+              style={{
+                backgroundColor: theme.pillBg,
+                borderColor: theme.pillBorder,
+              }}
+            >
               <button
                 type="button"
                 onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
                 className="stepper-btn-b"
+                style={{ color: theme.accentColor }}
                 aria-label="Decrease quantity"
               >
-                <Minus size={11} />
+                <Minus size={11} strokeWidth={2.5} />
               </button>
-              <span className="stepper-qty-b">{currentQty}</span>
+              <span className="stepper-qty-b" style={{ color: theme.pillText }}>
+                {currentQty}
+              </span>
               <button
                 type="button"
                 onClick={() => addToCart(product)}
                 disabled={currentQty >= availableQty}
                 className="stepper-btn-b"
+                style={{ color: theme.accentColor }}
                 aria-label="Increase quantity"
               >
-                <Plus size={11} />
+                <Plus size={11} strokeWidth={2.5} />
               </button>
             </div>
           ) : (
