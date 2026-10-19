@@ -114,7 +114,6 @@
 }
 
 .lp-stat-pill:hover {
-  transform: translateY(-2px);
   border-color: rgba(21, 128, 61, 0.28);
 }
 
@@ -219,7 +218,6 @@
 .lp-feature-card:hover {
   background-color: #ffffff;
   border-color: rgba(21, 128, 61, 0.3);
-  transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(15, 46, 34, 0.06);
 }
 
@@ -235,7 +233,6 @@
 .lp-feature-card.amber:hover {
   background-color: #ffffff;
   border-color: rgba(180, 83, 9, 0.38);
-  transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(180, 83, 9, 0.08);
 }
 
@@ -251,7 +248,6 @@
 .lp-feature-card.emerald:hover {
   background-color: #ffffff;
   border-color: rgba(21, 128, 61, 0.38);
-  transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(21, 128, 61, 0.08);
 }
 

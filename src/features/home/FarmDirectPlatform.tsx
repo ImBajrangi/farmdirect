@@ -41,6 +41,7 @@ import { marketplaceService, BackendStatus } from '../../services/marketplaceSer
 import { Product, Category, Order, FarmerProfile, UnitOfSale, ServiceArea, MarketplaceFilters } from '../../types';
 import { CustomDropdown, DropdownOption } from '../../components/common/CustomDropdown';
 import { formatPaise } from '../../utils/currency';
+import { ProductCard } from '../products/ProductCard';
 import './platform.css';
 import '../products/products.css';
 
@@ -400,214 +401,122 @@ export const FarmDirectPlatform: React.FC = () => {
         </header>
       </div>
 
-      {/* ─── 2. Agentic Copilot Hero Section ─────────────────────────────── */}
-      <section className="fd-hero-section">
-        <div className="fd-agentic-copilot-card">
-          <div className="fd-copilot-badge">
-            <Sparkles size={14} />
-            <span>
-              {selectedPersona === 'customer' && (language === 'hi' ? 'एआई फ़सल रडार' : 'AI Freshness Radar')}
-              {selectedPersona === 'farmer' && (language === 'hi' ? 'किसान एआई सहायक' : 'Kisan AI Operating System')}
-              {selectedPersona === 'admin' && (language === 'hi' ? 'सुरक्षा व नीति नियंत्रण' : 'Governance & Trust Engine')}
-            </span>
+      {/* ─── 2. Farmer / Admin Context Banner (Buyer goes directly to catalog) ─ */}
+      {selectedPersona !== 'customer' && (
+        <section className="fd-hero-section">
+          <div className="fd-agentic-copilot-card">
+            <div className="fd-copilot-badge">
+              <Sparkles size={14} />
+              <span>
+                {selectedPersona === 'farmer' && (language === 'hi' ? 'किसान एआई सहायक' : 'Kisan AI Operating System')}
+                {selectedPersona === 'admin' && (language === 'hi' ? 'सुरक्षा व नीति नियंत्रण' : 'Governance & Trust Engine')}
+              </span>
+            </div>
+
+            <h1 className="fd-copilot-headline">
+              {selectedPersona === 'farmer' &&
+                (language === 'hi'
+                  ? '1-मिनट में फ़सल लिस्ट करें। पूरा पैसा सीधे यूपीआई खाते में।'
+                  : 'List in 60 seconds. 100% Payout straight to UPI.')}
+              {selectedPersona === 'admin' &&
+                (language === 'hi'
+                  ? 'सत्यापित किसान, ईमानदार दरें व सुरक्षित भुगतान।'
+                  : 'Verified Farmers, Transparent Pricing & Idempotent Webhooks.')}
+            </h1>
+
+            <p className="fd-copilot-subhead">
+              {selectedPersona === 'farmer' &&
+                (language === 'hi'
+                  ? 'बिना मंडी दलालों के अपनी फ़सल उचित मूल्य पर सीधे ग्राहकों को बेचें। तुरंत ऑर्डर सूचना और सुरक्षित इन्वेंटरी नियंत्रण।'
+                  : 'Eliminate mandi commission and weighment shrinkage. Receive instant orders from nearby households and restaurants with guaranteed settlements.')}
+              {selectedPersona === 'admin' &&
+                (language === 'hi'
+                  ? '7/12 भूलेख भूमि सत्यापन, पीजीएस प्राकृतिक प्रमाणीकरण जांच और 0% ओवरसेलिंग की गारंटी।'
+                  : 'Automated 7/12 land record cross-checking, PGS organic validation, and strict single-tenant RLS isolation.')}
+            </p>
+
+            <div className="fd-copilot-actions">
+              {selectedPersona === 'farmer' && (
+                <>
+                  <button
+                    onClick={() => handleSelectQuickCrop('नाशिक लाल कांदा', 'cat-veg', '26', '100', 'kg')}
+                    className="fd-action-chip primary-lime"
+                  >
+                    <Plus size={14} />
+                    <span>{language === 'hi' ? '🧅 100 किग्रा कांदा लिस्ट करें (₹26/किग्रा)' : '🧅 Draft 100 kg Red Onions (₹26/kg)'}</span>
+                  </button>
+                  <button
+                    onClick={() => handleSelectQuickCrop('देशी टमाटर', 'cat-veg', '32', '50', 'kg')}
+                    className="fd-action-chip"
+                  >
+                    <span>{language === 'hi' ? '🍅 50 किग्रा देशी टमाटर (₹32)' : '🍅 50 kg Tomatoes (₹32)'}</span>
+                  </button>
+                  <Link to="/farmer/dashboard" className="fd-action-chip">
+                    <span>{language === 'hi' ? 'विस्तृत किसान डैशबोर्ड →' : 'Full Farmer Dashboard →'}</span>
+                  </Link>
+                </>
+              )}
+
+              {selectedPersona === 'admin' && (
+                <>
+                  <button onClick={refreshData} className="fd-action-chip primary-lime">
+                    <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+                    <span>{language === 'hi' ? 'लाइव ऑडिट सिंक करें' : 'Sync Live Telemetry'}</span>
+                  </button>
+                  <Link to="/admin/dashboard" className="fd-action-chip">
+                    <span>{language === 'hi' ? 'प्रशासन डेस्क खोलें →' : 'Open Admin Operations Desk →'}</span>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
-
-          <h1 className="fd-copilot-headline">
-            {selectedPersona === 'customer' &&
-              (language === 'hi'
-                ? 'सीधे खेत की मिट्टी से। शून्य बिचौलिए।'
-                : 'Direct from the Soil. Zero Middlemen.')}
-            {selectedPersona === 'farmer' &&
-              (language === 'hi'
-                ? '1-मिनट में फ़सल लिस्ट करें। पूरा पैसा सीधे यूपीआई खाते में।'
-                : 'List in 60 seconds. 100% Payout straight to UPI.')}
-            {selectedPersona === 'admin' &&
-              (language === 'hi'
-                ? 'सत्यापित किसान, ईमानदार दरें व सुरक्षित भुगतान।'
-                : 'Verified Farmers, Transparent Pricing & Idempotent Webhooks.')}
-          </h1>
-
-          <p className="fd-copilot-subhead">
-            {selectedPersona === 'customer' &&
-              (language === 'hi'
-                ? 'नाशिक और पुणे के किसानों द्वारा सुबह 5:30 बजे कटी ताज़ा सब्जियां व फल। सुपरमार्केट से 34% कम दाम, बिना किसी दलाली के।'
-                : 'Harvested at dawn along the Godavari basin. Delivered within 18 hours at 34% below supermarket prices with complete origin traceability.')}
-            {selectedPersona === 'farmer' &&
-              (language === 'hi'
-                ? 'बिना मंडी दलालों के अपनी फ़सल उचित मूल्य पर सीधे ग्राहकों को बेचें। तुरंत ऑर्डर सूचना और सुरक्षित इन्वेंटरी नियंत्रण।'
-                : 'Eliminate mandi commission and weighment shrinkage. Receive instant orders from nearby households and restaurants with guaranteed settlements.')}
-            {selectedPersona === 'admin' &&
-              (language === 'hi'
-                ? '7/12 भूलेख भूमि सत्यापन, पीजीएस प्राकृतिक प्रमाणीकरण जांच और 0% ओवरसेलिंग की गारंटी।'
-                : 'Automated 7/12 land record cross-checking, PGS organic validation, and strict single-tenant RLS isolation.')}
-          </p>
-
-          {/* Persona Quick Actions */}
-          <div className="fd-copilot-actions">
-            {selectedPersona === 'customer' && (
-              <>
-                <button
-                  onClick={() => {
-                    const veg = products.find(p => p.category_id === 'cat-veg');
-                    if (veg) addToCart(veg, 2);
-                  }}
-                  className="fd-action-chip primary-lime"
-                >
-                  <Zap size={14} />
-                  <span>{language === 'hi' ? '🌅 आज की प्रभात टोकरी जोड़ें (₹120)' : '🌅 1-Tap Morning Harvest Crate (₹120)'}</span>
-                </button>
-                <button
-                  onClick={() => setHarvestTodayOnly(!harvestTodayOnly)}
-                  className="fd-action-chip"
-                >
-                  <Clock size={14} />
-                  <span>{harvestTodayOnly ? 'Showing Today Only' : 'Filter Harvested Today'}</span>
-                </button>
-                <Link to="/marketplace" className="fd-action-chip">
-                  <span>{language === 'hi' ? 'पूरा बाज़ार देखें →' : 'Browse Full Catalog →'}</span>
-                </Link>
-              </>
-            )}
-
-            {selectedPersona === 'farmer' && (
-              <>
-                <button
-                  onClick={() => handleSelectQuickCrop('नाशिक लाल कांदा', 'cat-veg', '26', '100', 'kg')}
-                  className="fd-action-chip primary-lime"
-                >
-                  <Plus size={14} />
-                  <span>{language === 'hi' ? '🧅 100 किग्रा कांदा लिस्ट करें (₹26/किग्रा)' : '🧅 Draft 100 kg Red Onions (₹26/kg)'}</span>
-                </button>
-                <button
-                  onClick={() => handleSelectQuickCrop('देशी टमाटर', 'cat-veg', '32', '50', 'kg')}
-                  className="fd-action-chip"
-                >
-                  <span>{language === 'hi' ? '🍅 50 किग्रा देशी टमाटर (₹32)' : '🍅 50 kg Tomatoes (₹32)'}</span>
-                </button>
-                <Link to="/farmer/dashboard" className="fd-action-chip">
-                  <span>{language === 'hi' ? 'विस्तृत किसान डैशबोर्ड →' : 'Full Farmer Dashboard →'}</span>
-                </Link>
-              </>
-            )}
-
-            {selectedPersona === 'admin' && (
-              <>
-                <button onClick={refreshData} className="fd-action-chip primary-lime">
-                  <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-                  <span>{language === 'hi' ? 'लाइव ऑडिट सिंक करें' : 'Sync Live Telemetry'}</span>
-                </button>
-                <Link to="/admin/dashboard" className="fd-action-chip">
-                  <span>{language === 'hi' ? 'प्रशासन डेस्क खोलें →' : 'Open Admin Operations Desk →'}</span>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ─── 3. Dynamic Persona View ────────────────────────────────────── */}
       <main className="fd-main-content">
         {/* ================================================================= */}
-        {/* BUYER MODE: CLEAN, MOUTH-WATERING, TRANSPARENT MARKETPLACE        */}
+        {/* BUYER MODE: DIRECT ACCESSIBILITY, SIMPLE FILTRATION & PRODUCE     */}
         {/* ================================================================= */}
         {selectedPersona === 'customer' && (
-          <div>
-            {/* Price Transparency Card */}
-            <div className="fd-price-transparency-card">
-              <div className="fd-metric-column">
-                <span className="fd-metric-kicker">
-                  {language === 'hi' ? 'किसान को सीधे भुगतान' : 'Direct Farmer Payout'}
-                </span>
-                <span className="fd-metric-num">₹32 / kg · 100% Direct</span>
-              </div>
-              <div className="fd-metric-column">
-                <span className="fd-metric-kicker">
-                  {language === 'hi' ? 'मंडी दलाली व आढ़त' : 'Mandi Middlemen Cut'}
-                </span>
-                <span className="fd-metric-num savings">₹0.00 (Zero)</span>
-              </div>
-              <div className="fd-metric-column">
-                <span className="fd-metric-kicker">
-                  {language === 'hi' ? 'सुपरमार्केट खुदरा भाव' : 'Supermarket Retail'}
-                </span>
-                <span className="fd-metric-num retail">₹48 - ₹55 / kg</span>
-              </div>
-              <div className="fd-metric-column">
-                <span className="fd-metric-kicker">
-                  {language === 'hi' ? 'आपकी शुद्ध बचत' : 'Your Net Savings'}
-                </span>
-                <span className="fd-metric-num savings">34% Cheaper</span>
-              </div>
-            </div>
-
-            {/* 1. Category Pills Strip (Exact Marketplace Bar UI) */}
-            <div className="marketplace-category-strip" role="tablist" aria-label="Product Categories">
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('all')}
-                className={`category-pill-btn ${selectedCategory === 'all' ? 'active' : ''}`}
-                role="tab"
-                aria-selected={selectedCategory === 'all'}
-              >
-                <Sparkles size={13} />
-                <span>{language === 'hi' ? 'सर्व शेतमाल (All)' : 'All Harvest'}</span>
-              </button>
-
-              {categories.map((c) => {
-                const isSelected = selectedCategory === c.id;
-                const label = language === 'hi' && c.name_hi ? c.name_hi : c.name;
-                const icon = getCategoryEmoji(c.icon || c.slug);
-
-                return (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() => setSelectedCategory(c.id)}
-                    className={`category-pill-btn ${isSelected ? 'active' : ''}`}
-                    role="tab"
-                    aria-selected={isSelected}
-                  >
-                    <span>{icon} {label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* 2. Unified Command Card (Exact Marketplace Bar UI) */}
-            <div className="marketplace-command-card">
-              <div className="command-controls-row">
-                {/* Search */}
-                <div className="command-search-field">
-                  <Search size={15} className="command-search-icon" />
+          <div className="fd-buyer-storefront">
+            {/* Perfectly Aligned Minimalist Storefront Shelf */}
+            <div className="fd-storefront-shelf">
+              {/* Row 1: Unified Search & Action Bar */}
+              <div className="fd-search-action-row">
+                <div className="fd-search-field">
+                  <Search size={18} className="fd-search-ico" />
                   <input
                     type="text"
-                    placeholder={language === 'hi' ? 'खोजें: नाशिक कांदा, द्राक्षे, पालक, लोकवन गहू, तूप, टोमॅटो...' : 'Search fresh produce: Nashik Onions, Grapes, Spinach, Wheat, Gir Cow Ghee...'}
+                    placeholder={language === 'hi' ? 'ताज़ा सब्जियाँ, फल, अनाज खोजें...' : 'Search fresh produce, fruits, grains, dairy...'}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="command-search-input"
+                    className="fd-search-input"
                     aria-label="Search produce"
                   />
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setSearchQuery('')}
-                      className="command-search-clear"
+                      className="fd-search-clear"
                       aria-label="Clear search"
                     >
-                      <X size={11} />
+                      <X size={13} />
                     </button>
                   )}
                 </div>
 
-                {/* Filters */}
-                <div className="command-filters-group">
-                  <CustomDropdown
-                    value={selectedServiceArea}
-                    options={serviceAreaOptions}
-                    onChange={setSelectedServiceArea}
-                    icon={<MapPin size={13} />}
-                    ariaLabel="Select Hub"
-                  />
+                <div className="fd-action-controls">
+                  <button
+                    type="button"
+                    onClick={() => setOnlyOrganic(!onlyOrganic)}
+                    className={`fd-organic-pill ${onlyOrganic ? 'active' : ''}`}
+                    aria-pressed={onlyOrganic}
+                    title="Filter Certified Organic"
+                  >
+                    <Leaf size={14} />
+                    <span>{language === 'hi' ? 'सेंद्रिय' : 'Organic'}</span>
+                  </button>
 
                   <CustomDropdown
                     value={sortBy || 'newest'}
@@ -616,136 +525,64 @@ export const FarmDirectPlatform: React.FC = () => {
                     icon={<ArrowUpDown size={13} />}
                     ariaLabel="Sort Produce"
                   />
-
-                  <button
-                    type="button"
-                    onClick={() => setOnlyOrganic(!onlyOrganic)}
-                    className={`organic-toggle-pill ${onlyOrganic ? 'active' : ''}`}
-                    aria-pressed={onlyOrganic}
-                    title="Filter Certified Organic"
-                  >
-                    <Award size={13} />
-                    <span>{language === 'hi' ? '100% सेंद्रिय' : 'Organic Only'}</span>
-                    {onlyOrganic && <Check size={11} className="toggle-check" />}
-                  </button>
-
-                  <div className="command-lot-badge">
-                    <span className="lot-dot"></span>
-                    <span><strong>{filteredProducts.length}</strong> {language === 'hi' ? 'शेतमाल' : 'lots'}</span>
-                  </div>
                 </div>
               </div>
 
-              {/* Quick Staples Micro-Strip */}
-              <div className="command-staples-substrip">
-                <span className="staples-micro-label">{language === 'hi' ? '🔥 रोजची गरज:' : '🔥 Quick:'}</span>
-                <div className="staples-micro-scroll">
-                  {[
-                    { name: language === 'hi' ? 'नाशिक लाल कांदा' : 'Nashik Red Onions', q: 'onion' },
-                    { name: language === 'hi' ? 'Thompson Grapes' : 'Thompson Grapes', q: 'grapes' },
-                    { name: language === 'hi' ? 'देशी कोवळा पालक' : 'Tender Spinach', q: 'spinach' },
-                    { name: language === 'hi' ? 'लोकवन गहू' : 'Lokwan Wheat', q: 'wheat' },
-                    { name: language === 'hi' ? 'गिर गाय बिलोना तूप' : 'Gir Cow Ghee', q: 'ghee' },
-                    { name: language === 'hi' ? 'गावरान टोमॅटो' : 'Vine Tomatoes', q: 'tomato' },
-                  ].map((staple) => (
+              {/* Row 2: Category Segmented Stream */}
+              <div className="fd-category-tabs-bar" role="tablist" aria-label="Product Categories">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('all')}
+                  className={`fd-cat-tab ${selectedCategory === 'all' ? 'active' : ''}`}
+                  role="tab"
+                  aria-selected={selectedCategory === 'all'}
+                >
+                  {language === 'hi' ? 'सभी फ़सलें' : 'All Produce'}
+                </button>
+                {categories.map((c) => {
+                  const isSelected = selectedCategory === c.id;
+                  const label = language === 'hi' && c.name_hi ? c.name_hi : c.name;
+                  return (
                     <button
-                      key={staple.q}
+                      key={c.id}
                       type="button"
-                      onClick={() => {
-                        setSearchQuery(staple.q);
-                        setSelectedCategory('all');
-                      }}
-                      className={`staple-micro-btn ${searchQuery.toLowerCase().includes(staple.q) ? 'active' : ''}`}
+                      onClick={() => setSelectedCategory(c.id)}
+                      className={`fd-cat-tab ${isSelected ? 'active' : ''}`}
+                      role="tab"
+                      aria-selected={isSelected}
                     >
-                      {staple.name}
+                      {label}
                     </button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Product Cards Grid */}
-            <div className="fd-grid-products">
-              {filteredProducts.map((prod) => {
-                const qty = getItemQuantity(prod.id);
-                const stock = prod.inventory?.available_quantity ?? 45;
-
-                return (
-                  <article key={prod.id} className="fd-product-card">
-                    <div className="fd-card-visual">
-                      <img
-                        src={prod.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&auto=format&fit=crop&q=80'}
-                        alt={prod.name}
-                        className="fd-card-photo"
-                        loading="lazy"
-                      />
-                      {prod.harvest_date && (
-                        <div className="fd-harvest-badge">
-                          <Clock size={11} />
-                          <span>{language === 'hi' ? 'आज सुबह की कटाई' : 'Dawn Harvest'}</span>
-                        </div>
-                      )}
-                      <div className="fd-stock-badge">
-                        <span>{stock} {prod.unit} left</span>
-                      </div>
-                    </div>
-
-                    <div className="fd-card-content">
-                      <h3 className="fd-crop-name" title={prod.name}>
-                        {language === 'hi' ? (prod.name_hi || prod.name) : prod.name}
-                      </h3>
-                      <div className="fd-farm-origin">
-                        <MapPin size={12} color="#1b4d3a" style={{ flexShrink: 0 }} />
-                        <span>{prod.farmer?.farm_name || 'Shree Ganesh Farm'} · {prod.farmer?.district || 'Nashik'}</span>
-                      </div>
-
-                      <div className="fd-card-bottom">
-                        <div className="fd-price-lockup">
-                          <span className="fd-rupee-price">{formatPaise(prod.price_paise, language)}</span>
-                          <span className="fd-unit-denom">/ {prod.unit}</span>
-                        </div>
-
-                        {qty === 0 ? (
-                          <button
-                            onClick={() => addToCart(prod, 1)}
-                            className="fd-add-cart-btn"
-                            aria-label={`Add ${prod.name} to cart`}
-                          >
-                            <Plus size={13} strokeWidth={2.5} />
-                            <span>{language === 'hi' ? 'जोड़ें' : 'Add'}</span>
-                          </button>
-                        ) : (
-                          <div className="fd-stepper-container" role="group" aria-label={`Adjust ${prod.name} quantity`}>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(prod.id, qty - 1)}
-                              className="fd-stepper-icon-btn fd-stepper-dec"
-                              aria-label="Decrease quantity"
-                              title={qty === 1 ? 'Remove from cart' : 'Decrease quantity'}
-                            >
-                              {qty === 1 ? <Trash2 size={11} strokeWidth={2.2} /> : <Minus size={11} strokeWidth={2.5} />}
-                            </button>
-                            <span className="fd-stepper-digit-wrap">
-                              <span className="fd-stepper-digit">{qty}</span>
-                              <span className="fd-stepper-unit">{formatShortUnit(prod.unit)}</span>
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(prod.id, qty + 1)}
-                              className="fd-stepper-icon-btn fd-stepper-inc"
-                              aria-label="Increase quantity"
-                              title="Increase quantity"
-                            >
-                              <Plus size={11} strokeWidth={2.5} />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+            {/* Direct Product Cards Grid */}
+            {filteredProducts.length > 0 ? (
+              <div className="grid-products">
+                {filteredProducts.map((prod) => (
+                  <ProductCard key={prod.id} product={prod as any} />
+                ))}
+              </div>
+            ) : (
+              <div className="fd-empty-filter-state">
+                <p>{language === 'hi' ? 'कोई फ़सल नहीं मिली। कृपया फ़िल्टर बदलें।' : 'No produce matched your search or filters.'}</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('all');
+                    setSelectedServiceArea('all');
+                    setOnlyOrganic(false);
+                    setHarvestTodayOnly(false);
+                  }}
+                  className="fd-reset-filter-btn"
+                >
+                  {language === 'hi' ? 'सभी फ़िल्टर रीसेट करें' : 'Reset All Filters'}
+                </button>
+              </div>
+            )}
 
             {/* Floating Checkout Drawer on Selection */}
             {itemCount > 0 && (
@@ -947,16 +784,15 @@ export const FarmDirectPlatform: React.FC = () => {
                   className="fd-publish-btn"
                 >
                   <Plus size={18} strokeWidth={2.5} />
-                  <span>{language === 'hi' ? 'सीधे बाज़ार में लाइव करें (Publish Harvest)' : 'Publish to Live Marketplace'}</span>
+                  <span>{language === 'hi' ? 'सीधे बाज़ार में लाइव करें' : 'Publish to Live Marketplace'}</span>
                   <ArrowRight size={16} strokeWidth={2} style={{ marginLeft: 6 }} />
                 </button>
               </form>
             </div>
 
-            {/* Live Orders Stream */}
             <div style={{ marginBottom: 20 }}>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f2e22', marginBottom: 4 }}>
-                {language === 'hi' ? '📦 प्राप्त ग्राहक ऑर्डर्स' : '📦 Incoming Farmgate Orders'}
+                {language === 'hi' ? 'प्राप्त ग्राहक ऑर्डर्स' : '📦 Incoming Farmgate Orders'}
               </h3>
               <p style={{ color: '#4e6b5d', fontSize: '0.84375rem', marginBottom: 16 }}>
                 {language === 'hi'
@@ -1024,7 +860,7 @@ export const FarmDirectPlatform: React.FC = () => {
             {/* Smart Low-Stock Nudge */}
             <div style={{ marginTop: 32 }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f2e22', marginBottom: 14 }}>
-                {language === 'hi' ? '⚠️ कम स्टॉक चेतावनी व पुनः पूर्ति' : '⚠️ Smart Low Stock Replenishment'}
+                {language === 'hi' ? 'कम स्टॉक चेतावनी व पुनः पूर्ति' : 'Smart Low Stock Replenishment'}
               </h3>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
@@ -1103,7 +939,7 @@ export const FarmDirectPlatform: React.FC = () => {
 
             {/* Farmer KYC Verification Queue */}
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f2e22', marginBottom: 14 }}>
-              {language === 'hi' ? '🛡️ किसान सत्यापन व 7/12 भूलेख जांच' : '🛡️ Farmer KYC & 7/12 Land Verification Desk'}
+              {language === 'hi' ? 'किसान सत्यापन व 7/12 भूलेख जांच' : 'Farmer KYC & 7/12 Land Verification Desk'}
             </h3>
 
             <div className="fd-verification-stream">

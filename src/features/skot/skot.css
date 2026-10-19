@@ -235,7 +235,6 @@ body.skot-dark-mode,
 
 .skot-contact-btn:hover {
   border-color: var(--skot-ink);
-  transform: translateY(-1px);
 }
 
 .skot-cart-btn {
@@ -257,7 +256,6 @@ body.skot-dark-mode,
 
 .skot-cart-btn:hover {
   border-color: var(--skot-ink);
-  transform: translateY(-1px);
 }
 
 .skot-cart-icon-circle {
@@ -587,7 +585,6 @@ body.skot-dark-mode,
 }
 
 .skot-model-switcher-card:hover {
-  transform: translateY(-2px);
   border-color: var(--skot-ink);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }

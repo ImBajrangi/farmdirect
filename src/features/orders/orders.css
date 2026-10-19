@@ -10,7 +10,8 @@
 
 .orders-title {
   font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-weight: 550;
+  letter-spacing: -0.02em;
   color: var(--color-text);
   margin-bottom: var(--space-1);
 }
@@ -50,7 +51,7 @@
 
 .orders-empty-title {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 550;
   color: #0f172a;
   letter-spacing: -0.015em;
   margin: 0 0 0.5rem 0;
@@ -88,7 +89,7 @@
 }
 
 .cart-bridge-info strong {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .cart-bridge-btn {
@@ -96,7 +97,7 @@
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #047857;
   background: #ffffff;
   border: 1px solid #a7f3d0;
@@ -178,7 +179,7 @@
 
 .pipeline-text strong {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #0f172a;
   line-height: 1.2;
 }
@@ -232,7 +233,8 @@
 
 .confirmation-title {
   font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-weight: 550;
+  letter-spacing: -0.02em;
   color: var(--color-text);
   margin-bottom: var(--space-2);
 }
@@ -287,7 +289,7 @@
 .order-number-val {
   font-family: monospace;
   font-size: var(--font-size-sm);
-  font-weight: 700;
+  font-weight: 550;
   color: var(--color-text);
 }
 
@@ -376,7 +378,7 @@
 
 .order-total-price {
   font-size: var(--font-size-base);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
 }
 

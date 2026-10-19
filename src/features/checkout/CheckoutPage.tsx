@@ -214,20 +214,26 @@ export const CheckoutPage: React.FC = () => {
             )}
 
             <div className="address-grid">
-              {addresses.map((addr: Address) => (
-                <div
-                  key={addr.id}
-                  className={`address-item ${selectedAddressId === addr.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedAddressId(addr.id)}
-                >
-                  <span className="address-item-tag">{addr.label}</span>
-                  <div className="address-item-name">{addr.recipient_name}</div>
-                  <div className="address-item-phone">{addr.phone}</div>
-                  <div className="address-item-text">
-                    {addr.address_line_1}, {addr.city}, {addr.pincode}
+              {addresses.map((addr: Address) => {
+                const isSelected = selectedAddressId === addr.id;
+                return (
+                  <div
+                    key={addr.id}
+                    className={`address-item ${isSelected ? 'active selected' : ''}`}
+                    onClick={() => setSelectedAddressId(addr.id)}
+                  >
+                    <div className="address-item-top">
+                      <span className="address-item-tag">{addr.label}</span>
+                      <div className={`delivery-radio-dot ${isSelected ? 'checked' : ''}`} />
+                    </div>
+                    <div className="address-item-name">{addr.recipient_name}</div>
+                    <div className="address-item-phone">{addr.phone}</div>
+                    <div className="address-item-text">
+                      {addr.address_line_1}, {addr.city}, {addr.pincode}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
@@ -241,21 +247,38 @@ export const CheckoutPage: React.FC = () => {
             <div className="delivery-options-grid">
               <button
                 type="button"
-                className={`delivery-option-btn ${deliveryType === 'local_delivery' ? 'active' : ''}`}
+                className={`delivery-option-card ${deliveryType === 'local_delivery' ? 'active' : ''}`}
                 onClick={() => setDeliveryType('local_delivery')}
               >
-                <Truck size={24} />
-                <span className="delivery-option-title">Local Delivery</span>
-                <span className="delivery-option-desc">Direct to your doorstep in 24 hrs</span>
+                <div className="delivery-option-icon-box">
+                  <Truck size={22} />
+                </div>
+                <div className="delivery-option-text">
+                  <div className="delivery-option-title-row">
+                    <span className="delivery-option-title">Local Delivery</span>
+                    <span className="delivery-badge-pill">Direct</span>
+                  </div>
+                  <span className="delivery-option-desc">Direct to your doorstep in 24 hrs</span>
+                </div>
+                <div className={`delivery-radio-dot ${deliveryType === 'local_delivery' ? 'checked' : ''}`} />
               </button>
+
               <button
                 type="button"
-                className={`delivery-option-btn ${deliveryType === 'pickup' ? 'active' : ''}`}
+                className={`delivery-option-card ${deliveryType === 'pickup' ? 'active' : ''}`}
                 onClick={() => setDeliveryType('pickup')}
               >
-                <Store size={24} />
-                <span className="delivery-option-title">Farm Pickup</span>
-                <span className="delivery-option-desc">Pick up directly at the farm</span>
+                <div className="delivery-option-icon-box">
+                  <Store size={22} />
+                </div>
+                <div className="delivery-option-text">
+                  <div className="delivery-option-title-row">
+                    <span className="delivery-option-title">Farm Pickup</span>
+                    <span className="delivery-badge-pill free">Free</span>
+                  </div>
+                  <span className="delivery-option-desc">Pick up directly at the farm</span>
+                </div>
+                <div className={`delivery-radio-dot ${deliveryType === 'pickup' ? 'checked' : ''}`} />
               </button>
             </div>
 
@@ -280,18 +303,15 @@ export const CheckoutPage: React.FC = () => {
                 onClick={() => setPaymentMethod('razorpay_online')}
               >
                 <div className="payment-option-left">
-                  <CreditCard size={20} color="var(--color-primary)" />
+                  <div className="payment-option-icon-box">
+                    <CreditCard size={20} />
+                  </div>
                   <div>
                     <div className="payment-option-title">UPI / Cards / NetBanking</div>
                     <div className="payment-option-desc">Instant online payment via Razorpay</div>
                   </div>
                 </div>
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === 'razorpay_online'}
-                  onChange={() => setPaymentMethod('razorpay_online')}
-                />
+                <div className={`delivery-radio-dot ${paymentMethod === 'razorpay_online' ? 'checked' : ''}`} />
               </div>
 
               <div
@@ -299,18 +319,15 @@ export const CheckoutPage: React.FC = () => {
                 onClick={() => setPaymentMethod('cod')}
               >
                 <div className="payment-option-left">
-                  <Banknote size={20} color="var(--color-primary)" />
+                  <div className="payment-option-icon-box">
+                    <Banknote size={20} />
+                  </div>
                   <div>
                     <div className="payment-option-title">Cash on Delivery (COD)</div>
                     <div className="payment-option-desc">Pay cash or scan QR when receiving goods</div>
                   </div>
                 </div>
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === 'cod'}
-                  onChange={() => setPaymentMethod('cod')}
-                />
+                <div className={`delivery-radio-dot ${paymentMethod === 'cod' ? 'checked' : ''}`} />
               </div>
             </div>
           </section>

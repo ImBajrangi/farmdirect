@@ -1,17 +1,175 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Minus, Check, MapPin, Calendar, Award } from 'lucide-react';
+import { Plus, Minus, ArrowUpRight } from 'lucide-react';
 import { Product } from '../../types';
-import { formatPaise, formatWeight } from '../../lib/formatting/currency';
+import { formatPaise } from '../../lib/formatting/currency';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useCart } from '../../features/cart/CartContext';
+import '../../features/products/products.css';
 
 interface ProductCardProps {
   product: Product;
 }
 
+interface ItemTheme {
+  shellBg: string;
+  borderColor: string;
+  canvasBg: string;
+  ribbonBg: string;
+  ribbonText: string;
+  pillBg: string;
+  pillText: string;
+  pillBorder: string;
+  accentColor: string;
+  shadowColor: string;
+}
+
+function getItemTheme(slug: string): ItemTheme {
+  const s = slug.toLowerCase();
+
+  // 1. Red Onions -> Deep Burgundy Velvet & Rose Tint
+  if (s.includes('onion') || s.includes('kanda')) {
+    return {
+      shellBg: '#1f0d16',
+      borderColor: 'rgba(244, 63, 94, 0.22)',
+      canvasBg: '#fce7ef',
+      ribbonBg: '#881337',
+      ribbonText: '#ffe4e6',
+      pillBg: 'rgba(244, 63, 94, 0.16)',
+      pillText: '#fda4af',
+      pillBorder: 'rgba(244, 63, 94, 0.3)',
+      accentColor: '#fb7185',
+      shadowColor: 'rgba(136, 19, 55, 0.3)',
+    };
+  }
+
+  // 2. Grapes -> Deep Royal Violet & Lavender Tint
+  if (s.includes('grape') || s.includes('draksh')) {
+    return {
+      shellBg: '#130d24',
+      borderColor: 'rgba(168, 85, 247, 0.22)',
+      canvasBg: '#ede9fe',
+      ribbonBg: '#581c87',
+      ribbonText: '#f3e8ff',
+      pillBg: 'rgba(168, 85, 247, 0.16)',
+      pillText: '#d8b4fe',
+      pillBorder: 'rgba(168, 85, 247, 0.3)',
+      accentColor: '#c084fc',
+      shadowColor: 'rgba(88, 28, 135, 0.3)',
+    };
+  }
+
+  // 3. Spinach & Green Veggies -> Deep Forest Bottle Green & Emerald Tint
+  if (s.includes('spinach') || s.includes('palak') || s.includes('methi')) {
+    return {
+      shellBg: '#0d1f13',
+      borderColor: 'rgba(34, 197, 94, 0.22)',
+      canvasBg: '#dcfce7',
+      ribbonBg: '#166534',
+      ribbonText: '#dcfce7',
+      pillBg: 'rgba(34, 197, 94, 0.16)',
+      pillText: '#86efac',
+      pillBorder: 'rgba(34, 197, 94, 0.3)',
+      accentColor: '#4ade80',
+      shadowColor: 'rgba(22, 101, 52, 0.3)',
+    };
+  }
+
+  // 4. Wheat / Grains -> Deep Roasted Amber & Golden Husk Tint
+  if (s.includes('wheat') || s.includes('gehu') || s.includes('grain') || s.includes('cereal') || s.includes('rice')) {
+    return {
+      shellBg: '#211508',
+      borderColor: 'rgba(245, 158, 11, 0.22)',
+      canvasBg: '#fef3c7',
+      ribbonBg: '#78350f',
+      ribbonText: '#fef3c7',
+      pillBg: 'rgba(245, 158, 11, 0.16)',
+      pillText: '#fde68a',
+      pillBorder: 'rgba(245, 158, 11, 0.3)',
+      accentColor: '#fbbf24',
+      shadowColor: 'rgba(120, 53, 15, 0.3)',
+    };
+  }
+
+  // 5. Gir Cow Ghee & Dairy -> Artisan Bronze & Saffron Gold Tint
+  if (s.includes('ghee') || s.includes('dairy') || s.includes('toop') || s.includes('milk')) {
+    return {
+      shellBg: '#1d1305',
+      borderColor: 'rgba(234, 179, 8, 0.22)',
+      canvasBg: '#fef9c3',
+      ribbonBg: '#713f12',
+      ribbonText: '#fef9c3',
+      pillBg: 'rgba(234, 179, 8, 0.16)',
+      pillText: '#fef08a',
+      pillBorder: 'rgba(234, 179, 8, 0.3)',
+      accentColor: '#facc15',
+      shadowColor: 'rgba(113, 63, 18, 0.3)',
+    };
+  }
+
+  // 6. Tomatoes & Spices -> Deep Ripe Field Crimson & Coral Tint
+  if (s.includes('tomato') || s.includes('chilli') || s.includes('spice') || s.includes('masala')) {
+    return {
+      shellBg: '#220b0b',
+      borderColor: 'rgba(239, 68, 68, 0.22)',
+      canvasBg: '#fee2e2',
+      ribbonBg: '#7f1d1d',
+      ribbonText: '#fee2e2',
+      pillBg: 'rgba(239, 68, 68, 0.16)',
+      pillText: '#fca5a5',
+      pillBorder: 'rgba(239, 68, 68, 0.3)',
+      accentColor: '#f87171',
+      shadowColor: 'rgba(127, 29, 29, 0.3)',
+    };
+  }
+
+  // Default Organic Kiwi/Farmgate Forest Green
+  return {
+    shellBg: '#112417',
+    borderColor: 'rgba(34, 197, 94, 0.22)',
+    canvasBg: '#dcfce7',
+    ribbonBg: '#166534',
+    ribbonText: '#dcfce7',
+    pillBg: 'rgba(34, 197, 94, 0.16)',
+    pillText: '#86efac',
+    pillBorder: 'rgba(34, 197, 94, 0.3)',
+    accentColor: '#4ade80',
+    shadowColor: 'rgba(22, 101, 52, 0.3)',
+  };
+}
+
+function getCleanTitle(name: string): string {
+  if (name.includes('Nashik Garva Red Onions')) return 'Nashik Red Onions';
+  if (name.includes('Thompson Seedless')) return 'Thompson Grapes';
+  if (name.includes('Tender Spinach')) return 'Tender Spinach';
+  if (name.includes('Lokwan Heritage')) return 'Lokwan Wheat';
+  if (name.includes('Gir Cow Bilona')) return 'Gir Cow Ghee';
+  if (name.includes('Country Tomatoes') || name.includes('देशी लाल टमाटर')) return 'Vine Tomatoes';
+  return name;
+}
+
+function formatHarvestDate(dateStr?: string, lang?: string): string {
+  if (!dateStr) return lang === 'hi' ? 'आजची ताजी तोडणी' : 'Fresh Morning Harvest';
+  try {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      const d = new Date(year, month, day);
+      if (!isNaN(d.getTime())) {
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${day} ${monthNames[month]}`;
+      }
+    }
+  } catch {
+    // fallback
+  }
+  return dateStr;
+}
+
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { language, t } = useTranslation();
+  const { language } = useTranslation();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const currentQty = getItemQuantity(product.id);
   const availableQty = product.inventory?.available_quantity ?? 999;
@@ -20,131 +178,114 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const imageUrl = product.images?.[0]?.image_url || 
     'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
 
-  const productName = language === 'hi' && product.name_hi ? product.name_hi : product.name;
-  const farmName = language === 'hi' && product.farmer?.farm_name_hi ? product.farmer.farm_name_hi : product.farmer?.farm_name;
+  const cleanTitle = getCleanTitle(language === 'hi' && product.name_hi ? product.name_hi : product.name);
+  const village = product.farmer?.village || 'Nashik';
+  const unitLabel = product.unit ? `1 ${product.unit}` : '1 kg';
+  const theme = getItemTheme(product.slug);
+
+  // Dynamic price scaling with quantity
+  const effectiveQty = currentQty > 0 ? currentQty : 1;
+  const displayPricePaise = Math.round(product.price_paise * effectiveQty);
 
   return (
-    <div className="group bg-white rounded-2xl border border-earth-200 overflow-hidden shadow-soft hover:shadow-lifted hover:border-agri-300 transition-all duration-200 flex flex-col justify-between">
-      {/* Top Media & Badges */}
-      <div className="relative aspect-[4/3] bg-earth-100 overflow-hidden">
-        <Link to={`/product/${product.slug}`} className="block w-full h-full">
-          <img
-            src={imageUrl}
-            alt={productName}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+    <div
+      className="product-card-b"
+      style={{
+        backgroundColor: theme.shellBg,
+        borderColor: theme.borderColor,
+        boxShadow: `0 16px 36px -4px ${theme.shadowColor}`,
+      }}
+    >
+      {/* Top Media Canvas */}
+      <div className="product-canvas-b" style={{ backgroundColor: theme.canvasBg }}>
+        <Link to={`/product/${product.slug}`} className="product-canvas-link-b" aria-label={cleanTitle}>
+          <img src={imageUrl} alt={cleanTitle} loading="lazy" className="product-canvas-img-b" />
         </Link>
 
-        {/* Top Badges */}
-        <div className="absolute top-2 left-2 right-2 flex items-center justify-between pointer-events-none">
-          {product.is_certified_organic ? (
-            <span className="bg-emerald-700/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-              <Award className="w-3 h-3" />
-              <span>{t.common.organicCertified}</span>
-            </span>
-          ) : (
-            <span className="bg-stone-900/70 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm">
-              {t.common.directFromFarm}
-            </span>
-          )}
-
-          {isOutOfStock && (
-            <span className="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-              {t.common.outOfStock}
-            </span>
-          )}
+        {/* Curved Olive Bottom Ribbon */}
+        <div
+          className="product-canvas-ribbon-b"
+          style={{ backgroundColor: theme.ribbonBg, color: theme.ribbonText }}
+        >
+          <span>
+            {product.harvest_date
+              ? `Free Delivery · Harvested ${formatHarvestDate(product.harvest_date, language)}`
+              : 'Free Delivery · Fresh Morning Harvest'}
+          </span>
         </div>
-
-        {/* Harvest Date Strip if available */}
-        {product.harvest_date && (
-          <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm text-stone-700 text-[10px] font-medium px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
-            <Calendar className="w-3 h-3 text-agri-600" />
-            <span>{t.common.harvestedOn}: {product.harvest_date}</span>
-          </div>
-        )}
       </div>
 
-      {/* Content Body */}
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
-        <div>
-          {/* Farmer Source Credit */}
-          {product.farmer && (
-            <Link
-              to={`/farmer/${product.farmer.id}`}
-              className="text-[11px] font-semibold text-agri-700 hover:text-agri-800 flex items-center gap-1 mb-1 truncate"
-            >
-              <MapPin className="w-3 h-3 shrink-0" />
-              <span className="truncate">{farmName} • {product.farmer.village}</span>
-            </Link>
-          )}
-
-          {/* Product Title */}
-          <Link to={`/product/${product.slug}`} className="block">
-            <h3 className="font-bold text-stone-900 text-sm sm:text-base leading-snug hover:text-agri-700 transition line-clamp-1">
-              {productName}
-            </h3>
+      {/* Card B Bottom Split Layout: [Title + Single Row Tags] | [Price + Order Now ↗ / Stepper] */}
+      <div className="product-footer-split-b">
+        {/* Left Column: Title + Single-Row Pills */}
+        <div className="product-left-col-b">
+          <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
+            {cleanTitle}
           </Link>
 
-          {/* Subtitle / Unit info */}
-          <p className="text-xs text-stone-500 mt-1 line-clamp-2">
-            {language === 'hi' && product.description_hi ? product.description_hi : product.description}
-          </p>
+          <div className="product-tags-row-b">
+            <span
+              className="product-trait-pill-b"
+              style={{
+                backgroundColor: theme.pillBg,
+                color: theme.pillText,
+                borderColor: theme.pillBorder,
+              }}
+            >
+              {village}
+            </span>
+            <span
+              className="product-trait-pill-b"
+              style={{
+                backgroundColor: theme.pillBg,
+                color: theme.pillText,
+                borderColor: theme.pillBorder,
+              }}
+            >
+              {unitLabel}
+            </span>
+          </div>
         </div>
 
-        {/* Bottom Price & Add Action */}
-        <div className="pt-3 mt-3 border-t border-earth-100 flex items-center justify-between gap-2">
-          <div>
-            <div className="text-base sm:text-lg font-black text-stone-900 leading-none">
-              {formatPaise(product.price_paise, language)}
-              <span className="text-xs font-normal text-stone-500 ml-1">
-                / {formatWeight(1, product.unit, language)}
-              </span>
-            </div>
-            {product.min_order_quantity > 1 && (
-              <span className="text-[10px] text-stone-400">
-                {t.common.minOrder}: {product.min_order_quantity} {product.unit}
-              </span>
-            )}
+        {/* Right Column: Giant Price (Top) + Order Now ↗ or Stepper (Bottom) */}
+        <div className="product-right-col-b">
+          <div className="product-price-val-b" title={`₹${product.price_paise / 100} / ${unitLabel}`}>
+            {formatPaise(displayPricePaise, language)}
           </div>
 
-          {/* Cart Stepper or Add Button */}
           {isOutOfStock ? (
-            <button
-              disabled
-              className="px-3 py-1.5 rounded-xl bg-earth-200 text-stone-400 text-xs font-semibold cursor-not-allowed"
-            >
-              {t.common.outOfStock}
-            </button>
+            <span className="product-soldout-b">Sold Out</span>
           ) : currentQty > 0 ? (
-            <div className="flex items-center bg-agri-50 border border-agri-300 rounded-xl overflow-hidden shadow-xs">
+            <div className="product-stepper-b">
               <button
+                type="button"
                 onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
-                className="w-8 h-8 flex items-center justify-center text-agri-800 hover:bg-agri-200 active:scale-95 transition"
+                className="stepper-btn-b"
                 aria-label="Decrease quantity"
               >
-                <Minus className="w-3.5 h-3.5" />
+                <Minus size={11} />
               </button>
-              <span className="px-2 font-bold text-xs text-agri-950 min-w-[28px] text-center">
-                {currentQty}
-              </span>
+              <span className="stepper-qty-b">{currentQty}</span>
               <button
+                type="button"
                 onClick={() => addToCart(product)}
                 disabled={currentQty >= availableQty}
-                className="w-8 h-8 flex items-center justify-center text-agri-800 hover:bg-agri-200 active:scale-95 disabled:opacity-40 transition"
+                className="stepper-btn-b"
                 aria-label="Increase quantity"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus size={11} />
               </button>
             </div>
           ) : (
             <button
+              type="button"
               onClick={() => addToCart(product)}
-              className="px-3 py-1.5 rounded-xl bg-agri-600 hover:bg-agri-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
-              aria-label={`Add ${productName} to Cart`}
+              className="product-order-btn-b"
+              style={{ color: theme.accentColor }}
+              aria-label={`Order ${cleanTitle} Now`}
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>{t.common.addToCart}</span>
+              <span>Order Now</span>
+              <ArrowUpRight size={13} />
             </button>
           )}
         </div>

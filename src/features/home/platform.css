@@ -77,20 +77,20 @@
   align-items: center;
   justify-content: center;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 600;
   box-shadow: 0 4px 12px rgba(15, 46, 34, 0.2);
 }
 
 .fd-brand-wordmark {
   font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--fd-forest);
 }
 
 .fd-brand-subtag {
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   background-color: var(--fd-lime-subtle);
   color: var(--fd-forest);
@@ -206,7 +206,7 @@
   border: none;
   border-radius: 9999px;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 550;
   cursor: pointer;
   text-decoration: none;
   box-shadow: 0 4px 14px rgba(15, 46, 34, 0.2);
@@ -222,7 +222,7 @@
   background-color: var(--fd-lime);
   color: var(--fd-forest);
   font-size: 0.6875rem;
-  font-weight: 800;
+  font-weight: 600;
   padding: 1px 6px;
   border-radius: 9999px;
 }
@@ -254,7 +254,7 @@
   border-radius: 9999px;
   color: var(--fd-lime);
   font-size: 0.78125rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 16px;
@@ -262,7 +262,7 @@
 
 .fd-copilot-headline {
   font-size: clamp(1.8rem, 3.4vw, 2.75rem);
-  font-weight: 800;
+  font-weight: 550;
   line-height: 1.1;
   letter-spacing: -0.03em;
   margin-bottom: 12px;
@@ -322,11 +322,223 @@
 /* ─── 3. Content Frame ─────────────────────────────────────────────────── */
 .fd-main-content {
   max-width: 1180px;
-  margin: 32px auto 0;
+  margin: 18px auto 0;
   padding: 0 16px;
 }
 
-/* ─── 4. Customer: Price Transparency Banner ────────────────────────────── */
+/* ─── 4. Impeccably Aligned Minimalist Storefront ───────────────────── */
+.fd-buyer-storefront {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-storefront-shelf {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+/* Row 1: Unified Search & Action Controls */
+.fd-search-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.fd-search-field {
+  flex: 1 1 auto;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 9999px;
+  padding: 0 20px 0 22px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 16px -2px rgba(15, 46, 34, 0.05);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fd-search-field:focus-within {
+  border-color: #15803d;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.12);
+}
+
+.fd-search-ico {
+  color: #64748b;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.fd-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: #0f2e22;
+}
+
+.fd-search-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.fd-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f1f5f9;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+  transition: all 0.15s ease;
+}
+
+.fd-search-clear:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.fd-action-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.fd-organic-pill {
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #263e2d;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px -2px rgba(15, 46, 34, 0.05);
+}
+
+.fd-organic-pill:hover {
+  background-color: #f7faf5;
+  border-color: rgba(21, 128, 61, 0.35);
+  color: #15803d;
+}
+
+.fd-organic-pill.active {
+  background-color: #eaf5e6;
+  border-color: #15803d;
+  color: #15803d;
+  box-shadow: 0 1px 6px rgba(21, 128, 61, 0.12);
+}
+
+.fd-action-controls .custom-dropdown-btn {
+  height: 50px;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(15, 46, 34, 0.05);
+}
+
+/* Row 2: Category Segmented Stream */
+.fd-category-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 0 6px;
+}
+
+.fd-category-tabs-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.fd-cat-tab {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  background-color: #ffffff;
+  color: #355240;
+  border: 1px solid rgba(15, 46, 34, 0.1);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(15, 46, 34, 0.03);
+}
+
+.fd-cat-tab:hover {
+  background-color: #f7faf5;
+  color: #0f2e22;
+  border-color: rgba(21, 128, 61, 0.35);
+}
+
+.fd-cat-tab.active {
+  background-color: #0f2e22;
+  color: #ffffff;
+  border-color: #0f2e22;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(15, 46, 34, 0.18);
+}
+
+/* Empty State */
+.fd-empty-filter-state {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #ffffff;
+  border: 1px dashed rgba(15, 46, 34, 0.18);
+  border-radius: 24px;
+  margin: 16px 0 32px;
+}
+
+.fd-empty-filter-state p {
+  font-size: 1rem;
+  color: #4b6b57;
+  margin-bottom: 16px;
+}
+
+.fd-reset-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background-color: #0f2e22;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fd-reset-filter-btn:hover {
+  background-color: #164634;
+}
+
+/* ─── 5. Customer: Price Transparency Banner (Optional/Secondary) ──────── */
 .fd-price-transparency-card {
   background-color: var(--fd-card-bg);
   border: 1px solid var(--fd-border);
@@ -349,7 +561,7 @@
 
 .fd-metric-kicker {
   font-size: 0.71875rem;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--fd-text-faint);
@@ -357,7 +569,7 @@
 
 .fd-metric-num {
   font-size: 1.45rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fd-forest);
   letter-spacing: -0.02em;
 }
@@ -410,7 +622,6 @@
   background-color: var(--fd-canvas-subtle);
   border-color: rgba(15, 46, 34, 0.22);
   color: var(--fd-forest);
-  transform: translateY(-1px);
 }
 
 .fd-cat-pill.active {
@@ -512,7 +723,6 @@
 }
 
 .fd-product-card:hover {
-  transform: translateY(-2px);
   box-shadow: var(--fd-shadow-hover);
   border-color: var(--fd-border-medium);
 }
@@ -543,7 +753,7 @@
   background: rgba(15, 46, 34, 0.88);
   color: var(--fd-lime);
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.02em;
   padding: 4px 10px;
   border-radius: 9999px;
@@ -564,7 +774,7 @@
   background: rgba(255, 255, 255, 0.94);
   color: var(--fd-forest);
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 500;
   padding: 4px 10px;
   border-radius: 9999px;
   backdrop-filter: blur(8px);
@@ -583,7 +793,7 @@
 
 .fd-crop-name {
   font-size: 1.0625rem;
-  font-weight: 700;
+  font-weight: 550;
   color: var(--fd-forest);
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -632,7 +842,7 @@
 
 .fd-rupee-price {
   font-size: 1.28rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fd-forest);
   letter-spacing: -0.02em;
 }
@@ -640,7 +850,7 @@
 .fd-unit-denom {
   font-size: 0.78125rem;
   color: var(--fd-text-muted);
-  font-weight: 500;
+  font-weight: 450;
   white-space: nowrap;
 }
 
@@ -654,7 +864,7 @@
   padding: 0 14px;
   border-radius: 9999px;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -668,12 +878,10 @@
 
 .fd-add-cart-btn:hover {
   background-color: var(--fd-forest-light);
-  transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(15, 46, 34, 0.22);
 }
 
 .fd-add-cart-btn:active {
-  transform: translateY(0);
 }
 
 .fd-stepper-container {
@@ -724,7 +932,7 @@
 
 .fd-stepper-digit {
   font-size: 0.875rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fd-lime);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -732,53 +940,62 @@
 
 .fd-stepper-unit {
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1;
 }
 
 /* Floating Checkout Pill Drawer */
 .fd-floating-checkout-pill {
-  position: sticky;
-  bottom: 20px;
-  z-index: 50;
-  max-width: 520px;
-  margin: 0 auto;
-  background: rgba(15, 46, 34, 0.95);
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 85;
+  width: calc(100% - 32px);
+  max-width: 480px;
+  margin: 0;
+  background: rgba(15, 46, 34, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   color: #ffffff;
-  border: 1px solid rgba(217, 247, 88, 0.22);
+  border: 1px solid rgba(217, 247, 88, 0.28);
   border-radius: 9999px;
   padding: 10px 18px 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  box-shadow: 0 16px 44px -8px rgba(15, 46, 34, 0.42);
+  box-shadow: 0 16px 44px -8px rgba(15, 46, 34, 0.5);
   animation: fdSlideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  .fd-floating-checkout-pill {
+    bottom: 24px;
+  }
 }
 
 @keyframes fdSlideUpFade {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translate(-50%, 16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 }
 
 .fd-checkout-pill-meta {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #a8cfbd;
 }
 
 .fd-checkout-pill-amount {
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fd-lime);
   letter-spacing: -0.02em;
 }
@@ -792,7 +1009,7 @@
   color: var(--fd-forest);
   border-radius: 9999px;
   font-size: 0.84375rem;
-  font-weight: 700;
+  font-weight: 550;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -802,7 +1019,6 @@
 
 .fd-checkout-action-btn:hover {
   background-color: var(--fd-lime-hover);
-  transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(217, 247, 88, 0.35);
 }
 
@@ -833,7 +1049,7 @@
 
 .fd-studio-title {
   font-size: 1.35rem;
-  font-weight: 800;
+  font-weight: 550;
   color: var(--fd-forest, #0f2e22);
   letter-spacing: -0.02em;
   margin: 0;
@@ -848,7 +1064,7 @@
   background-color: rgba(21, 128, 61, 0.08);
   border: 1px solid rgba(21, 128, 61, 0.2);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #15803d;
 }
 
@@ -880,7 +1096,6 @@
   background-color: #ffffff;
   border-color: var(--theme-accent, #15803d);
   color: #14532d;
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(21, 128, 61, 0.10);
 }
 
@@ -986,7 +1201,7 @@
   position: absolute;
   left: 14px;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--theme-accent, #15803d);
   pointer-events: none;
   user-select: none;
@@ -996,7 +1211,7 @@
   position: absolute;
   right: 12px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fd-text-muted, #4e6b5d);
   background-color: rgba(15, 46, 34, 0.06);
   padding: 3px 8px;
@@ -1064,7 +1279,7 @@
 
 .fd-unit-customizer-label {
   font-size: 0.78125rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fd-text-muted, #4e6b5d);
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1087,7 +1302,7 @@
   border-radius: 9999px;
   cursor: pointer;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--fd-forest, #0f2e22);
   transition: all 0.18s ease;
 }
@@ -1105,7 +1320,7 @@
 }
 
 .fd-unit-choice-code {
-  font-weight: 800;
+  font-weight: 600;
   font-size: 0.75rem;
 }
 
@@ -1127,7 +1342,7 @@
   border: none;
   border-radius: 16px;
   font-size: 0.96875rem;
-  font-weight: 700;
+  font-weight: 550;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(21, 128, 61, 0.22);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1136,12 +1351,10 @@
 
 .fd-publish-btn:hover {
   background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-  transform: translateY(-1.5px);
   box-shadow: 0 8px 24px rgba(21, 128, 61, 0.32);
 }
 
 .fd-publish-btn:active {
-  transform: translateY(0);
 }
 
 /* Live Farmgate Orders Grid */
@@ -1170,7 +1383,7 @@
 }
 
 .fd-order-id {
-  font-weight: 800;
+  font-weight: 600;
   color: var(--fd-forest);
   font-size: 1.05rem;
 }
@@ -1179,7 +1392,7 @@
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -1311,14 +1524,14 @@
     text-decoration: none;
     color: var(--fd-text-muted);
     font-size: 0.6875rem;
-    font-weight: 600;
+    font-weight: 500;
     gap: 3px;
     transition: color 0.15s ease;
   }
 
   .fd-nav-touch-item.active {
     color: var(--fd-forest);
-    font-weight: 700;
+    font-weight: 550;
   }
 
   .fd-nav-touch-badge {
@@ -1328,7 +1541,7 @@
     background-color: var(--fd-forest);
     color: var(--fd-lime);
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     padding: 1px 5px;
     border-radius: 9999px;
   }

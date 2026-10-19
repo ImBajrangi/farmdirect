@@ -135,7 +135,6 @@
 .crypto-btn-trial:hover {
   background-color: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
 }
 
 /* Mobile Hamburger */
@@ -288,7 +287,6 @@
 
 .crypto-hero-cta-btn:hover {
   background-color: var(--crypto-lime-hover);
-  transform: translateY(-2px);
   box-shadow: 0 16px 40px rgba(194, 244, 24, 0.5);
 }
 
@@ -860,7 +858,7 @@
 }
 
 .crypto-price-card:hover {
-  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
 }
 
 /* White Cards (Базовый, Стандартный) */

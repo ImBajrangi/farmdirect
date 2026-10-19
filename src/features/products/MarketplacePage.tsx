@@ -159,84 +159,135 @@ export const MarketplacePage: React.FC = () => {
     { value: 'price_desc', label: copy.sortPriceDesc, icon: '💎' },
   ];
 
+  // Synchronize searchQuery with URL params if changed externally
+  useEffect(() => {
+    const q = searchParams.get('q') || '';
+    if (q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
+
   return (
     <div className="page-container products-page">
-      {/* Sleek Compact Header (Zero wasted vertical space) */}
-      <div className="marketplace-header-compact">
-        <div className="marketplace-title-wrap">
-          <h1 className="marketplace-title-compact">
-            {copy.titleMain}
-            <span className="marketplace-title-sub-compact">{copy.titleSub}</span>
-          </h1>
-        </div>
-      </div>
-
-      {/* Compact Category Pills Strip */}
-      <div className="marketplace-category-strip" role="tablist" aria-label="Product Categories">
-        <button
-          type="button"
-          onClick={() => handleCategorySelect('all')}
-          className={`category-pill-btn ${selectedCategory === 'all' ? 'active' : ''}`}
-          role="tab"
-          aria-selected={selectedCategory === 'all'}
-        >
-          <Sparkles size={13} />
-          <span>{copy.allProduce}</span>
-        </button>
-
-        {categories.map((c) => {
-          const isSelected = selectedCategory === c.id;
-          const friendly = copy.categories[c.id];
-          const label = friendly
-            ? friendly.label
-            : (language === 'hi' && c.name_hi ? c.name_hi : c.name);
-          const icon = friendly ? friendly.icon : '🌱';
-
-          return (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => handleCategorySelect(c.id)}
-              className={`category-pill-btn ${isSelected ? 'active' : ''}`}
-              role="tab"
-              aria-selected={isSelected}
-            >
-              <span>{icon} {label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* High-Efficiency Unified Command Card */}
-      <div className="marketplace-command-card">
-        {/* Controls Row: Search + Custom Dropdowns + Organic + Lots Count */}
-        <div className="command-controls-row">
-          {/* Integrated Search Input */}
-          <div className="command-search-field">
-            <Search size={15} className="command-search-icon" />
-            <input
-              type="text"
-              placeholder={copy.searchPlaceholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="command-search-input"
-              aria-label="Search produce"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="command-search-clear"
-                aria-label="Clear search"
-              >
-                <X size={11} />
-              </button>
-            )}
+      {/* 1. Distinct Marketplace Header with Premium Value Proposition & Trust Badges */}
+      <header className="marketplace-hero-strip">
+        <div className="marketplace-header-row">
+          <div className="marketplace-header-text">
+            <div className="marketplace-eyebrow-badge">
+              <span className="eyebrow-dot" />
+              <span>{language === 'hi' ? 'सकाळी 6:00 AM थेट शेतातून तोडणी' : '6:00 AM MORNING HARVEST DISPATCH'}</span>
+            </div>
+            <h1 className="marketplace-page-title">
+              {copy.titleMain}
+              <span className="marketplace-page-sub">{copy.titleSub}</span>
+            </h1>
+            <p className="marketplace-lead-desc">
+              {language === 'hi'
+                ? 'बिना किसी बिचौलिए के सीधे सत्यापित किसानों से ताज़ा फ़सलें खरीदें।'
+                : 'Direct harvest dispatch from verified growers in Nashik and Pune. 100% direct farmer payouts with zero middlemen markups.'}
+            </p>
           </div>
 
-          {/* Action Filters Group with Custom Dropdowns */}
-          <div className="command-filters-group">
-            {/* Custom Service Hub Dropdown */}
+          <div className="marketplace-trust-cluster">
+            <div className="trust-cluster-pill">
+              <Sparkles size={13} className="trust-cluster-icon" />
+              <span>PGS Organic</span>
+            </div>
+            <div className="trust-cluster-pill">
+              <Award size={13} className="trust-cluster-icon" />
+              <span>100% Direct Payout</span>
+            </div>
+            <div className="trust-cluster-pill">
+              <MapPin size={13} className="trust-cluster-icon" />
+              <span>Nashik & Pune Hubs</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* 2. Distinct 2-Column Marketplace Architecture: Filter Sidebar + Catalog Grid */}
+      <div className="marketplace-layout">
+        {/* Left Filter Rail */}
+        <aside className="marketplace-filter-rail">
+          {/* Categories Filter Block */}
+          <div className="filter-block">
+            <div className="filter-block-header">
+              <span className="filter-block-title">{language === 'hi' ? 'श्रेणियां' : 'Categories'}</span>
+              {selectedCategory !== 'all' && (
+                <button
+                  type="button"
+                  onClick={() => handleCategorySelect('all')}
+                  className="filter-reset-link"
+                >
+                  {language === 'hi' ? 'सभी देखें' : 'Reset'}
+                </button>
+              )}
+            </div>
+
+            <div className="filter-cat-stack" role="tablist">
+              <button
+                type="button"
+                onClick={() => handleCategorySelect('all')}
+                className={`filter-cat-item ${selectedCategory === 'all' ? 'active' : ''}`}
+                role="tab"
+                aria-selected={selectedCategory === 'all'}
+              >
+                <span className="cat-label-with-icon">
+                  <span className="cat-icon">🌱</span>
+                  <span>{copy.allProduce}</span>
+                </span>
+                <span className="cat-count-pill">{products.length}</span>
+              </button>
+
+              {categories.map((c) => {
+                const isSelected = selectedCategory === c.id;
+                const friendly = copy.categories[c.id];
+                const label = friendly
+                  ? friendly.label
+                  : (language === 'hi' && c.name_hi ? c.name_hi : c.name);
+                const icon = friendly ? friendly.icon : '🥬';
+
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => handleCategorySelect(c.id)}
+                    className={`filter-cat-item ${isSelected ? 'active' : ''}`}
+                    role="tab"
+                    aria-selected={isSelected}
+                  >
+                    <span className="cat-label-with-icon">
+                      <span className="cat-icon">{icon}</span>
+                      <span>{label}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Farming Practices Block */}
+          <div className="filter-block">
+            <span className="filter-block-title">{language === 'hi' ? 'प्रमाणीकरण' : 'Standards'}</span>
+            <button
+              type="button"
+              onClick={() => setOnlyOrganic(!onlyOrganic)}
+              className={`filter-toggle-pill ${onlyOrganic ? 'active' : ''}`}
+              aria-pressed={onlyOrganic}
+            >
+              <div className="filter-toggle-content">
+                <Sparkles size={14} className="toggle-sparkle" />
+                <span>{copy.organicOnly}</span>
+              </div>
+              <span className={`filter-toggle-switch ${onlyOrganic ? 'on' : ''}`}>
+                <span className="switch-thumb" />
+              </span>
+            </button>
+          </div>
+
+          {/* Delivery Hub Block */}
+          <div className="filter-block">
+            <span className="filter-block-title">{language === 'hi' ? 'सेवा क्षेत्र' : 'Delivery Hub'}</span>
             <CustomDropdown
               value={selectedServiceArea}
               options={serviceAreaOptions}
@@ -244,57 +295,78 @@ export const MarketplacePage: React.FC = () => {
               icon={<MapPin size={13} />}
               ariaLabel="Select Hub"
             />
+          </div>
+        </aside>
 
-            {/* Custom Sort Dropdown */}
-            <CustomDropdown
-              value={sortBy || 'newest'}
-              options={sortOptions}
-              onChange={(val) => setSortBy(val as MarketplaceFilters['sortBy'])}
-              icon={<ArrowUpDown size={13} />}
-              ariaLabel="Sort Produce"
-            />
+        {/* Right Catalog Main Stream */}
+        <main className="marketplace-catalog-stream">
+          {/* Catalog Status Bar: Result Count + Inline Quick Filter + Sort */}
+          <div className="catalog-status-bar">
+            <div className="catalog-lot-indicator">
+              <span className="lot-pulse-dot" />
+              <span>
+                <strong>{products.length}</strong> {language === 'hi' ? 'ताज़ा फ़सलें उपलब्ध' : 'fresh farm lots available'}
+              </span>
+              {searchQuery && (
+                <span className="catalog-active-filter-badge">
+                  <span>"{searchQuery}"</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('');
+                      searchParams.delete('q');
+                      setSearchParams(searchParams);
+                    }}
+                    className="catalog-filter-clear-btn"
+                    aria-label="Clear keyword filter"
+                  >
+                    <X size={11} />
+                  </button>
+                </span>
+              )}
+            </div>
 
-            {/* Organic Toggle Pill */}
-            <button
-              type="button"
-              onClick={() => setOnlyOrganic(!onlyOrganic)}
-              className={`organic-toggle-pill ${onlyOrganic ? 'active' : ''}`}
-              aria-pressed={onlyOrganic}
-              title="Filter Certified Organic"
-            >
-              <Award size={13} />
-              <span>{copy.organicOnly}</span>
-              {onlyOrganic && <Check size={11} className="toggle-check" />}
-            </button>
+            <div className="catalog-toolbar-actions">
+              {/* In-Catalog Quick Search Filter */}
+              <div className="catalog-quick-filter-pill">
+                <Search size={14} className="quick-filter-icon" />
+                <input
+                  type="text"
+                  placeholder={language === 'hi' ? 'फ़सल खोजें...' : 'Filter in catalog...'}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="quick-filter-input"
+                  aria-label="Filter produce in catalog"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="quick-filter-clear"
+                    aria-label="Clear filter"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
 
-            {/* Compact Lot Badge */}
-            <div className="command-lot-badge">
-              <span className="lot-dot"></span>
-              <span><strong>{products.length}</strong> {language === 'hi' ? 'शेतमाल' : 'lots'}</span>
+              {/* Sort Dropdown */}
+              <div className="catalog-sort-group">
+                <CustomDropdown
+                  value={sortBy || 'newest'}
+                  options={sortOptions}
+                  onChange={(val) => setSortBy(val as MarketplaceFilters['sortBy'])}
+                  icon={<ArrowUpDown size={13} />}
+                  ariaLabel="Sort Produce"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Compact Micro-Staples Strip (Inline & Zero Bloat) */}
-        <div className="command-staples-substrip">
-          <span className="staples-micro-label">{copy.staplesLabel}</span>
-          <div className="staples-micro-scroll">
-            {copy.staples.map((staple) => (
-              <button
-                key={staple.query}
-                type="button"
-                onClick={() => handleStapleClick(staple.query)}
-                className={`staple-micro-btn ${searchQuery.toLowerCase().includes(staple.query) ? 'active' : ''}`}
-              >
-                {staple.name}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* Produce Grid */}
+          <ProductList products={products} isLoading={loading} />
+        </main>
       </div>
-
-      {/* Product List Grid */}
-      <ProductList products={products} isLoading={loading} />
     </div>
   );
 };
