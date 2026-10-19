@@ -34,8 +34,9 @@ export const AppRoutes: React.FC = () => {
   return (
     <Suspense fallback={<Loader size="md" message="Loading FarmDirect..." />}>
       <Routes>
-        {/* FarmDirect Master Agricultural Platform on Root */}
-        <Route path="/" element={<FarmDirectPlatform />} />
+        {/* FarmDirect Master Landing Page on Root */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/platform" element={<FarmDirectPlatform />} />
         <Route path="/visual-poetry" element={<VisualPoetryPage />} />
 

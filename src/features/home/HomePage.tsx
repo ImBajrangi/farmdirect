@@ -1,193 +1,114 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight,
-  ShieldCheck,
-  Truck,
-  HeartHandshake,
+  Sprout,
+  ShoppingBag,
   Tractor,
-  Play,
-  Pause,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Sparkles,
-  Layers,
   ThermometerSnowflake,
-  Clock,
-  Coins,
+  ShieldCheck,
+  ArrowRight,
+  ArrowDown,
+  Play,
 } from 'lucide-react';
 import { productService } from '../products/product.service';
 import { Product } from '../products/product.types';
-import { ProductCard } from '../products/ProductCard';
-import { Button } from '../../components/common/Button';
 import './home.css';
 
-// Demo Example Tab Definitions (Section 6.4)
-interface DemoExample {
-  id: string;
-  category: 'HARVEST' | 'LOGISTICS' | 'BULK';
-  title: string;
-  location: string;
-  metric1: { label: string; value: string };
-  metric2: { label: string; value: string };
-  metric3: { label: string; value: string };
-  caption: string;
+// Official Fruit Baskets vector icon (seed sprout droplet + 4 radiating citrus slices)
+export const FruitBasketsLogoIcon: React.FC<{ size?: number; className?: string; color?: string }> = ({
+  size = 32,
+  className = '',
+  color = 'currentColor',
+}) => (
+  <svg
+    width={size}
+    height={Math.round(size * (148.378 / 173))}
+    viewBox="0 0 173 148.378"
+    fill={color}
+    className={className}
+    style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}
+    aria-label="Fruit Baskets Logo"
+  >
+    <g id="Fresh_x5F_Fruit_x5F_Baskets">
+      <g>
+        {/* Top seed sprout droplet */}
+        <path
+          style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
+          d="M86.408,49.213c-4.261-6.951-8.876-15.481-12.353-23.866c-1.653-3.986-3.883-9.299-2.279-14.631C73.398,5.328,79.34-0.55,87.128,0.041c7.96,0.604,14.392,6.463,14.392,14.871c0,3.421-1.482,6.834-2.638,9.714C95.415,33.262,90.84,41.753,86.408,49.213z"
+        />
+        {/* Top right citrus wedge */}
+        <path
+          style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
+          d="M131.142,65.643c7.914-0.188,16.659-0.247,24.466-0.12c4.662,0.076,9.021-0.06,12.113,1.679c2.565,1.442,5.207,4.257,5.277,8.395c0.067,3.963-1.283,7.699-2.279,11.034c-1.948,6.524-4.617,12.876-7.915,18.589c-1.672,2.897-3.509,6.224-5.397,7.795c-3.277,2.727-8.71,2.952-12.593,0.479c-2.126-1.354-3.757-3.799-5.517-5.396c-5.592-5.078-10.818-10.672-16.191-16.191c-5.354-5.499-10.652-10.456-16.31-16.19c-1.727-1.751-4.391-4.018-4.078-6.716c0.241-2.074,2.892-3.155,5.396-3.358C115.515,65.044,124.473,65.801,131.142,65.643z"
+        />
+        {/* Top left citrus wedge */}
+        <path
+          style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
+          d="M10.492,65.763c4.746-0.258,10.552-0.322,15.951-0.12c4.802,0.18,10.063-0.157,15.711,0c4.521,0.126,9.157,0.053,14.751,0.12c3.158,0.038,11.906-1.191,12.952,2.758c0.847,3.194-2.379,5.857-3.598,7.076c-9.161,9.162-18.103,17.566-27.344,27.224c-1.763,1.843-3.667,3.539-5.396,5.517c-1.652,1.888-3.623,4.288-5.517,5.397c-4.42,2.588-10.545,1.596-13.552-1.679c-1.686-1.837-3.211-5.043-4.677-7.676c-2.918-5.242-5.296-11.124-7.315-17.27c-1.112-3.383-2.792-7.846-2.399-12.232C0.518,69.747,5.048,66.059,10.492,65.763z"
+        />
+        {/* Bottom left citrus wedge */}
+        <path
+          style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
+          d="M77.533,77.996c5.1-0.854,4.493,6.099,4.437,10.074c-0.095,6.797,0.053,13.052,0.12,20.748c0.046,5.223-0.091,10.191,0,14.991c0.091,4.777,0.423,9.546,0,14.392c-0.407,4.667-3.809,9.47-8.515,10.074c-3.776,0.485-7.783-0.84-11.394-1.799c-6.699-1.78-13.516-4.83-19.069-8.035c-3.119-1.801-7.204-4.04-8.755-6.477c-2.461-3.865-1.559-9.879,0.72-12.952c1.457-1.965,3.433-3.544,5.157-5.277c8.664-8.71,16.925-16.996,25.785-26.145c1.605-1.658,3.302-3.446,5.277-5.157C72.92,81.027,75.1,78.403,77.533,77.996z"
+        />
+        {/* Bottom right citrus wedge */}
+        <path
+          style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
+          d="M93.724,77.996c3.348-0.71,5.297,2.566,7.436,4.317c2.128,1.743,3.763,3.523,5.396,5.157c8.703,8.704,17.759,17.782,26.385,26.385c3.338,3.33,9.782,8.939,6.476,16.431c-1.491,3.378-5.306,5.61-8.755,7.555c-5.875,3.314-12.198,6.252-19.188,8.395c-6.113,1.874-13.58,3.6-17.75-0.84c-1.569-1.671-2.741-4.222-2.998-7.436c-0.388-4.839-0.117-9.627-0.12-13.912c-0.005-7.552,0-17.538,0-26.625c0-4.437-0.419-9.451,0-14.152C90.814,80.944,91.55,78.457,93.724,77.996z"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+// Backward compatibility alias
+export const XFarmLogoIcon = FruitBasketsLogoIcon;
+
+interface ProduceCurationItem {
+  origin: string;
+  desc: string;
+  image: string;
 }
 
-const DEMO_EXAMPLES: DemoExample[] = [
-  {
-    id: 'ex-1',
-    category: 'HARVEST',
-    title: 'Dawn Field Harvest & Sorting',
-    location: 'Pimpalgaon Baswant · Nashik District',
-    metric1: { label: 'Harvest Age', value: '4.5 hrs' },
-    metric2: { label: 'Direct Producer', value: '100% Payout' },
-    metric3: { label: 'Cold-Chain Lock', value: '4.2°C' },
-    caption: 'Verified grower crop picked at 5:30 AM, graded at farmgate shed with Mahabhulekh 7/12 authenticated tag.',
+const PRODUCE_CURATION: Record<string, ProduceCurationItem> = {
+  'prod-onion-1': {
+    origin: 'Nashik · Ramesh Patil',
+    desc: 'Crisp, pungent winter-harvested red onions naturally cured under shade.',
+    image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=700&q=80',
   },
-  {
-    id: 'ex-2',
-    category: 'HARVEST',
-    title: 'GI-Tagged Nashik Grapes Dispatch',
-    location: 'Dindori Valley · Export Quality',
-    metric1: { label: 'Brix Sugar Index', value: '18.5°' },
-    metric2: { label: 'Pesticide Residue', value: '0.00 ppm' },
-    metric3: { label: 'Farmgate Margin', value: '+34%' },
-    caption: 'Direct orchard crates aggregated with automated digital weighment and instant UPI settlement.',
+  'prod-grapes-1': {
+    origin: 'Dindori · Patil Agro',
+    desc: 'Sweet, thin-skinned table grapes plucked fresh with zero synthetic chemicals.',
+    image: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=700&q=80',
   },
-  {
-    id: 'ex-3',
-    category: 'LOGISTICS',
-    title: 'Nashik–Pune Reefer Corridor Transit',
-    location: 'NH-60 Agro Cold-Chain Transit',
-    metric1: { label: 'Transit Duration', value: '3 hrs 40 m' },
-    metric2: { label: 'Reefer Temp', value: '3.8°C' },
-    metric3: { label: 'Wastage Rate', value: '0.2%' },
-    caption: 'Pre-cooled GPS-monitored vehicle dispatched straight to Western Pune distribution hubs without mandi halts.',
+  'prod-spinach-1': {
+    origin: 'Niphad · Shinde Farm',
+    desc: 'Tender dark green spinach leaves harvested with roots intact for peak crispness.',
+    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=80',
   },
-  {
-    id: 'ex-4',
-    category: 'LOGISTICS',
-    title: 'Hyperlocal Last-Mile Route Clustering',
-    location: 'Kothrud & Baner Delivery Cluster',
-    metric1: { label: 'Drop Efficiency', value: '98.6%' },
-    metric2: { label: 'Carbon Offset', value: '-42%' },
-    metric3: { label: 'Delivery Window', value: '< 24 hrs' },
-    caption: 'Algorithmic route bundling batches neighbourhood orders into reusable insulated crates.',
+  'prod-wheat-1': {
+    origin: 'Niphad Women Collective',
+    desc: 'Unpolished golden grain Lokwan wheat, stone-cleaned for ultra-soft rotis.',
+    image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=700&q=80',
   },
-  {
-    id: 'ex-5',
-    category: 'BULK',
-    title: 'Commercial Restaurant Sourcing',
-    location: 'Pune Hospitality Supply Hub',
-    metric1: { label: 'Order Lead Time', value: '18 hrs' },
-    metric2: { label: 'Price vs Mandi', value: '-18%' },
-    metric3: { label: 'GST Compliance', value: 'Instant' },
-    caption: 'Bulk container lots of onions, tomatoes, and greens supplied directly to verified commercial kitchens.',
+  'prod-ghee-1': {
+    origin: 'Grass-Fed Gir Sanctuary',
+    desc: 'Traditional wood-churned curd bilona ghee with rich golden granular texture.',
+    image: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=700&q=80',
   },
-];
-
-// Department / Category Definitions (Section 6.9 & 6.10: 1:1 Aspect Ratio)
-interface DepartmentItem {
-  id: string;
-  categoryParam: string;
-  emoji: string;
-  title: string;
-  titleNative: string;
-  description: string;
-  spec: string;
-}
-
-const DEPARTMENTS: DepartmentItem[] = [
-  {
-    id: 'dep-veg',
-    categoryParam: 'cat-veg',
-    emoji: '🥬',
-    title: 'Organic Vegetables',
-    titleNative: 'सेंद्रिय भाजीपाला',
-    description: 'Harvested at dawn along Godavari riverbeds with verified PGS-India certification.',
-    spec: 'Same-day cold dispatch',
+  'prod-tomato-1': {
+    origin: 'Godavari River Basin',
+    desc: 'Tangy, juicy field tomatoes with authentic tart sweetness ripened naturally on vines.',
+    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=700&q=80',
   },
-  {
-    id: 'dep-fruit',
-    categoryParam: 'cat-fruit',
-    emoji: '🍇',
-    title: 'Orchard Fresh Fruits',
-    titleNative: 'बागेतील ताजी फळे',
-    description: 'GI-tagged Nashik grapes, Junnar pomegranates, and Konkan mangoes direct from trees.',
-    spec: 'Natural tree-ripened only',
-  },
-  {
-    id: 'dep-grain',
-    categoryParam: 'cat-grains',
-    emoji: '🌾',
-    title: 'Native Grains & Pulses',
-    titleNative: 'देशी धान्य व कडधान्ये',
-    description: 'Direct mill-unpolished Indrayani rice, Bhalia wheat, and desi unpolished tur dal.',
-    spec: 'Stone ground & unpolished',
-  },
-  {
-    id: 'dep-dairy',
-    categoryParam: 'cat-dairy',
-    emoji: '🥛',
-    title: 'Farm Dairy & Cold-Pressed',
-    titleNative: 'दुग्ध व घाण्याचे तेल',
-    description: 'Pure Gir cow A2 milk and traditional wood-churned cold-pressed oils.',
-    spec: 'Zero synthetic preservatives',
-  },
-  {
-    id: 'dep-bulk',
-    categoryParam: 'cat-bulk',
-    emoji: '📦',
-    title: 'Bulk Commercial Supply',
-    titleNative: 'होलसेल खरेदी',
-    description: 'Crate and container-grade agricultural sourcing for restaurants, canteens, and retailers.',
-    spec: 'Mandi parity + GST invoices',
-  },
-];
-
-// Use-Case Carousel Slides (Section 6.7)
-interface UseCaseSlide {
-  title: string;
-  subtitle: string;
-  description: string;
-  metrics: string;
-  linkText: string;
-}
-
-const USE_CASE_SLIDES: UseCaseSlide[] = [
-  {
-    title: 'Households & Apartment Societies',
-    subtitle: 'Daily Farmgate Crates',
-    description: 'Receive morning harvested greens and fresh kitchen staples before 7 AM with zero plastic wrapping and 100% farm source traceability.',
-    metrics: 'Save 22% compared to supermarket markups',
-    linkText: 'Explore Home Delivery →',
-  },
-  {
-    title: 'Restaurants & Cloud Kitchens',
-    subtitle: 'High-Volume Commercial Supply',
-    description: 'Consistent grading, daily scheduled delivery slots, and automated GST billing that eliminates early-morning mandi bidding hassle.',
-    metrics: 'Average ₹24,000 monthly procurement savings',
-    linkText: 'Schedule Commercial Walkthrough →',
-  },
-  {
-    title: 'Retail Grocers & FPO Aggregators',
-    subtitle: 'Direct Cold-Chain Bulk Logistics',
-    description: 'Pool demand with regional farmer-producer organisations to receive pre-graded crates directly into your storeroom without weight shrinkage.',
-    metrics: '< 1% sorting loss vs 15% mandi shrinkage',
-    linkText: 'Join Aggregator Network →',
-  },
-];
+};
 
 export const HomePage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('ex-1');
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [isSlidePlaying, setIsSlidePlaying] = useState<boolean>(true);
-  const [manifestoStep, setManifestoStep] = useState<number>(0);
+  const [activeNav, setActiveNav] = useState<'harvest' | 'baskets' | 'farms' | 'coldchain' | 'trust'>('harvest');
+  const [activeSlide, setActiveSlide] = useState<number>(1);
+  const [tonnageIndex, setTonnageIndex] = useState<number>(0);
+  const tonnages = [120, 240, 360, 480];
 
   useEffect(() => {
     async function loadData() {
@@ -195,503 +116,461 @@ export const HomePage: React.FC = () => {
         const prodList = await productService.getProducts();
         setProducts(prodList);
       } catch (err) {
-        console.error('Failed to load home data', err);
+        console.error('Failed to load home products', err);
       }
     }
     loadData();
   }, []);
 
-  // Autoplay for Use-Case Carousel (Section 6.7 - WCAG User stoppable)
-  useEffect(() => {
-    if (!isSlidePlaying) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % USE_CASE_SLIDES.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [isSlidePlaying]);
-
-  const selectedExample = DEMO_EXAMPLES.find((e) => e.id === activeTab) || DEMO_EXAMPLES[0];
-
   return (
-    <div>
-      {/* ─── 1. Dayos Hero Section ─────────────────────────────────────────── */}
-      <section className="dayos-hero">
-        <div className="page-container">
-          <div className="hero-eyebrow-wrapper">
-            <div className="eyebrow">
-              <span className="eyebrow-dot" />
-              <span>Platform · Direct farm-to-table supply network</span>
-            </div>
-          </div>
+    <div className="xfarm-page-wrapper">
+      <div className="xfarm-master-card">
+        {/* ─── 1. Header Navigation ───────────────────────────────────────── */}
+        <header className="xfarm-header-nav">
+          <Link to="/" className="xfarm-brand-lockup">
+            <FruitBasketsLogoIcon size={34} color="#0F2E22" />
+            <span className="xfarm-brand-text">Fruit Baskets</span>
+          </Link>
 
-          <h1 className="dayos-hero-title">
-            DIRECT FROM THE SOIL.<br />
-            NOT PASSED THROUGH 5 MIDDLEMEN.
-          </h1>
-
-          <p className="dayos-hero-desc">
-            Connecting Maharashtra farmers directly with households, restaurants, and retail stores with guaranteed 24-hour harvest freshness and zero commission deductions.
-          </p>
-
-          <div className="dayos-proof-line">
-            <span>Harvested in &lt;18 hours</span>
-            <span>·</span>
-            <span>0% middleman commission</span>
-            <span>·</span>
-            <span>1,200+ verified growers</span>
-          </div>
-
-          <div className="dayos-hero-actions">
-            <Link to="/marketplace">
-              <Button variant="primary" size="lg">
-                Explore Marketplace <ArrowRight size={16} />
-              </Button>
+          {/* Center Floating Segmented Theme-Relatable Pill Nav */}
+          <nav className="xfarm-pill-nav" aria-label="Main Navigation">
+            <Link
+              to="/marketplace"
+              className={`xfarm-nav-link ${activeNav === 'harvest' ? 'active-lime' : ''}`}
+              onClick={() => setActiveNav('harvest')}
+            >
+              <Sprout size={15} />
+              <span>Fresh Harvest</span>
             </Link>
-            <Link to="/farmer/register" className="link-arrow">
-              <Tractor size={16} />
-              <span>Sell as Producer →</span>
+            <Link
+              to="/marketplace?category=fruits"
+              className={`xfarm-nav-link ${activeNav === 'baskets' ? 'active-lime' : ''}`}
+              onClick={() => setActiveNav('baskets')}
+            >
+              <ShoppingBag size={15} />
+              <span>Fruit Baskets</span>
             </Link>
+            <Link
+              to="/farmers"
+              className={`xfarm-nav-link ${activeNav === 'farms' ? 'active' : ''}`}
+              onClick={() => setActiveNav('farms')}
+            >
+              <Tractor size={15} />
+              <span>Verified Farms</span>
+            </Link>
+            <a
+              href="#cold-chain"
+              className={`xfarm-nav-link ${activeNav === 'coldchain' ? 'active' : ''}`}
+              onClick={() => setActiveNav('coldchain')}
+            >
+              <ThermometerSnowflake size={15} />
+              <span>24h Cold-Chain</span>
+            </a>
+            <Link
+              to="/platform"
+              className={`xfarm-nav-link ${activeNav === 'trust' ? 'active' : ''}`}
+              onClick={() => setActiveNav('trust')}
+            >
+              <ShieldCheck size={15} />
+              <span>7/12 Land Verified</span>
+            </Link>
+          </nav>
+
+          {/* Right Action CTA */}
+          <Link to="/marketplace" className="xfarm-header-cta">
+            <span>Order Farm Fresh</span>
+          </Link>
+        </header>
+
+        {/* ─── 2. Hero Headline: "What Is Our Success?" ────────────────────── */}
+        <div className="xfarm-hero-heading-row">
+          <h1 className="xfarm-main-title">What Is Our Success?</h1>
+          <Link to="/about" className="xfarm-learn-more-link">
+            <span>Learn More</span>
+            <span>⟶</span>
+          </Link>
+        </div>
+
+        {/* ─── 3. Two-Column Hero Showcase Grid ───────────────────────────── */}
+        <div className="xfarm-showcase-grid">
+          {/* ─── Column 1: Left Carrot Harvest Impact Card ────────────────── */}
+          <div className="xfarm-harvest-card">
+            {/* Top Text & Badges */}
+            <div className="xfarm-card-top-header">
+              <h2 className="xfarm-card-title">
+                New Opportunities For <br />
+                <span className="agricultural-pill">Agricultural</span> Production
+              </h2>
+
+              <div className="xfarm-floating-tags-col">
+                <div className="xfarm-pill-badge">
+                  <span className="xfarm-mini-thumb">🌱</span>
+                  <span>Direct Farmgate · 2026</span>
+                </div>
+              </div>
+            </div>
+
+            {/* High-Resolution Carrots Background Image */}
+            <img
+              src="/images/carrots_harvest.jpg"
+              alt="Fresh organic carrot harvest"
+              className="xfarm-harvest-img-bg"
+              loading="eager"
+            />
+            {/* Seamless Luxury Scrim Overlay */}
+            <div className="xfarm-harvest-scrim" />
+
+            {/* Bottom Row: Metric Card & Controls */}
+            <div className="xfarm-bottom-metric-row">
+              <div className="xfarm-metric-card-white">
+                <div className="xfarm-metric-kicker-row">
+                  <span className="xfarm-live-dot" />
+                  <span className="xfarm-metric-kicker-text">Live Farmgate Volume</span>
+                </div>
+
+                <div className="xfarm-metric-value-row">
+                  <span className="xfarm-metric-num">{tonnages[tonnageIndex]}</span>
+                  <span className="xfarm-metric-unit">tons / mo</span>
+                </div>
+
+                <div className="xfarm-metric-progress-track">
+                  <div className="xfarm-metric-progress-fill" style={{ width: '84%' }} />
+                </div>
+
+                <p className="xfarm-metric-desc">
+                  Direct farmgate yields dispatched to verified regional fruit baskets
+                </p>
+              </div>
+
+              {/* Unified Floating Action Controls */}
+              <div className="xfarm-floating-actions">
+                <Link
+                  to="/marketplace"
+                  className="xfarm-hero-explore-btn"
+                  title="Explore Fresh Produce"
+                >
+                  <span>Explore Produce</span>
+                  <ArrowRight size={15} />
+                </Link>
+
+                <a
+                  href="#bento-ecosystem"
+                  className="xfarm-hero-scroll-btn"
+                  title="Scroll to Ecosystem"
+                  aria-label="Scroll Down"
+                >
+                  <ArrowDown size={16} />
+                </a>
+              </div>
+            </div>
           </div>
 
-          {/* ─── 2. Hero Interactive Demo Player (Section 6.3) ─────────────── */}
-          <div className="hero-player-container">
-            <div className="player-top-bar">
-              <div className="player-label">
-                <span className="eyebrow-dot" />
-                <span>{selectedExample.location}</span>
-              </div>
-              <div className="player-controls">
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="player-btn"
-                  aria-label={isPlaying ? 'Pause Demo' : 'Play Demo'}
-                >
-                  {isPlaying ? <Pause size={12} /> : <Play size={12} />}
-                  <span>{isPlaying ? 'Pause' : 'Play'}</span>
-                </button>
-                <button
-                  onClick={() => setPlaybackSpeed(playbackSpeed === 1.0 ? 1.5 : 1.0)}
-                  className={`player-btn ${playbackSpeed === 1.5 ? 'active' : ''}`}
-                  aria-label="Toggle 1.5x Playback"
-                >
-                  <span>{playbackSpeed}×</span>
-                </button>
-              </div>
-            </div>
+          {/* ─── Column 2: Right Lime Card with Smartphone Mockup ─────────── */}
+          <div className="xfarm-innovation-card">
+            <div className="xfarm-polka-bg" />
 
-            <div className="player-screen">
-              <div className="player-grid-simulation">
-                <div className="player-metric-card">
-                  <div className="player-metric-val flex-row items-center gap-2">
-                    <Clock size={20} />
-                    <span>{selectedExample.metric1.value}</span>
-                  </div>
-                  <div className="player-metric-lbl">{selectedExample.metric1.label}</div>
+            <div className="xfarm-phone-frame">
+              {/* Speaker Notch */}
+              <div className="xfarm-phone-notch" />
+
+              <h3 className="xfarm-phone-header-title">
+                Innovations In<br />Vertical Farming!
+              </h3>
+
+              {/* Segmented slider track with play arrow */}
+              <div className="xfarm-phone-slider-track">
+                <span
+                  onClick={() => setActiveSlide(0)}
+                  className={`xfarm-slider-dash ${activeSlide === 0 ? 'active' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
+                <span
+                  onClick={() => setActiveSlide(1)}
+                  className={`xfarm-slider-dash ${activeSlide === 1 ? 'active' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
+                <div className="xfarm-slider-play-arrow">
+                  <Play size={10} fill="#B8D72E" color="#B8D72E" />
                 </div>
-
-                <div className="player-metric-card">
-                  <div className="player-metric-val flex-row items-center gap-2">
-                    <Coins size={20} />
-                    <span>{selectedExample.metric2.value}</span>
-                  </div>
-                  <div className="player-metric-lbl">{selectedExample.metric2.label}</div>
-                </div>
-
-                <div className="player-metric-card">
-                  <div className="player-metric-val flex-row items-center gap-2">
-                    <ThermometerSnowflake size={20} />
-                    <span>{selectedExample.metric3.value}</span>
-                  </div>
-                  <div className="player-metric-lbl">{selectedExample.metric3.label}</div>
-                </div>
+                <span
+                  onClick={() => setActiveSlide(2)}
+                  className={`xfarm-slider-dash ${activeSlide === 2 ? 'active' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
+                <span
+                  onClick={() => setActiveSlide(3)}
+                  className={`xfarm-slider-dash ${activeSlide === 3 ? 'active' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
               </div>
-            </div>
 
-            <div className="player-caption-bar">
-              <span>{selectedExample.caption}</span>
-              <span className="badge badge-popular" style={{ fontSize: '0.6875rem' }}>
-                Live Corridor
-              </span>
+              {/* Two Vertical Feature Cards with Transparent Food Pics */}
+              <div className="xfarm-phone-dual-cards">
+                {/* Card 1: Periwinkle Sky Blue with Transparent Potato Chaat Bowl */}
+                <Link to="/marketplace" className="xfarm-mini-feature-card sky">
+                  <h4 className="xfarm-mini-card-headline">
+                    Farm-to-Table<br />Pure Delights
+                  </h4>
+
+                  <div className="xfarm-mini-card-img-wrap transparent-bg">
+                    <img
+                      src="/images/foody/potato_bowl.png"
+                      alt="Artisanal Potato Chaat Bowl"
+                      className="xfarm-mini-card-food-img"
+                    />
+                    <span className="xfarm-mini-pill-btn">
+                      <span>Explore</span>
+                      <span style={{ fontSize: '7px' }}>•</span>
+                    </span>
+                  </div>
+
+                  <p className="xfarm-mini-card-footer-text">
+                    Pure Spices & Fresh Roots
+                  </p>
+                </Link>
+
+                {/* Card 2: Deep Pine Forest Green with Transparent Vegetable Biryani */}
+                <Link to="/marketplace" className="xfarm-mini-feature-card forest">
+                  <h4 className="xfarm-mini-card-headline light">
+                    Wood-Fired<br />Pure Harvest
+                  </h4>
+
+                  <div className="xfarm-mini-card-img-wrap transparent-bg">
+                    <img
+                      src="/images/foody/veggie_biryani.png"
+                      alt="Antique Copper Bowl of Vegetable Biryani"
+                      className="xfarm-mini-card-food-img"
+                    />
+                    <span className="xfarm-mini-pill-btn">
+                      <span>More</span>
+                      <span style={{ fontSize: '7px' }}>•</span>
+                    </span>
+                  </div>
+
+                  <p className="xfarm-mini-card-footer-text" style={{ color: '#E0F2E9' }}>
+                    100% Farm-Direct Grains
+                  </p>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* ─── 3. Demo Example Tabs (Section 6.4) ─────────────────────────────── */}
-      <section className="demo-tabs-section">
-        <div className="page-container">
-          <div className="demo-tabs-list" role="tablist" aria-label="Demo showcases">
-            {DEMO_EXAMPLES.map((example) => {
-              const isActive = example.id === activeTab;
+        {/* ─── 4. Brand Ecosystem Bento Grid ──────────────────────────────── */}
+        <section id="bento-ecosystem" className="xfarm-bento-section">
+          <div className="xfarm-section-header">
+            <div>
+              <span className="xfarm-section-eyebrow">Design System & Philosophy</span>
+              <h2 className="xfarm-section-title">From The Field To The Sky</h2>
+            </div>
+            <Link to="/marketplace" className="xfarm-learn-more-link">
+              <span>View All Produce</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="xfarm-bento-grid">
+            {/* Tile 1: Giant Lime Banner Card */}
+            <div className="xfarm-bento-lime-banner">
+              <div className="xfarm-lime-brand-top">
+                <FruitBasketsLogoIcon size={46} color="#0F2E22" />
+                <div>
+                  <h3 className="xfarm-lime-brand-title">Fruit Baskets</h3>
+                  <div className="xfarm-lime-brand-sub">pure farmgate produce</div>
+                </div>
+              </div>
+
+              <div className="xfarm-lime-banner-footer">
+                <div className="xfarm-font-specimen">
+                  <span>ABC</span>
+                  <span className="xfarm-specimen-pill">Mazzard Light</span>
+                </div>
+                <span className="xfarm-sprouts-tagline">seed sprout + citrus slices</span>
+              </div>
+            </div>
+
+            {/* Tile 2: Transparent Food Spotlight: Matar Paneer */}
+            <div className="xfarm-bento-food-spotlight">
+              <img
+                src="/images/foody/matar_paneer.png"
+                alt="Matar Paneer in Ornate Copper Bowl"
+                className="xfarm-floating-food-img"
+                loading="lazy"
+              />
+              <div>
+                <h4 className="xfarm-food-spotlight-title">Matar Paneer Curry</h4>
+                <p style={{ margin: 0, fontSize: '0.8125rem', color: '#536F61' }}>
+                  Farm cottage cheese & sweet peas in &lt; 18h
+                </p>
+              </div>
+            </div>
+
+            {/* Tile 3: Stacked Cards with Slogan Pill */}
+            <div className="xfarm-bento-field-card">
+              <div className="xfarm-scattered-cards-bg">
+                <div className="xfarm-scatter-card blue">
+                  <span style={{ fontSize: '0.625rem', opacity: 0.7 }}>DIRECT</span>
+                  <div style={{ marginTop: '16px' }}>Fruit Baskets</div>
+                </div>
+                <div className="xfarm-scatter-card forest">
+                  <FruitBasketsLogoIcon size={20} color="#FFFFFF" />
+                  <div style={{ marginTop: '14px', fontSize: '0.625rem' }}>100% Farmgate</div>
+                </div>
+                <div className="xfarm-scatter-card forest-alt">
+                  <span style={{ fontSize: '0.625rem', opacity: 0.8 }}>ZERO MIDDLEMEN</span>
+                </div>
+              </div>
+              <div className="xfarm-floating-slogan-pill">
+                From the field to your table!
+              </div>
+            </div>
+
+            {/* Tile 4: Transparent Chaat Bowl Spotlight */}
+            <div className="xfarm-bento-chaat-card">
+              <img
+                src="/images/foody/potato_bowl.png"
+                alt="Vibrant Garnished Potato Chaat Bowl"
+                className="xfarm-floating-food-img"
+                style={{ maxHeight: '110px' }}
+                loading="lazy"
+              />
+              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '1rem', marginTop: '8px' }}>
+                Artisanal Chaat Bowl
+              </h4>
+            </div>
+
+            {/* Tile 5: 75 Tons Deep Forest Card */}
+            <div className="xfarm-bento-forest-card">
+              <div className="xfarm-forest-top-row">
+                <p className="xfarm-forest-sub">
+                  direct farmgate harvest dispatched monthly
+                </p>
+                <FruitBasketsLogoIcon size={26} color="rgba(255, 255, 255, 0.7)" />
+              </div>
+              <div className="xfarm-forest-num-row">
+                <span className="xfarm-forest-huge-num">75</span>
+                <span className="xfarm-forest-huge-unit">tons</span>
+              </div>
+            </div>
+
+            {/* Tile 6: Blueprint Construction Card */}
+            <div className="xfarm-bento-blueprint-card">
+              <div className="xfarm-blueprint-grid">
+                <FruitBasketsLogoIcon size={38} color="#FFFFFF" />
+                <span className="xfarm-blueprint-text">Fruit Baskets</span>
+              </div>
+            </div>
+
+            {/* Tile 7: Transparent Terracotta Rasgulla Card */}
+            <div className="xfarm-bento-rasgulla-card">
+              <img
+                src="/images/foody/terracotta_rasgulla.png"
+                alt="Terracotta Bowl of Garnished Rasgulla"
+                className="xfarm-floating-food-img"
+                style={{ maxHeight: '95px' }}
+                loading="lazy"
+              />
+              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '0.9375rem', marginTop: '6px' }}>
+                Terracotta Rasgulla
+              </h4>
+            </div>
+
+            {/* Tile 8: Transparent Food Spotlight: Heritage Biryani Feast */}
+            <Link to="/marketplace" className="xfarm-bento-feast-card">
+              <div className="xfarm-feast-text-col">
+                <h4 className="xfarm-feast-title">Vegetable Biryani</h4>
+                <p className="xfarm-feast-desc">
+                  Farm vegetables, saffron &amp; heritage basmati
+                </p>
+                <span className="xfarm-feast-link">
+                  <span>Explore Dish</span>
+                  <ArrowRight size={13} />
+                </span>
+              </div>
+              <div className="xfarm-feast-img-wrap">
+                <img
+                  src="/images/foody/veggie_biryani.png"
+                  alt="Antique Copper Bowl of Vegetable Biryani"
+                  className="xfarm-floating-feast-img"
+                  loading="lazy"
+                />
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* ─── 5. Featured Fresh Crops Catalog Strip ───────────────────────── */}
+        <section className="xfarm-produce-section">
+          <div className="xfarm-section-header">
+            <div>
+              <span className="xfarm-section-eyebrow">Direct Farmgate Sourcing</span>
+              <h2 className="xfarm-section-title">Fresh Harvest Ready For Dispatch</h2>
+            </div>
+            <Link to="/marketplace" className="xfarm-learn-more-link">
+              <span>Open Catalog</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="xfarm-produce-grid">
+            {products.slice(0, 6).map((product) => {
+              const curation = PRODUCE_CURATION[product.id] || {
+                origin: 'Verified Regional Farm',
+                desc: product.description || 'Pure farmgate produce directly from verified growers.',
+                image: product.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=80',
+              };
+
               return (
-                <button
-                  key={example.id}
-                  role="tab"
-                  aria-selected={isActive}
-                  className={`demo-tab-btn ${isActive ? 'active' : ''}`}
-                  onClick={() => setActiveTab(example.id)}
+                <Link
+                  key={product.id}
+                  to={`/product/${product.slug || product.id}`}
+                  className="xfarm-produce-card"
                 >
-                  <span>{example.category}</span>
-                  <span className="demo-tab-badge">{example.title}</span>
-                </button>
+                  <div className="xfarm-produce-img-wrap">
+                    <img
+                      src={curation.image}
+                      alt={product.name}
+                      className="xfarm-produce-img"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h4 className="xfarm-produce-name">{product.name}</h4>
+                  <p className="xfarm-produce-meta">
+                    <span className="xfarm-produce-price">₹{Math.round(product.price_paise / 100)}</span>
+                    <span className="xfarm-produce-unit">/ {product.unit || 'kg'}</span>
+                    <span className="xfarm-produce-dot">·</span>
+                    <span>{curation.origin}</span>
+                  </p>
+                </Link>
               );
             })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ─── 4. Partnered With Strip (Section 6.8 & 4) ──────────────────────── */}
-      <section className="partner-strip">
-        <div className="page-container">
-          <div className="partner-strip-title">
-            Integrated With Regional Agri-Infrastructure & Verified FPO Networks
-          </div>
-          <div className="partner-logo-row">
-            <span className="partner-badge">Sahyadri Farms FPO</span>
-            <span className="partner-badge">MahaFPO Federation</span>
-            <span className="partner-badge">NABARD AgriTech</span>
-            <span className="partner-badge">Nashik APMC Gateway</span>
-            <span className="partner-badge">Pune ColdGrid Hub</span>
-            <span className="partner-badge">Mahabhulekh 7/12 Direct</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 5. Triptych: DIRECT. / TRANSPARENT. / FRESH. (Section 6.5) ────── */}
-      <section className="triptych-section">
-        <div className="page-container">
-          <div className="triptych-grid">
-            <div className="triptych-card">
-              <div>
-                <div className="triptych-title">DIRECT.</div>
-                <p className="triptych-body">
-                  Bypass speculative commission agents and multi-tier traders. Connect directly with authentic growers verified through official 7/12 land records.
-                </p>
-              </div>
-              <div className="triptych-footer">
-                <CheckCircle2 size={14} />
-                <span>Zero Intermediary Exploitation</span>
-              </div>
-            </div>
-
-            <div className="triptych-card">
-              <div>
-                <div className="triptych-title">FAIR.</div>
-                <p className="triptych-body">
-                  Every rupee paid goes straight into the farmer's bank account via instant UPI. Integer-paise financial precision with zero hidden deductions.
-                </p>
-              </div>
-              <div className="triptych-footer">
-                <Coins size={14} />
-                <span>100% Farmgate Value Retention</span>
-              </div>
-            </div>
-
-            <div className="triptych-card">
-              <div>
-                <div className="triptych-title">FRESH.</div>
-                <p className="triptych-body">
-                  Produce is harvested only upon confirmed demand and routed through active cold-chain logistics in under 24 hours, not weeks on mandi floors.
-                </p>
-              </div>
-              <div className="triptych-footer">
-                <Truck size={14} />
-                <span>Harvest to Door in &lt; 24 Hrs</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 6. Manifesto Block + Looping Flywheel Film (Section 6.6) ──────── */}
-      <section className="manifesto-section">
-        <div className="page-container">
-          <div className="manifesto-grid">
-            <div>
-              <h2 className="heading-2 mb-6">
-                WE'RE REVOLUTIONIZING THE FRESH PRODUCE CORRIDOR.
-              </h2>
-              <div className="manifesto-statements">
-                <div
-                  className={`manifesto-item ${manifestoStep === 0 ? 'active' : ''}`}
-                  onClick={() => setManifestoStep(0)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="manifesto-number">01 / THE BREAKDOWN</div>
-                  <div className="manifesto-text">
-                    Traditional wholesale mandi chains lose 35% of harvest value to transit decay and multi-stage handling before reaching city consumers.
-                  </div>
-                </div>
-
-                <div
-                  className={`manifesto-item ${manifestoStep === 1 ? 'active' : ''}`}
-                  onClick={() => setManifestoStep(1)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="manifesto-number">02 / THE GAP</div>
-                  <div className="manifesto-text">
-                    Intermediate cartels inflate retail prices by 250% while growers receive pennies and households get week-old wilted vegetables.
-                  </div>
-                </div>
-
-                <div
-                  className={`manifesto-item ${manifestoStep === 2 ? 'active' : ''}`}
-                  onClick={() => setManifestoStep(2)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="manifesto-number">03 / THE SOLUTION</div>
-                  <div className="manifesto-text">
-                    FarmDirect replaces speculation with direct algorithmic logistics, dynamic harvest pooling, and certified farmgate origin.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flywheel-card">
-              <div className="flywheel-orb">
-                <Sparkles size={36} style={{ color: 'var(--accent)' }} />
-              </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff', marginBottom: 6 }}>
-                Direct Farm Flywheel
-              </div>
-              <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', maxWidth: 280 }}>
-                Fair prices empower growers → higher yield quality → freshest food for households at lower cost.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 7. Use-Case Carousel (Section 6.7) ─────────────────────────────── */}
-      <section className="carousel-section">
-        <div className="page-container">
-          <div className="carousel-header">
-            <div>
-              <h2 className="heading-2">SUPERCHARGE YOUR FRESH SUPPLY.</h2>
-              <p className="text-lead" style={{ marginTop: 8 }}>
-                Engineered for households, commercial kitchens, and regional FPO aggregators.
-              </p>
-            </div>
-            <div className="carousel-controls">
-              <button
-                onClick={() => setIsSlidePlaying(!isSlidePlaying)}
-                className="btn btn-pill-soft btn-sm"
-                aria-label={isSlidePlaying ? 'Pause autoplay' : 'Start autoplay'}
-              >
-                {isSlidePlaying ? <Pause size={12} /> : <Play size={12} />}
-                <span>{isSlidePlaying ? 'Pause' : 'Autoplay'}</span>
-              </button>
-              <button
-                onClick={() => setCurrentSlide((prev) => (prev === 0 ? USE_CASE_SLIDES.length - 1 : prev - 1))}
-                className="btn btn-pill-soft btn-sm"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft size={14} />
-              </button>
-              <button
-                onClick={() => setCurrentSlide((prev) => (prev + 1) % USE_CASE_SLIDES.length)}
-                className="btn btn-pill-soft btn-sm"
-                aria-label="Next slide"
-              >
-                <ChevronRight size={14} />
-              </button>
-            </div>
-          </div>
-
-          <div className="carousel-card">
-            <div className="flex-row items-center justify-between">
-              <span className="eyebrow">
-                <span className="eyebrow-dot" />
-                <span>{USE_CASE_SLIDES[currentSlide].subtitle}</span>
-              </span>
-              <div className="flex-row gap-2">
-                {USE_CASE_SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    className={`carousel-dot ${idx === currentSlide ? 'active' : ''}`}
-                    onClick={() => setCurrentSlide(idx)}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <h3 className="heading-2" style={{ textTransform: 'none', fontSize: '1.75rem' }}>
-              {USE_CASE_SLIDES[currentSlide].title}
+        {/* ─── 6. Master CTA Band ─────────────────────────────────────────── */}
+        <section className="xfarm-master-cta-band">
+          <div>
+            <h3 className="xfarm-cta-band-title">
+              Experience Pure Farmgate Produce.
             </h3>
-
-            <p style={{ fontSize: '1.0625rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-              {USE_CASE_SLIDES[currentSlide].description}
+            <p className="xfarm-cta-band-desc">
+              Direct from verified growers with zero middlemen, algorithmic cold-chain routing, and 100% direct UPI settlement.
             </p>
-
-            <div className="flex-row items-center justify-between mt-4 flex-wrap gap-3">
-              <span className="badge badge-accent" style={{ fontSize: '0.8125rem' }}>
-                {USE_CASE_SLIDES[currentSlide].metrics}
-              </span>
-              <Link to="/marketplace" className="link-arrow">
-                <span>{USE_CASE_SLIDES[currentSlide].linkText}</span>
-              </Link>
-            </div>
           </div>
-        </div>
-      </section>
 
-      {/* ─── 8. Infinite Logo Marquee (Section 6.8) ─────────────────────────── */}
-      <section style={{ padding: 'var(--space-xl) 0', borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
-        <div className="page-container" style={{ textAlign: 'center', marginBottom: 'var(--space-md)' }}>
-          <h2 className="heading-3" style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-muted)' }}>
-            FINALLY, SUPPLY INFRASTRUCTURE THAT UNDERSTANDS INDIAN AGRICULTURE
-          </h2>
-        </div>
-        <div className="marquee-container">
-          <div className="marquee-content">
-            <span className="partner-badge">Nashik APMC Hub</span>
-            <span className="partner-badge">Sahyadri Farmers FPO</span>
-            <span className="partner-badge">Pune ColdGrid Reefer</span>
-            <span className="partner-badge">Mahabhulekh 7/12 Land Registry</span>
-            <span className="partner-badge">NPCI / UPI Instant Payout</span>
-            <span className="partner-badge">FSSAI Certified Hubs</span>
-            <span className="partner-badge">PGS-India Organic</span>
-            <span className="partner-badge">NPOP India Export Standard</span>
-            {/* Duplicate for seamless infinite loop */}
-            <span className="partner-badge">Nashik APMC Hub</span>
-            <span className="partner-badge">Sahyadri Farmers FPO</span>
-            <span className="partner-badge">Pune ColdGrid Reefer</span>
-            <span className="partner-badge">Mahabhulekh 7/12 Land Registry</span>
-            <span className="partner-badge">NPCI / UPI Instant Payout</span>
-            <span className="partner-badge">FSSAI Certified Hubs</span>
-            <span className="partner-badge">PGS-India Organic</span>
-            <span className="partner-badge">NPOP India Export Standard</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 9. Department Image Carousel (Square 1:1 Aspect Ratio) ─────────── */}
-      <section className="department-section">
-        <div className="page-container">
-          <div className="flex-row items-center justify-between mb-8 flex-wrap gap-4">
-            <div>
-              <h2 className="heading-2">RUN A BETTER BUSINESS.</h2>
-              <p className="text-lead" style={{ marginTop: 4 }}>
-                Explore authentic farm supply categories sourced straight from regional growers.
-              </p>
-            </div>
-            <Link to="/marketplace">
-              <Button variant="outline" size="sm">
-                View All Categories <ArrowRight size={14} />
-              </Button>
+          <div className="xfarm-cta-band-buttons">
+            <Link to="/marketplace" className="xfarm-btn-lime">
+              <span>Explore Marketplace</span>
+              <ArrowRight size={16} />
             </Link>
-          </div>
-
-          <div className="department-grid">
-            {DEPARTMENTS.map((dep) => (
-              <Link
-                key={dep.id}
-                to={`/marketplace?category=${dep.categoryParam}`}
-                className="department-card"
-              >
-                <div className="department-image-frame aspect-square">
-                  <span>{dep.emoji}</span>
-                </div>
-                <div className="department-info">
-                  <div className="department-title">{dep.title}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 500 }}>
-                    {dep.titleNative}
-                  </div>
-                  <p className="department-desc">{dep.description}</p>
-                  <div className="link-arrow" style={{ fontSize: '0.8125rem' }}>
-                    <span>More details →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 10. Department List Version (Section 6.10) ─────────────────────── */}
-      <section className="department-list-section">
-        <div className="page-container">
-          <div className="department-list-row">
-            {DEPARTMENTS.map((dep) => (
-              <Link
-                key={dep.id}
-                to={`/marketplace?category=${dep.categoryParam}`}
-                className="department-list-item"
-              >
-                <div className="flex-row items-center gap-3">
-                  <span style={{ fontSize: '1.25rem' }}>{dep.emoji}</span>
-                  <div>
-                    <span className="department-title">{dep.title}</span>
-                    <span className="text-caption ml-2" style={{ marginLeft: 8 }}>
-                      ({dep.titleNative})
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-row items-center gap-4">
-                  <span className="text-caption" style={{ display: 'none' }} id={`spec-${dep.id}`}>
-                    {dep.spec}
-                  </span>
-                  <span className="link-arrow">More details →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Live Today's Harvests Grid ────────────────────────────────────── */}
-      {products.length > 0 && (
-        <section style={{ padding: 'var(--space-section) 0', borderTop: '1px solid var(--border-subtle)' }}>
-          <div className="page-container">
-            <div className="flex-row items-center justify-between mb-8 flex-wrap gap-4">
-              <div>
-                <h2 className="heading-2">TODAY'S VERIFIED HARVESTS</h2>
-                <p className="text-lead" style={{ marginTop: 4 }}>
-                  Real inventory dispatched straight from local farms with active temperature tracking.
-                </p>
-              </div>
-              <Link to="/marketplace">
-                <Button variant="outline" size="sm">
-                  View Full Catalog ({products.length} items) <ArrowRight size={14} />
-                </Button>
-              </Link>
-            </div>
-
-            <div className="grid-products">
-              {products.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <Link to="/farmer/register" className="xfarm-btn-outline-white">
+              <span>Sell as Producer</span>
+            </Link>
           </div>
         </section>
-      )}
-
-      {/* ─── 11. CTA Band (Section 6.10 & 2) ─────────────────────────────────── */}
-      <div className="page-container">
-        <div className="dayos-cta-band">
-          <div>
-            <h2 className="cta-band-title">
-              LET'S TRANSFORM THE WAY FRESH PRODUCE REACHES YOUR DOOR.
-            </h2>
-            <p className="cta-band-desc">
-              Book a supply walkthrough to see our direct sourcing in action, or join 1,200+ local growers and start ordering today.
-            </p>
-          </div>
-          <div className="cta-band-actions">
-            <Link to="/marketplace">
-              <Button variant="primary" size="lg">
-                Explore Marketplace <ArrowRight size={16} />
-              </Button>
-            </Link>
-            <Link to="/about">
-              <Button variant="outline" size="lg">
-                About Our Infrastructure →
-              </Button>
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
+
+export default HomePage;

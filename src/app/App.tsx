@@ -34,6 +34,7 @@ const AppLayout: React.FC = () => {
   }
 
   const isMarketingPage =
+    location.pathname === '/' ||
     location.pathname === '/about' ||
     location.pathname === '/terms' ||
     location.pathname === '/privacy' ||
