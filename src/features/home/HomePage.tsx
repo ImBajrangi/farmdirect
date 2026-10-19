@@ -10,10 +10,7 @@ import {
   ArrowDown,
   Play,
   Pause,
-  Plus,
-  Minus,
 } from 'lucide-react';
-import { useCart } from '../cart/CartContext';
 import { productService } from '../products/product.service';
 import { Product } from '../products/product.types';
 import './home.css';
@@ -200,7 +197,6 @@ const VERTICAL_FARMING_SLIDES: VerticalFarmingSlide[] = [
 ];
 
 export const HomePage: React.FC = () => {
-  const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [activeNav, setActiveNav] = useState<'harvest' | 'baskets' | 'farms' | 'coldchain' | 'trust'>('harvest');
   const [activeSlide, setActiveSlide] = useState<number>(0);
@@ -703,83 +699,35 @@ export const HomePage: React.FC = () => {
                 fallbackImage: '/images/bell_peppers.png',
               };
 
-              const qty = getItemQuantity(product.id);
-
               return (
-                <div
+                <Link
                   key={product.id}
+                  to={`/product/${product.slug || product.id}`}
                   className="xfarm-produce-card"
                 >
-                  <Link
-                    to={`/product/${product.slug || product.id}`}
-                    style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
-                  >
-                    <div className="xfarm-produce-img-wrap">
-                      <img
-                        src={curation.image}
-                        alt={product.name}
-                        className="xfarm-produce-img"
-                        loading="eager"
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          const fallback = curation.fallbackImage || '/images/bell_peppers.png';
-                          if (!target.src.endsWith(fallback)) {
-                            target.src = fallback;
-                          }
-                        }}
-                      />
-                    </div>
-                    <h4 className="xfarm-produce-name">{product.name}</h4>
-                    <p className="xfarm-produce-meta">
-                      <span className="xfarm-produce-price">₹{Math.round(product.price_paise / 100)}</span>
-                      <span className="xfarm-produce-unit">/ {product.unit || 'kg'}</span>
-                      <span className="xfarm-produce-dot">·</span>
-                      <span>{curation.origin}</span>
-                    </p>
-                  </Link>
-
-                  <div className="xfarm-produce-action-row">
-                    {qty === 0 ? (
-                      <button
-                        type="button"
-                        className="xfarm-quick-add-pill"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          addToCart(product, 1);
-                        }}
-                        aria-label={`Add ${product.name} to cart`}
-                      >
-                        <Plus size={13} />
-                        <span>Add</span>
-                      </button>
-                    ) : (
-                      <div
-                        className="xfarm-quick-stepper"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, qty - 1)}
-                          aria-label={`Decrease quantity of ${product.name}`}
-                        >
-                          <Minus size={11} />
-                        </button>
-                        <span>{qty}</span>
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, qty + 1)}
-                          aria-label={`Increase quantity of ${product.name}`}
-                        >
-                          <Plus size={11} />
-                        </button>
-                      </div>
-                    )}
+                  <div className="xfarm-produce-img-wrap">
+                    <img
+                      src={curation.image}
+                      alt={product.name}
+                      className="xfarm-produce-img"
+                      loading="eager"
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        const fallback = curation.fallbackImage || '/images/bell_peppers.png';
+                        if (!target.src.endsWith(fallback)) {
+                          target.src = fallback;
+                        }
+                      }}
+                    />
                   </div>
-                </div>
+                  <h4 className="xfarm-produce-name">{product.name}</h4>
+                  <p className="xfarm-produce-meta">
+                    <span className="xfarm-produce-price">₹{Math.round(product.price_paise / 100)}</span>
+                    <span className="xfarm-produce-unit">/ {product.unit || 'kg'}</span>
+                    <span className="xfarm-produce-dot">·</span>
+                    <span>{curation.origin}</span>
+                  </p>
+                </Link>
               );
             })}
           </div>

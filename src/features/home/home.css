@@ -1423,77 +1423,6 @@
   opacity: 0.5;
 }
 
-.xfarm-produce-action-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.xfarm-quick-add-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  background-color: var(--xfarm-forest, #006044);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 9999px;
-  padding: 6px 16px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 6px rgba(0, 96, 68, 0.18);
-}
-
-.xfarm-quick-add-pill:hover {
-  background-color: var(--xfarm-forest-dark, #004330);
-  transform: translateY(-1px);
-}
-
-.xfarm-quick-add-pill:active {
-  transform: scale(0.96);
-}
-
-.xfarm-quick-stepper {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--xfarm-forest, #006044);
-  color: #FFFFFF;
-  border-radius: 9999px;
-  padding: 4px 10px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 96, 68, 0.18);
-}
-
-.xfarm-quick-stepper button {
-  background: transparent;
-  border: none;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  padding: 0;
-  transition: background-color 0.12s ease;
-}
-
-.xfarm-quick-stepper button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.xfarm-quick-stepper span {
-  min-width: 16px;
-  text-align: center;
-}
-
 /* ─── Bottom CTA Band ────────────────────────────────────────────────────── */
 .xfarm-master-cta-band {
   margin-top: 56px;
@@ -1963,29 +1892,6 @@
 
   .xfarm-produce-price {
     font-size: 0.95rem;
-  }
-
-  .xfarm-produce-action-row {
-    margin-top: 6px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .xfarm-quick-add-pill {
-    width: 100%;
-    padding: 6px 10px;
-    font-size: 0.75rem;
-    border-radius: 10px;
-  }
-
-  .xfarm-quick-stepper {
-    width: 100%;
-    justify-content: space-between;
-    padding: 4px 6px;
-    font-size: 0.75rem;
-    border-radius: 10px;
   }
 
   .xfarm-phone-notch {
