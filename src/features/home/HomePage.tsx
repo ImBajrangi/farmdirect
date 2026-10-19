@@ -9,6 +9,7 @@ import {
   ArrowRight,
   ArrowDown,
   Play,
+  Pause,
 } from 'lucide-react';
 import { productService } from '../products/product.service';
 import { Product } from '../products/product.types';
@@ -103,12 +104,108 @@ const PRODUCE_CURATION: Record<string, ProduceCurationItem> = {
   },
 };
 
+interface SlideCard {
+  title: string;
+  image: string;
+  alt: string;
+  footer: string;
+  themeClass: 'sky' | 'forest';
+}
+
+interface VerticalFarmingSlide {
+  kicker: string;
+  card1: SlideCard;
+  card2: SlideCard;
+}
+
+const VERTICAL_FARMING_SLIDES: VerticalFarmingSlide[] = [
+  {
+    kicker: 'Section 01 · Micro-Farming',
+    card1: {
+      title: 'Nutrient-Dense\nMicrogreens',
+      image: '/images/microgreens.png',
+      alt: 'Living Root Organic Microgreens',
+      footer: 'Living roots · Harvested daily',
+      themeClass: 'sky',
+    },
+    card2: {
+      title: 'Aeroponic\nStrawberries',
+      image: '/images/strawberries.png',
+      alt: 'Aeroponic Red Strawberries',
+      footer: 'Mist-grown · Sweet sun-ripened',
+      themeClass: 'forest',
+    },
+  },
+  {
+    kicker: 'Section 02 · Hydroponic Greens',
+    card1: {
+      title: 'Hydroponic\nGreens',
+      image: '/images/hydroponic_greens.png',
+      alt: 'Fresh Hydroponic Leafy Greens',
+      footer: 'Soil-free · 95% less water',
+      themeClass: 'sky',
+    },
+    card2: {
+      title: 'Vine-Ripened\nCrops',
+      image: '/images/vine_tomatoes.png',
+      alt: 'Vine-Ripened Farm Tomatoes',
+      footer: 'Zero pesticide · Natural sun',
+      themeClass: 'forest',
+    },
+  },
+  {
+    kicker: 'Section 03 · Climate-Controlled Herbs',
+    card1: {
+      title: 'Dutch Sweet\nBell Peppers',
+      image: '/images/bell_peppers.png',
+      alt: 'Dutch Sweet Bell Peppers',
+      footer: 'Zero residue · Crisp & sweet',
+      themeClass: 'forest',
+    },
+    card2: {
+      title: 'Aromatic Herb\nClusters',
+      image: '/images/aromatic_basil.png',
+      alt: 'Fresh Italian Sweet Basil',
+      footer: 'Pure sweet basil · High aroma',
+      themeClass: 'sky',
+    },
+  },
+  {
+    kicker: 'Section 04 · Orchard & Field Fresh',
+    card1: {
+      title: 'Field Crisp\nAsparagus',
+      image: '/images/fresh_asparagus.png',
+      alt: 'Crisp Green Asparagus Spears',
+      footer: 'Morning cut · <18h delivery',
+      themeClass: 'sky',
+    },
+    card2: {
+      title: 'Royal Orchard\nApples',
+      image: '/images/fresh_apples.png',
+      alt: 'Royal Crisp Orchard Apples',
+      footer: 'Direct orchard · Wax-free crisp',
+      themeClass: 'forest',
+    },
+  },
+];
+
 export const HomePage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [activeNav, setActiveNav] = useState<'harvest' | 'baskets' | 'farms' | 'coldchain' | 'trust'>('harvest');
-  const [activeSlide, setActiveSlide] = useState<number>(1);
+  const [activeSlide, setActiveSlide] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [tonnageIndex, setTonnageIndex] = useState<number>(0);
   const tonnages = [120, 240, 360, 480];
+
+  // Auto-advance vertical farming carousel every 3.8s when playing and not hovered
+  useEffect(() => {
+    if (!isPlaying || isHovered) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % VERTICAL_FARMING_SLIDES.length);
+    }, 3800);
+    return () => clearInterval(timer);
+  }, [isPlaying, isHovered]);
 
   useEffect(() => {
     async function loadData() {
@@ -121,6 +218,8 @@ export const HomePage: React.FC = () => {
     }
     loadData();
   }, []);
+
+  const currentSlide = VERTICAL_FARMING_SLIDES[activeSlide] || VERTICAL_FARMING_SLIDES[0];
 
   return (
     <div className="xfarm-page-wrapper">
@@ -269,7 +368,11 @@ export const HomePage: React.FC = () => {
           <div className="xfarm-innovation-card">
             <div className="xfarm-polka-bg" />
 
-            <div className="xfarm-phone-frame">
+            <div
+              className="xfarm-phone-frame"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               {/* Speaker Notch */}
               <div className="xfarm-phone-notch" />
 
@@ -277,78 +380,89 @@ export const HomePage: React.FC = () => {
                 Innovations In<br />Vertical Farming!
               </h3>
 
-              {/* Segmented slider track with play arrow */}
+              {/* Segmented slider track with play/pause arrow */}
               <div className="xfarm-phone-slider-track">
-                <span
+                <button
+                  type="button"
                   onClick={() => setActiveSlide(0)}
                   className={`xfarm-slider-dash ${activeSlide === 0 ? 'active' : ''}`}
-                  style={{ cursor: 'pointer' }}
+                  aria-label="Section 1: Microgreens and Strawberries"
+                  title="Section 1: Microgreens & Strawberries"
                 />
-                <span
+                <button
+                  type="button"
                   onClick={() => setActiveSlide(1)}
                   className={`xfarm-slider-dash ${activeSlide === 1 ? 'active' : ''}`}
-                  style={{ cursor: 'pointer' }}
+                  aria-label="Section 2: Hydroponic Greens and Vine Tomatoes"
+                  title="Section 2: Hydroponics & Vine-Ripened"
                 />
-                <div className="xfarm-slider-play-arrow">
-                  <Play size={10} fill="#B8D72E" color="#B8D72E" />
-                </div>
-                <span
+                <button
+                  type="button"
+                  className="xfarm-slider-play-arrow"
+                  onClick={() => setIsPlaying((p) => !p)}
+                  title={isPlaying ? 'Pause Auto-slide' : 'Resume Auto-slide'}
+                  aria-label={isPlaying ? 'Pause Auto-slide' : 'Resume Auto-slide'}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+                >
+                  {isPlaying ? (
+                    <Pause size={10} fill="#B8D72E" color="#B8D72E" />
+                  ) : (
+                    <Play size={10} fill="#B8D72E" color="#B8D72E" />
+                  )}
+                </button>
+                <button
+                  type="button"
                   onClick={() => setActiveSlide(2)}
                   className={`xfarm-slider-dash ${activeSlide === 2 ? 'active' : ''}`}
-                  style={{ cursor: 'pointer' }}
+                  aria-label="Section 3: Bell Peppers and Basil Herbs"
+                  title="Section 3: Bell Peppers & Basil Herbs"
                 />
-                <span
+                <button
+                  type="button"
                   onClick={() => setActiveSlide(3)}
                   className={`xfarm-slider-dash ${activeSlide === 3 ? 'active' : ''}`}
-                  style={{ cursor: 'pointer' }}
+                  aria-label="Section 4: Field Asparagus and Orchard Apples"
+                  title="Section 4: Field Asparagus & Apples"
                 />
               </div>
 
-              {/* Two Vertical Feature Cards with Transparent Food Pics */}
-              <div className="xfarm-phone-dual-cards">
-                {/* Card 1: Periwinkle Sky Blue with Transparent Potato Chaat Bowl */}
-                <Link to="/marketplace" className="xfarm-mini-feature-card sky">
+              {/* Dynamic Vertical Feature Cards with Smooth Fade Transition */}
+              <div key={activeSlide} className="xfarm-phone-dual-cards">
+                {/* Card 1 */}
+                <Link to="/marketplace" className={`xfarm-mini-feature-card ${currentSlide.card1.themeClass}`}>
                   <h4 className="xfarm-mini-card-headline">
-                    Farm-to-Table<br />Pure Delights
+                    {currentSlide.card1.title}
                   </h4>
 
                   <div className="xfarm-mini-card-img-wrap transparent-bg">
                     <img
-                      src="/images/foody/potato_bowl.png"
-                      alt="Artisanal Potato Chaat Bowl"
+                      src={currentSlide.card1.image}
+                      alt={currentSlide.card1.alt}
                       className="xfarm-mini-card-food-img"
                     />
-                    <span className="xfarm-mini-pill-btn">
-                      <span>Explore</span>
-                      <span style={{ fontSize: '7px' }}>•</span>
-                    </span>
                   </div>
 
                   <p className="xfarm-mini-card-footer-text">
-                    Pure Spices & Fresh Roots
+                    {currentSlide.card1.footer}
                   </p>
                 </Link>
 
-                {/* Card 2: Deep Pine Forest Green with Transparent Vegetable Biryani */}
-                <Link to="/marketplace" className="xfarm-mini-feature-card forest">
-                  <h4 className="xfarm-mini-card-headline light">
-                    Wood-Fired<br />Pure Harvest
+                {/* Card 2 */}
+                <Link to="/marketplace" className={`xfarm-mini-feature-card ${currentSlide.card2.themeClass}`}>
+                  <h4 className="xfarm-mini-card-headline">
+                    {currentSlide.card2.title}
                   </h4>
 
                   <div className="xfarm-mini-card-img-wrap transparent-bg">
                     <img
-                      src="/images/foody/veggie_biryani.png"
-                      alt="Antique Copper Bowl of Vegetable Biryani"
+                      src={currentSlide.card2.image}
+                      alt={currentSlide.card2.alt}
                       className="xfarm-mini-card-food-img"
                     />
-                    <span className="xfarm-mini-pill-btn">
-                      <span>More</span>
-                      <span style={{ fontSize: '7px' }}>•</span>
-                    </span>
                   </div>
 
-                  <p className="xfarm-mini-card-footer-text" style={{ color: '#E0F2E9' }}>
-                    100% Farm-Direct Grains
+                  <p className="xfarm-mini-card-footer-text">
+                    {currentSlide.card2.footer}
                   </p>
                 </Link>
               </div>
@@ -389,18 +503,18 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Tile 2: Transparent Food Spotlight: Matar Paneer */}
+            {/* Tile 2: Fresh Produce Spotlight: Dutch Bell Peppers */}
             <div className="xfarm-bento-food-spotlight">
               <img
-                src="/images/foody/matar_paneer.png"
-                alt="Matar Paneer in Ornate Copper Bowl"
+                src="/images/bell_peppers.png"
+                alt="Crisp Dutch Bell Peppers"
                 className="xfarm-floating-food-img"
                 loading="lazy"
               />
               <div>
-                <h4 className="xfarm-food-spotlight-title">Matar Paneer Curry</h4>
+                <h4 className="xfarm-food-spotlight-title">Dutch Bell Peppers</h4>
                 <p style={{ margin: 0, fontSize: '0.8125rem', color: '#536F61' }}>
-                  Farm cottage cheese & sweet peas in &lt; 18h
+                  Crisp, sweet &amp; zero pesticide residue
                 </p>
               </div>
             </div>
@@ -425,17 +539,17 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Tile 4: Transparent Chaat Bowl Spotlight */}
+            {/* Tile 4: Royal Orchard Apples Spotlight */}
             <div className="xfarm-bento-chaat-card">
               <img
-                src="/images/foody/potato_bowl.png"
-                alt="Vibrant Garnished Potato Chaat Bowl"
+                src="/images/fresh_apples.png"
+                alt="Royal Crisp Orchard Apples"
                 className="xfarm-floating-food-img"
                 style={{ maxHeight: '110px' }}
                 loading="lazy"
               />
-              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '1rem', marginTop: '8px' }}>
-                Artisanal Chaat Bowl
+              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '1rem', marginTop: '5px' }}>
+                Royal Orchard Apples
               </h4>
             </div>
 
@@ -461,36 +575,37 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Tile 7: Transparent Terracotta Rasgulla Card */}
+            {/* Tile 7: Aeroponic Strawberries Card */}
             <div className="xfarm-bento-rasgulla-card">
               <img
-                src="/images/foody/terracotta_rasgulla.png"
-                alt="Terracotta Bowl of Garnished Rasgulla"
+                src="/images/strawberries.png"
+                alt="Sweet Aeroponic Strawberries"
                 className="xfarm-floating-food-img"
                 style={{ maxHeight: '95px' }}
                 loading="lazy"
               />
               <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '0.9375rem', marginTop: '6px' }}>
-                Terracotta Rasgulla
+                Aeroponic Strawberries
               </h4>
             </div>
 
-            {/* Tile 8: Transparent Food Spotlight: Heritage Biryani Feast */}
+            {/* Tile 8: Curated Seasonal Veggie Basket Spotlight */}
             <Link to="/marketplace" className="xfarm-bento-feast-card">
               <div className="xfarm-feast-text-col">
-                <h4 className="xfarm-feast-title">Vegetable Biryani</h4>
+                <span className="xfarm-feast-badge">CURATED BASKET</span>
+                <h4 className="xfarm-feast-title">Seasonal Veggie Basket</h4>
                 <p className="xfarm-feast-desc">
-                  Farm vegetables, saffron &amp; heritage basmati
+                  Crisp root crops, fresh leafy greens &amp; orchard yields in &lt; 18h
                 </p>
                 <span className="xfarm-feast-link">
-                  <span>Explore Dish</span>
+                  <span>Explore Baskets</span>
                   <ArrowRight size={13} />
                 </span>
               </div>
               <div className="xfarm-feast-img-wrap">
                 <img
-                  src="/images/foody/veggie_biryani.png"
-                  alt="Antique Copper Bowl of Vegetable Biryani"
+                  src="/images/harvest_basket.png"
+                  alt="Farmgate Fresh Harvest Basket"
                   className="xfarm-floating-feast-img"
                   loading="lazy"
                 />

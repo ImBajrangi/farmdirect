@@ -28,114 +28,114 @@ interface ItemTheme {
 function getItemTheme(slug: string): ItemTheme {
   const s = slug.toLowerCase();
 
-  // 1. Red Onions -> Deep Burgundy Velvet & Rose Tint
+  // 1. Red Onions -> Soft Blush Rose & Deep Crimson Accents
   if (s.includes('onion') || s.includes('kanda')) {
     return {
-      shellBg: '#1f0d16',
-      borderColor: 'rgba(244, 63, 94, 0.22)',
-      canvasBg: '#fce7ef',
-      ribbonBg: '#881337',
-      ribbonText: '#ffe4e6',
-      pillBg: 'rgba(244, 63, 94, 0.16)',
-      pillText: '#fda4af',
-      pillBorder: 'rgba(244, 63, 94, 0.3)',
-      accentColor: '#fb7185',
-      shadowColor: 'rgba(136, 19, 55, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(225, 29, 72, 0.12)',
+      canvasBg: '#FFF1F2',
+      ribbonBg: '#FFE4E6',
+      ribbonText: '#9F1239',
+      pillBg: 'rgba(225, 29, 72, 0.06)',
+      pillText: '#9F1239',
+      pillBorder: 'rgba(225, 29, 72, 0.16)',
+      accentColor: '#BE123C',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 2. Grapes -> Deep Royal Violet & Lavender Tint
+  // 2. Grapes -> Soft Lilac & Deep Violet Accents
   if (s.includes('grape') || s.includes('draksh')) {
     return {
-      shellBg: '#130d24',
-      borderColor: 'rgba(168, 85, 247, 0.22)',
-      canvasBg: '#ede9fe',
-      ribbonBg: '#581c87',
-      ribbonText: '#f3e8ff',
-      pillBg: 'rgba(168, 85, 247, 0.16)',
-      pillText: '#d8b4fe',
-      pillBorder: 'rgba(168, 85, 247, 0.3)',
-      accentColor: '#c084fc',
-      shadowColor: 'rgba(88, 28, 135, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(147, 51, 234, 0.12)',
+      canvasBg: '#F5F3FF',
+      ribbonBg: '#EDE9FE',
+      ribbonText: '#6B21A8',
+      pillBg: 'rgba(147, 51, 234, 0.06)',
+      pillText: '#6B21A8',
+      pillBorder: 'rgba(147, 51, 234, 0.16)',
+      accentColor: '#7E22CE',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 3. Spinach & Green Veggies -> Deep Forest Bottle Green & Emerald Tint
+  // 3. Spinach & Green Veggies -> Soft Mint & Emerald Accents
   if (s.includes('spinach') || s.includes('palak') || s.includes('methi')) {
     return {
-      shellBg: '#0d1f13',
-      borderColor: 'rgba(34, 197, 94, 0.22)',
-      canvasBg: '#dcfce7',
-      ribbonBg: '#166534',
-      ribbonText: '#dcfce7',
-      pillBg: 'rgba(34, 197, 94, 0.16)',
-      pillText: '#86efac',
-      pillBorder: 'rgba(34, 197, 94, 0.3)',
-      accentColor: '#4ade80',
-      shadowColor: 'rgba(22, 101, 52, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(22, 163, 74, 0.12)',
+      canvasBg: '#F0FDF4',
+      ribbonBg: '#DCFCE7',
+      ribbonText: '#15803D',
+      pillBg: 'rgba(22, 163, 74, 0.06)',
+      pillText: '#15803D',
+      pillBorder: 'rgba(22, 163, 74, 0.16)',
+      accentColor: '#16A34A',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 4. Wheat / Grains -> Deep Roasted Amber & Golden Husk Tint
+  // 4. Wheat / Grains -> Soft Warm Amber & Golden Harvest Accents
   if (s.includes('wheat') || s.includes('gehu') || s.includes('grain') || s.includes('cereal') || s.includes('rice')) {
     return {
-      shellBg: '#211508',
-      borderColor: 'rgba(245, 158, 11, 0.22)',
-      canvasBg: '#fef3c7',
-      ribbonBg: '#78350f',
-      ribbonText: '#fef3c7',
-      pillBg: 'rgba(245, 158, 11, 0.16)',
-      pillText: '#fde68a',
-      pillBorder: 'rgba(245, 158, 11, 0.3)',
-      accentColor: '#fbbf24',
-      shadowColor: 'rgba(120, 53, 15, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(217, 119, 6, 0.12)',
+      canvasBg: '#FFFBEB',
+      ribbonBg: '#FEF3C7',
+      ribbonText: '#92400E',
+      pillBg: 'rgba(217, 119, 6, 0.06)',
+      pillText: '#92400E',
+      pillBorder: 'rgba(217, 119, 6, 0.16)',
+      accentColor: '#B45309',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 5. Gir Cow Ghee & Dairy -> Artisan Bronze & Saffron Gold Tint
+  // 5. Gir Cow Ghee & Dairy -> Soft Sunlit Cream & Honey Gold Accents
   if (s.includes('ghee') || s.includes('dairy') || s.includes('toop') || s.includes('milk')) {
     return {
-      shellBg: '#1d1305',
-      borderColor: 'rgba(234, 179, 8, 0.22)',
-      canvasBg: '#fef9c3',
-      ribbonBg: '#713f12',
-      ribbonText: '#fef9c3',
-      pillBg: 'rgba(234, 179, 8, 0.16)',
-      pillText: '#fef08a',
-      pillBorder: 'rgba(234, 179, 8, 0.3)',
-      accentColor: '#facc15',
-      shadowColor: 'rgba(113, 63, 18, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(202, 138, 4, 0.12)',
+      canvasBg: '#FEFCE8',
+      ribbonBg: '#FEF9C3',
+      ribbonText: '#854D0E',
+      pillBg: 'rgba(202, 138, 4, 0.06)',
+      pillText: '#854D0E',
+      pillBorder: 'rgba(202, 138, 4, 0.16)',
+      accentColor: '#A16207',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 6. Tomatoes & Spices -> Deep Ripe Field Crimson & Coral Tint
+  // 6. Tomatoes & Spices -> Soft Pastel Coral & Ripe Field Crimson Accents
   if (s.includes('tomato') || s.includes('chilli') || s.includes('spice') || s.includes('masala')) {
     return {
-      shellBg: '#220b0b',
-      borderColor: 'rgba(239, 68, 68, 0.22)',
-      canvasBg: '#fee2e2',
-      ribbonBg: '#7f1d1d',
-      ribbonText: '#fee2e2',
-      pillBg: 'rgba(239, 68, 68, 0.16)',
-      pillText: '#fca5a5',
-      pillBorder: 'rgba(239, 68, 68, 0.3)',
-      accentColor: '#f87171',
-      shadowColor: 'rgba(127, 29, 29, 0.3)',
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(239, 68, 68, 0.12)',
+      canvasBg: '#FEF2F2',
+      ribbonBg: '#FEE2E2',
+      ribbonText: '#991B1B',
+      pillBg: 'rgba(239, 68, 68, 0.06)',
+      pillText: '#991B1B',
+      pillBorder: 'rgba(239, 68, 68, 0.16)',
+      accentColor: '#DC2626',
+      shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // Default Organic Kiwi/Farmgate Forest Green
+  // Default Organic Leaf Green
   return {
-    shellBg: '#112417',
-    borderColor: 'rgba(34, 197, 94, 0.22)',
-    canvasBg: '#dcfce7',
-    ribbonBg: '#166534',
-    ribbonText: '#dcfce7',
-    pillBg: 'rgba(34, 197, 94, 0.16)',
-    pillText: '#86efac',
-    pillBorder: 'rgba(34, 197, 94, 0.3)',
-    accentColor: '#4ade80',
-    shadowColor: 'rgba(22, 101, 52, 0.3)',
+    shellBg: '#FFFFFF',
+    borderColor: 'rgba(22, 163, 74, 0.12)',
+    canvasBg: '#F0FDF4',
+    ribbonBg: '#DCFCE7',
+    ribbonText: '#15803D',
+    pillBg: 'rgba(22, 163, 74, 0.06)',
+    pillText: '#15803D',
+    pillBorder: 'rgba(22, 163, 74, 0.16)',
+    accentColor: '#16A34A',
+    shadowColor: 'rgba(15, 46, 34, 0.06)',
   };
 }
 
@@ -219,90 +219,108 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* Card B Bottom Split Layout: [Title + Single Row Tags] | [Price + Order Now ↗ / Stepper] */}
+      {/* Card B Bottom Split Layout */}
       <div className="product-footer-split-b">
-        {/* Left Column: Title + Single-Row Pills */}
-        <div className="product-left-col-b">
-          <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
-            {cleanTitle}
-          </Link>
+        {currentQty > 0 ? (
+          /* Active cart state: Title + Dedicated spacious row for Price and +/- Stepper */
+          <div className="product-active-cart-container-b">
+            <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
+              {cleanTitle}
+            </Link>
 
-          <div className="product-tags-row-b">
-            <span
-              className="product-trait-pill-b"
-              style={{
-                backgroundColor: theme.pillBg,
-                color: theme.pillText,
-                borderColor: theme.pillBorder,
-              }}
-            >
-              {village}
-            </span>
-            <span
-              className="product-trait-pill-b"
-              style={{
-                backgroundColor: theme.pillBg,
-                color: theme.pillText,
-                borderColor: theme.pillBorder,
-              }}
-            >
-              {unitLabel}
-            </span>
-          </div>
-        </div>
+            <div className="product-active-cart-row-b">
+              <div className="product-active-price-wrap-b">
+                <span className="product-active-price-val-b">
+                  {formatPaise(displayPricePaise, language)}
+                </span>
+                <span className="product-active-unit-sub-b">
+                  {currentQty} × {unitLabel}
+                </span>
+              </div>
 
-        {/* Right Column: Giant Price (Top) + Order Now ↗ or Stepper (Bottom) */}
-        <div className="product-right-col-b">
-          <div className="product-price-val-b" title={`₹${product.price_paise / 100} / ${unitLabel}`}>
-            {formatPaise(displayPricePaise, language)}
-          </div>
-
-          {isOutOfStock ? (
-            <span className="product-soldout-b">Sold Out</span>
-          ) : currentQty > 0 ? (
-            <div
-              className="product-stepper-b"
-              style={{
-                backgroundColor: theme.pillBg,
-                borderColor: theme.pillBorder,
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
-                className="stepper-btn-b"
-                style={{ color: theme.accentColor }}
-                aria-label="Decrease quantity"
+              <div
+                className="product-stepper-b product-stepper-spacious"
+                style={{
+                  backgroundColor: theme.pillBg,
+                }}
               >
-                <Minus size={11} strokeWidth={2.5} />
-              </button>
-              <span className="stepper-qty-b" style={{ color: theme.pillText }}>
-                {currentQty}
-              </span>
-              <button
-                type="button"
-                onClick={() => addToCart(product)}
-                disabled={currentQty >= availableQty}
-                className="stepper-btn-b"
-                style={{ color: theme.accentColor }}
-                aria-label="Increase quantity"
-              >
-                <Plus size={11} strokeWidth={2.5} />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
+                  className="stepper-btn-b"
+                  style={{ color: theme.accentColor }}
+                  aria-label="Decrease quantity"
+                >
+                  <Minus size={13} strokeWidth={2.5} />
+                </button>
+                <span className="stepper-qty-b" style={{ color: theme.pillText }}>
+                  {currentQty}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => addToCart(product)}
+                  disabled={currentQty >= availableQty}
+                  className="stepper-btn-b"
+                  style={{ color: theme.accentColor }}
+                  aria-label="Increase quantity"
+                >
+                  <Plus size={13} strokeWidth={2.5} />
+                </button>
+              </div>
             </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => addToCart(product)}
-              className="product-order-btn-b"
-              style={{ color: theme.accentColor }}
-              aria-label={`Order ${cleanTitle} Now`}
-            >
-              <span>Order Now</span>
-              <ArrowUpRight size={13} />
-            </button>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* Default state: Title + Borderless Tags on left, Price + Order Now on right */
+          <>
+            <div className="product-left-col-b">
+              <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
+                {cleanTitle}
+              </Link>
+
+              <div className="product-tags-row-b">
+                <span
+                  className="product-trait-pill-b"
+                  style={{
+                    backgroundColor: theme.pillBg,
+                    color: theme.pillText,
+                  }}
+                >
+                  {village}
+                </span>
+                <span
+                  className="product-trait-pill-b"
+                  style={{
+                    backgroundColor: theme.pillBg,
+                    color: theme.pillText,
+                  }}
+                >
+                  {unitLabel}
+                </span>
+              </div>
+            </div>
+
+            <div className="product-right-col-b">
+              <div className="product-price-val-b" title={`₹${product.price_paise / 100} / ${unitLabel}`}>
+                {formatPaise(displayPricePaise, language)}
+              </div>
+
+              {isOutOfStock ? (
+                <span className="product-soldout-b">Sold Out</span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => addToCart(product)}
+                  className="product-order-btn-b"
+                  style={{ color: theme.accentColor }}
+                  aria-label={`Order ${cleanTitle} Now`}
+                >
+                  <span>Order Now</span>
+                  <ArrowUpRight size={13} />
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

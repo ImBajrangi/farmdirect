@@ -21,7 +21,7 @@
   --xfarm-forest-dark: #004330;
   --xfarm-dark: #0F2E22;
   --xfarm-orange: #E85D3A;
-  --xfarm-canvas: #F0F3EF;
+  --xfarm-canvas: #FFFFFF;
   --xfarm-white: #FFFFFF;
   --xfarm-text: #0F2E22;
   --xfarm-text-muted: #536F61;
@@ -32,9 +32,11 @@
 
 /* ─── Outer Page Shell ───────────────────────────────────────────────────── */
 .xfarm-page-wrapper {
-  background-color: var(--xfarm-canvas);
+  background-color: #FFFFFF;
   min-height: 100vh;
-  padding: 20px 14px 64px 14px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
   font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   color: var(--xfarm-text);
   box-sizing: border-box;
@@ -42,26 +44,39 @@
 
 @media (min-width: 768px) {
   .xfarm-page-wrapper {
-    padding: 28px 24px 80px 24px;
+    padding: 0;
   }
 }
 
 /* ─── Main White Framed Master Canvas ────────────────────────────────────── */
 .xfarm-master-card {
-  max-width: 1360px;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
-  background-color: var(--xfarm-white);
-  border-radius: 36px;
-  padding: 24px 18px 48px 18px;
-  box-shadow: 0 12px 48px -8px rgba(15, 46, 34, 0.06), 0 1px 3px rgba(15, 46, 34, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background-color: #FFFFFF;
+  border-radius: 0;
+  padding: 20px 20px 60px 20px;
+  box-shadow: none;
+  border: none;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .xfarm-master-card {
-    padding: 32px 40px 60px 40px;
+    padding: 24px 36px 72px 36px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .xfarm-master-card {
+    padding: 28px 48px 80px 48px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .xfarm-master-card {
+    padding: 32px 64px 96px 64px;
+    max-width: 1720px;
   }
 }
 
@@ -589,31 +604,56 @@
 }
 
 .xfarm-slider-dash {
-  width: 32px;
+  width: 28px;
   height: 3px;
   background-color: #E2E8E4;
   border-radius: 9999px;
-  transition: background-color 0.18s ease;
+  transition: background-color 0.25s ease, width 0.25s ease;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  outline: none;
 }
 
 .xfarm-slider-dash.active {
   background-color: var(--xfarm-dark);
+  width: 38px;
 }
 
 .xfarm-slider-play-arrow {
   color: #C0DE30;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.15s ease;
 }
 
-/* Two Side-by-Side Vertical Mobile Cards */
+.xfarm-slider-play-arrow:hover {
+  transform: scale(1.15);
+}
+
+/* Two Side-by-Side Vertical Mobile Cards (Animated Carousel) */
 .xfarm-phone-dual-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  animation: xfarmFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Card 1: Periwinkle Sky Blue */
+@keyframes xfarmFadeIn {
+  from {
+    opacity: 0.35;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Phone Dual Cards: Light, organic, high-contrast themes */
 .xfarm-mini-feature-card {
   border-radius: 22px;
   padding: 16px 14px;
@@ -623,35 +663,34 @@
   min-height: 250px;
   box-sizing: border-box;
   text-decoration: none;
-  transition: box-shadow 0.18s ease;
+  transition: transform 0.18s ease;
 }
 
 .xfarm-mini-feature-card.sky {
-  background-color: var(--xfarm-sky);
+  background-color: #E8F4EC;
   color: #0F2E22;
 }
 
 .xfarm-mini-feature-card.forest {
-  background-color: var(--xfarm-forest);
-  color: #FFFFFF;
+  background-color: #FFF5E5;
+  color: #0F2E22;
 }
 
 .xfarm-mini-card-headline {
-  font-size: 0.875rem;
-  font-weight: 550;
+  font-family: var(--font-display, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.015em;
-  margin: 0 0 10px 0;
-}
-
-.xfarm-mini-card-headline.light {
-  color: #FFFFFF;
+  color: #0F2E22;
+  margin: 0 0 8px 0;
+  white-space: pre-line;
 }
 
 .xfarm-mini-card-img-wrap {
   position: relative;
   width: 100%;
-  height: 105px;
+  height: 115px;
   border-radius: 14px;
   overflow: hidden;
   margin: 6px 0 10px 0;
@@ -676,9 +715,9 @@
 .xfarm-mini-card-food-img {
   width: 100%;
   height: 100%;
-  max-height: 98px;
+  max-height: 112px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(15, 46, 34, 0.22));
+  filter: drop-shadow(0 6px 14px rgba(15, 46, 34, 0.08));
   display: block;
   pointer-events: none;
 }
@@ -855,7 +894,7 @@
   max-width: 190px;
   height: 140px;
   object-fit: contain;
-  filter: drop-shadow(0 14px 22px rgba(15, 46, 34, 0.16));
+  filter: drop-shadow(0 8px 16px rgba(15, 46, 34, 0.09));
   display: block;
   margin: 0 auto;
   pointer-events: none;
@@ -1187,7 +1226,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 12px 20px rgba(15, 46, 34, 0.16));
+  filter: drop-shadow(0 8px 16px rgba(15, 46, 34, 0.09));
   display: block;
   pointer-events: none;
 }
