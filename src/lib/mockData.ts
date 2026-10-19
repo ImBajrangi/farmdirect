@@ -359,10 +359,10 @@ export const INITIAL_INVENTORIES: Inventory[] = [
 ];
 
 export const PRODUCT_IMAGE_MAP: Record<string, string> = {
-  'prod-onion-1': 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=700&q=80',
-  'prod-grapes-1': 'https://images.unsplash.com/photo-1596363505729-4190a9506133?auto=format&fit=crop&w=700&q=80',
-  'prod-spinach-1': 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=80',
-  'prod-wheat-1': 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=700&q=80',
-  'prod-ghee-1': 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=700&q=80',
-  'prod-tomato-1': 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=700&q=80',
+  'prod-onion-1': '/images/bell_peppers.png',
+  'prod-grapes-1': '/images/fresh_apples.png',
+  'prod-spinach-1': '/images/hydroponic_greens.png',
+  'prod-wheat-1': '/images/harvest_basket.png',
+  'prod-ghee-1': '/images/aromatic_basil.png',
+  'prod-tomato-1': '/images/vine_tomatoes.png',
 };

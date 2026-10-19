@@ -407,3 +407,34 @@
   margin-top: var(--space-md);
   text-align: center;
 }
+
+/* ─── Ultra-Smooth Checkout Mobile Experience (< 640px) ──────────────────── */
+@media (max-width: 640px) {
+  .checkout-card {
+    padding: 18px 16px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+
+  .order-summary-box {
+    padding: 18px 16px;
+    border-radius: 18px;
+    position: static;
+  }
+
+  .checkout-title {
+    font-size: 1.5rem;
+  }
+
+  .address-item,
+  .delivery-option-card,
+  .payment-option-row {
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+
+  .payment-option-icon-box {
+    width: 38px;
+    height: 38px;
+  }
+}

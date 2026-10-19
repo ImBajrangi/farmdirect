@@ -10,7 +10,10 @@ import {
   ArrowDown,
   Play,
   Pause,
+  Plus,
+  Minus,
 } from 'lucide-react';
+import { useCart } from '../cart/CartContext';
 import { productService } from '../products/product.service';
 import { Product } from '../products/product.types';
 import './home.css';
@@ -69,38 +72,45 @@ interface ProduceCurationItem {
   origin: string;
   desc: string;
   image: string;
+  fallbackImage: string;
 }
 
 const PRODUCE_CURATION: Record<string, ProduceCurationItem> = {
   'prod-onion-1': {
     origin: 'Nashik · Ramesh Patil',
     desc: 'Crisp, pungent winter-harvested red onions naturally cured under shade.',
-    image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=700&q=80',
+    image: '/images/bell_peppers.png',
+    fallbackImage: '/images/bell_peppers.png',
   },
   'prod-grapes-1': {
     origin: 'Dindori · Patil Agro',
     desc: 'Sweet, thin-skinned table grapes plucked fresh with zero synthetic chemicals.',
-    image: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=700&q=80',
+    image: '/images/fresh_apples.png',
+    fallbackImage: '/images/fresh_apples.png',
   },
   'prod-spinach-1': {
     origin: 'Niphad · Shinde Farm',
     desc: 'Tender dark green spinach leaves harvested with roots intact for peak crispness.',
-    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=80',
+    image: '/images/hydroponic_greens.png',
+    fallbackImage: '/images/hydroponic_greens.png',
   },
   'prod-wheat-1': {
     origin: 'Niphad Women Collective',
     desc: 'Unpolished golden grain Lokwan wheat, stone-cleaned for ultra-soft rotis.',
-    image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=700&q=80',
+    image: '/images/harvest_basket.png',
+    fallbackImage: '/images/harvest_basket.png',
   },
   'prod-ghee-1': {
     origin: 'Grass-Fed Gir Sanctuary',
     desc: 'Traditional wood-churned curd bilona ghee with rich golden granular texture.',
-    image: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=700&q=80',
+    image: '/images/aromatic_basil.png',
+    fallbackImage: '/images/carrots_harvest.jpg',
   },
   'prod-tomato-1': {
     origin: 'Godavari River Basin',
     desc: 'Tangy, juicy field tomatoes with authentic tart sweetness ripened naturally on vines.',
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=700&q=80',
+    image: '/images/vine_tomatoes.png',
+    fallbackImage: '/images/vine_tomatoes.png',
   },
 };
 
@@ -190,6 +200,7 @@ const VERTICAL_FARMING_SLIDES: VerticalFarmingSlide[] = [
 ];
 
 export const HomePage: React.FC = () => {
+  const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [activeNav, setActiveNav] = useState<'harvest' | 'baskets' | 'farms' | 'coldchain' | 'trust'>('harvest');
   const [activeSlide, setActiveSlide] = useState<number>(0);
@@ -280,6 +291,52 @@ export const HomePage: React.FC = () => {
             <span>Order Farm Fresh</span>
           </Link>
         </header>
+
+        {/* ─── Mobile Horizontal Scrollable Chip Rail ──────────────────────── */}
+        <nav className="xfarm-mobile-chips-wrapper" aria-label="Mobile Sections">
+          <div className="xfarm-mobile-chips-track">
+            <Link
+              to="/marketplace"
+              className={`xfarm-chip-pill ${activeNav === 'harvest' ? 'active' : ''}`}
+              onClick={() => setActiveNav('harvest')}
+            >
+              <Sprout size={13} />
+              <span>Fresh Harvest</span>
+            </Link>
+            <Link
+              to="/marketplace?category=fruits"
+              className={`xfarm-chip-pill ${activeNav === 'baskets' ? 'active' : ''}`}
+              onClick={() => setActiveNav('baskets')}
+            >
+              <ShoppingBag size={13} />
+              <span>Fruit Baskets</span>
+            </Link>
+            <Link
+              to="/farmers"
+              className={`xfarm-chip-pill ${activeNav === 'farms' ? 'active' : ''}`}
+              onClick={() => setActiveNav('farms')}
+            >
+              <Tractor size={13} />
+              <span>Verified Farms</span>
+            </Link>
+            <a
+              href="#cold-chain"
+              className={`xfarm-chip-pill ${activeNav === 'coldchain' ? 'active' : ''}`}
+              onClick={() => setActiveNav('coldchain')}
+            >
+              <ThermometerSnowflake size={13} />
+              <span>24h Cold-Chain</span>
+            </a>
+            <Link
+              to="/platform"
+              className={`xfarm-chip-pill ${activeNav === 'trust' ? 'active' : ''}`}
+              onClick={() => setActiveNav('trust')}
+            >
+              <ShieldCheck size={13} />
+              <span>7/12 Land Verified</span>
+            </Link>
+          </div>
+        </nav>
 
         {/* ─── 2. Hero Headline: "What Is Our Success?" ────────────────────── */}
         <div className="xfarm-hero-heading-row">
@@ -548,9 +605,14 @@ export const HomePage: React.FC = () => {
                 style={{ maxHeight: '110px' }}
                 loading="lazy"
               />
-              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '1rem', marginTop: '5px' }}>
-                Royal Orchard Apples
-              </h4>
+              <div>
+                <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '1rem', marginTop: '5px' }}>
+                  Royal Orchard Apples
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.8125rem', color: '#536F61' }}>
+                  Wax-free, crisp &amp; sweet
+                </p>
+              </div>
             </div>
 
             {/* Tile 5: 75 Tons Deep Forest Card */}
@@ -567,10 +629,10 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Tile 6: Blueprint Construction Card */}
+            {/* Tile 6: Botanical Emblem Card */}
             <div className="xfarm-bento-blueprint-card">
               <div className="xfarm-blueprint-grid">
-                <FruitBasketsLogoIcon size={38} color="#FFFFFF" />
+                <FruitBasketsLogoIcon size={38} color="#006044" />
                 <span className="xfarm-blueprint-text">Fruit Baskets</span>
               </div>
             </div>
@@ -584,13 +646,26 @@ export const HomePage: React.FC = () => {
                 style={{ maxHeight: '95px' }}
                 loading="lazy"
               />
-              <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '0.9375rem', marginTop: '6px' }}>
-                Aeroponic Strawberries
-              </h4>
+              <div>
+                <h4 className="xfarm-food-spotlight-title" style={{ fontSize: '0.9375rem', marginTop: '6px' }}>
+                  Aeroponic Strawberries
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.8125rem', color: '#536F61' }}>
+                  Mist-grown &amp; sweet
+                </p>
+              </div>
             </div>
 
             {/* Tile 8: Curated Seasonal Veggie Basket Spotlight */}
             <Link to="/marketplace" className="xfarm-bento-feast-card">
+              <div className="xfarm-feast-img-wrap">
+                <img
+                  src="/images/harvest_basket.png"
+                  alt="Farmgate Fresh Harvest Basket"
+                  className="xfarm-floating-feast-img"
+                  loading="lazy"
+                />
+              </div>
               <div className="xfarm-feast-text-col">
                 <span className="xfarm-feast-badge">CURATED BASKET</span>
                 <h4 className="xfarm-feast-title">Seasonal Veggie Basket</h4>
@@ -601,14 +676,6 @@ export const HomePage: React.FC = () => {
                   <span>Explore Baskets</span>
                   <ArrowRight size={13} />
                 </span>
-              </div>
-              <div className="xfarm-feast-img-wrap">
-                <img
-                  src="/images/harvest_basket.png"
-                  alt="Farmgate Fresh Harvest Basket"
-                  className="xfarm-floating-feast-img"
-                  loading="lazy"
-                />
               </div>
             </Link>
           </div>
@@ -629,34 +696,90 @@ export const HomePage: React.FC = () => {
 
           <div className="xfarm-produce-grid">
             {products.slice(0, 6).map((product) => {
-              const curation = PRODUCE_CURATION[product.id] || {
-                origin: 'Verified Regional Farm',
+              const curation: ProduceCurationItem = PRODUCE_CURATION[product.id] || {
+                origin: product.farmer?.farm_name || 'Verified Regional Farm',
                 desc: product.description || 'Pure farmgate produce directly from verified growers.',
-                image: product.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=80',
+                image: product.images?.[0]?.image_url || '/images/bell_peppers.png',
+                fallbackImage: '/images/bell_peppers.png',
               };
 
+              const qty = getItemQuantity(product.id);
+
               return (
-                <Link
+                <div
                   key={product.id}
-                  to={`/product/${product.slug || product.id}`}
                   className="xfarm-produce-card"
                 >
-                  <div className="xfarm-produce-img-wrap">
-                    <img
-                      src={curation.image}
-                      alt={product.name}
-                      className="xfarm-produce-img"
-                      loading="lazy"
-                    />
+                  <Link
+                    to={`/product/${product.slug || product.id}`}
+                    style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
+                  >
+                    <div className="xfarm-produce-img-wrap">
+                      <img
+                        src={curation.image}
+                        alt={product.name}
+                        className="xfarm-produce-img"
+                        loading="eager"
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          const fallback = curation.fallbackImage || '/images/bell_peppers.png';
+                          if (!target.src.endsWith(fallback)) {
+                            target.src = fallback;
+                          }
+                        }}
+                      />
+                    </div>
+                    <h4 className="xfarm-produce-name">{product.name}</h4>
+                    <p className="xfarm-produce-meta">
+                      <span className="xfarm-produce-price">₹{Math.round(product.price_paise / 100)}</span>
+                      <span className="xfarm-produce-unit">/ {product.unit || 'kg'}</span>
+                      <span className="xfarm-produce-dot">·</span>
+                      <span>{curation.origin}</span>
+                    </p>
+                  </Link>
+
+                  <div className="xfarm-produce-action-row">
+                    {qty === 0 ? (
+                      <button
+                        type="button"
+                        className="xfarm-quick-add-pill"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart(product, 1);
+                        }}
+                        aria-label={`Add ${product.name} to cart`}
+                      >
+                        <Plus size={13} />
+                        <span>Add</span>
+                      </button>
+                    ) : (
+                      <div
+                        className="xfarm-quick-stepper"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(product.id, qty - 1)}
+                          aria-label={`Decrease quantity of ${product.name}`}
+                        >
+                          <Minus size={11} />
+                        </button>
+                        <span>{qty}</span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(product.id, qty + 1)}
+                          aria-label={`Increase quantity of ${product.name}`}
+                        >
+                          <Plus size={11} />
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <h4 className="xfarm-produce-name">{product.name}</h4>
-                  <p className="xfarm-produce-meta">
-                    <span className="xfarm-produce-price">₹{Math.round(product.price_paise / 100)}</span>
-                    <span className="xfarm-produce-unit">/ {product.unit || 'kg'}</span>
-                    <span className="xfarm-produce-dot">·</span>
-                    <span>{curation.origin}</span>
-                  </p>
-                </Link>
+                </div>
               );
             })}
           </div>

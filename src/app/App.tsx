@@ -29,6 +29,7 @@ const AppLayout: React.FC = () => {
     return (
       <main style={{ minHeight: '100vh' }}>
         <AppRoutes />
+        {location.pathname === '/' && <Sidebar />}
       </main>
     );
   }

@@ -418,3 +418,57 @@
   background-color: var(--border-subtle, rgba(15, 46, 34, 0.08));
   margin: 0 12px;
 }
+
+/* ─── Ultra-Smooth Cart Mobile Experience (< 640px) ──────────────────────── */
+@media (max-width: 640px) {
+  .cart-group-card {
+    padding: 16px 14px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+
+  .cart-item-row {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .cart-summary-card {
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+
+  .cart-software-stepper {
+    padding: 6px 10px;
+  }
+
+  .cart-step {
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .cart-step-divider {
+    margin: 0 4px;
+  }
+
+  .cart-empty-card {
+    padding: 32px 16px;
+    border-radius: 20px;
+  }
+
+  .cart-quick-pills {
+    gap: 6px;
+  }
+
+  .cart-quick-pill {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-suggested-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

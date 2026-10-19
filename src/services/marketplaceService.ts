@@ -55,7 +55,7 @@ interface CacheEntry<T> {
 const memoryCache = new Map<string, CacheEntry<unknown>>();
 const MEMORY_CACHE_TTL = 120 * 1000; // 2 minutes
 
-function withTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs = 4000): Promise<T> {
+function withTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs = 1200): Promise<T> {
   return Promise.race([
     Promise.resolve(promiseLike),
     new Promise<never>((_, reject) =>
@@ -90,20 +90,16 @@ export function invalidateMarketplaceCache(prefix?: string): void {
   }
 }
 
-// Initialize LocalStorage with seed data if absent
-function initializeStorage() {
-  if (!localStorage.getItem(STORAGE_KEYS.SERVICE_AREAS)) {
-    localStorage.setItem(STORAGE_KEYS.SERVICE_AREAS, JSON.stringify(INITIAL_SERVICE_AREAS));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.CATEGORIES)) {
-    localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(INITIAL_CATEGORIES));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.FARMERS)) {
-    localStorage.setItem(STORAGE_KEYS.FARMERS, JSON.stringify(INITIAL_FARMERS));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
-    const enrichedProducts = INITIAL_PRODUCTS.map(p => ({
+function getInitialEnrichedProducts(): Product[] {
+  return INITIAL_PRODUCTS.map(p => {
+    const category = INITIAL_CATEGORIES.find(c => c.id === p.category_id || c.slug === p.category_id);
+    const farmer = INITIAL_FARMERS.find(f => f.id === p.farmer_id);
+    const inventory = INITIAL_INVENTORIES.find(i => i.product_id === p.id);
+    return {
       ...p,
+      category,
+      farmer,
+      inventory,
       images: [
         {
           id: `img-${p.id}`,
@@ -114,15 +110,36 @@ function initializeStorage() {
           created_at: new Date().toISOString()
         }
       ]
-    }));
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(enrichedProducts));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.INVENTORY)) {
-    localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(INITIAL_INVENTORIES));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
-    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
-  }
+    };
+  });
+}
+
+// Initialize LocalStorage with seed data if absent & prime memory microcache
+function initializeStorage() {
+  const serviceAreasRaw = localStorage.getItem(STORAGE_KEYS.SERVICE_AREAS);
+  const categoriesRaw = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
+  const farmersRaw = localStorage.getItem(STORAGE_KEYS.FARMERS);
+  const productsRaw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+  const inventoryRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
+
+  const serviceAreas = serviceAreasRaw ? JSON.parse(serviceAreasRaw) : INITIAL_SERVICE_AREAS;
+  const categories = categoriesRaw ? JSON.parse(categoriesRaw) : INITIAL_CATEGORIES;
+  const farmers = farmersRaw ? JSON.parse(farmersRaw) : INITIAL_FARMERS;
+  const products = productsRaw ? JSON.parse(productsRaw) : getInitialEnrichedProducts();
+  const inventory = inventoryRaw ? JSON.parse(inventoryRaw) : INITIAL_INVENTORIES;
+
+  if (!serviceAreasRaw) localStorage.setItem(STORAGE_KEYS.SERVICE_AREAS, JSON.stringify(serviceAreas));
+  if (!categoriesRaw) localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
+  if (!farmersRaw) localStorage.setItem(STORAGE_KEYS.FARMERS, JSON.stringify(farmers));
+  if (!productsRaw) localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  if (!inventoryRaw) localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inventory));
+  if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
+
+  // Prime in-memory microcache for instant 0ms access
+  setCached('service_areas', serviceAreas);
+  setCached('categories', categories);
+  setCached('farmers', farmers);
+  setCached('raw_products', products);
 }
 
 initializeStorage();
@@ -254,91 +271,42 @@ export const marketplaceService = {
     const cached = getCached<Product[]>(filterKey);
     if (cached) return cached;
 
-    let products: Product[] | null = null;
-
-    if (isSupabaseConfigured && supabase) {
-      try {
-        let query = supabase.from('products').select(`
-          *,
-          category:categories(*),
-          farmer:farmer_profiles(*),
-          images:product_images(*),
-          inventory:inventory(*)
-        `).eq('is_active', true).eq('is_moderated', true);
-
-        if (filters?.categoryId && filters.categoryId !== 'all') {
-          query = query.eq('category_id', filters.categoryId);
-        }
-        if (filters?.onlyOrganic) {
-          query = query.eq('is_certified_organic', true);
-        }
-
-        const { data, error } = await withTimeout(query);
-        if (!error && data && data.length > 0) {
-          products = data as unknown as Product[];
-          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-          currentBackendStatus.status = 'connected';
-          currentBackendStatus.lastSyncTimestamp = Date.now();
-          currentBackendStatus.lastOrigin = 'live_supabase';
-        } else if (!error && data && data.length === 0) {
-          currentBackendStatus.status = 'empty_database';
-          currentBackendStatus.lastOrigin = 'fixture_fallback';
-        } else if (error) {
-          currentBackendStatus.status = error.code === '42501' ? 'permission_error' : 'network_error';
-          currentBackendStatus.lastErrorMessage = error.message;
-          currentBackendStatus.lastOrigin = 'fixture_fallback';
-        }
-      } catch (err) {
-        console.warn('Supabase products fetch fallback to local cache:', err);
-        currentBackendStatus.status = 'network_error';
-        currentBackendStatus.lastErrorMessage = err instanceof Error ? err.message : String(err);
-        currentBackendStatus.lastOrigin = 'fixture_fallback';
-      }
+    // Instant local memory or storage access (0ms latency)
+    let products: Product[] | null = getCached<Product[]>('raw_products');
+    if (!products || products.length === 0) {
+      const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+      products = raw ? JSON.parse(raw) : getInitialEnrichedProducts();
+      setCached('raw_products', products);
     }
 
-    if (!products) {
-      const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-      const fallbackProducts: Product[] = raw ? JSON.parse(raw) : INITIAL_PRODUCTS;
-      const categories = await this.getCategories();
-      const farmers = await this.getFarmers();
-      const inventoryRaw = localStorage.getItem(STORAGE_KEYS.INVENTORY);
-      const inventories: Inventory[] = inventoryRaw ? JSON.parse(inventoryRaw) : INITIAL_INVENTORIES;
+    // Non-blocking background revalidation with Supabase
+    if (isSupabaseConfigured && supabase) {
+      (async () => {
+        try {
+          const query = supabase.from('products').select(`
+            *,
+            category:categories(*),
+            farmer:farmer_profiles(*),
+            images:product_images(*),
+            inventory:inventory(*)
+          `).eq('is_active', true).eq('is_moderated', true);
 
-      // Enrich with joins and resolve category IDs across live Supabase & mock seed formats
-      products = fallbackProducts.map(p => {
-        const category = categories.find(c => 
-          c.id === p.category_id || 
-          c.slug === p.category_id ||
-          (p.category_id === 'cat-veg' && c.slug === 'vegetables') ||
-          (p.category_id === 'cat-fruit' && c.slug === 'fruits') ||
-          (p.category_id === 'cat-grains' && c.slug === 'grains') ||
-          (p.category_id === 'cat-pulses' && c.slug === 'pulses') ||
-          (p.category_id === 'cat-spices' && c.slug === 'spices') ||
-          (p.category_id === 'cat-dairy' && c.slug === 'dairy')
-        );
-        const resolvedCategoryId = category ? category.id : p.category_id;
-        const farmer = farmers.find(f => f.id === p.farmer_id || f.farm_name === p.farmer?.farm_name);
-
-        return {
-          ...p,
-          category_id: resolvedCategoryId,
-          category,
-          farmer,
-          inventory: inventories.find(i => i.product_id === p.id),
-          images: p.images || [{
-            id: `img-${p.id}`,
-            product_id: p.id,
-            image_url: PRODUCT_IMAGE_MAP[p.id] || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
-            sort_order: 0,
-            is_primary: true,
-            created_at: new Date().toISOString()
-          }]
-        };
-      });
+          const { data, error } = await withTimeout(query, 2500);
+          if (!error && data && data.length > 0) {
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(data));
+            setCached('raw_products', data as unknown as Product[]);
+            currentBackendStatus.status = 'connected';
+            currentBackendStatus.lastSyncTimestamp = Date.now();
+            currentBackendStatus.lastOrigin = 'live_supabase';
+          }
+        } catch {
+          // Graceful silent fallback
+        }
+      })();
     }
 
     // Apply Filters
-    let result = [...products];
+    let result: Product[] = [...(products || [])];
     if (filters) {
       if (filters.searchQuery) {
         const q = filters.searchQuery.toLowerCase().trim();

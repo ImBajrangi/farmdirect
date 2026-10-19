@@ -230,26 +230,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   {formatPaise(displayPricePaise, language)}
                 </span>
                 <span className="product-active-unit-sub-b">
-                  {currentQty} × {unitLabel}
+                  {currentQty} × {unitLabel} · {formatPaise(product.price_paise, language)}/{product.unit || 'kg'}
                 </span>
               </div>
 
-              <div
-                className="product-stepper-b product-stepper-spacious"
-                style={{
-                  backgroundColor: theme.pillBg,
-                }}
-              >
+              <div className="product-stepper-b product-stepper-spacious">
                 <button
                   type="button"
                   onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
                   className="stepper-btn-b"
-                  style={{ color: theme.accentColor }}
                   aria-label="Decrease quantity"
                 >
-                  <Minus size={13} strokeWidth={2.5} />
+                  <Minus size={14} strokeWidth={2.6} />
                 </button>
-                <span className="stepper-qty-b" style={{ color: theme.pillText }}>
+                <span className="stepper-qty-b">
                   {currentQty}
                 </span>
                 <button
@@ -257,10 +251,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   onClick={() => addToCart(product)}
                   disabled={currentQty >= availableQty}
                   className="stepper-btn-b"
-                  style={{ color: theme.accentColor }}
                   aria-label="Increase quantity"
                 >
-                  <Plus size={13} strokeWidth={2.5} />
+                  <Plus size={14} strokeWidth={2.6} />
                 </button>
               </div>
             </div>
@@ -307,11 +300,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   type="button"
                   onClick={() => addToCart(product)}
                   className="product-order-btn-b"
-                  style={{ color: theme.accentColor }}
                   aria-label={`Order ${cleanTitle} Now`}
                 >
                   <span>Order Now</span>
-                  <ArrowUpRight size={13} />
+                  <ArrowUpRight size={13} strokeWidth={2.4} />
                 </button>
               )}
             </div>

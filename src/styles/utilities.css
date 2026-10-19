@@ -7,18 +7,20 @@
   max-width: var(--max-width-page);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(1rem, 4vw, 3rem);
-  padding-right: clamp(1rem, 4vw, 3rem);
+  padding-left: clamp(0.75rem, 3.5vw, 3rem);
+  padding-right: clamp(0.75rem, 3.5vw, 3rem);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .page-content {
-  padding-top: var(--space-lg);
-  padding-bottom: calc(var(--bottom-nav-height) + var(--space-lg));
+  padding-top: var(--space-md);
+  padding-bottom: calc(var(--bottom-nav-height, 64px) + var(--space-xl) + env(safe-area-inset-bottom, 0px));
 }
 
 @media (min-width: 768px) {
   .page-content {
+    padding-top: var(--space-lg);
     padding-bottom: var(--space-xxl);
   }
 }

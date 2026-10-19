@@ -125,9 +125,9 @@ export const Header: React.FC = () => {
           </button>
 
           {/* Cart Primary CTA Pill */}
-          <Link to="/cart" className="btn btn-primary btn-sm" aria-label="Cart">
+          <Link to="/cart" className="btn btn-primary btn-sm header-cart-btn" aria-label="Cart">
             <ShoppingBag size={15} />
-            <span>Cart</span>
+            <span className="header-cart-label">Cart</span>
             {itemCount > 0 && <span className="cart-button-badge">{itemCount}</span>}
           </Link>
 
