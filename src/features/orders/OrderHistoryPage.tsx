@@ -28,6 +28,12 @@ export const OrderHistoryPage: React.FC = () => {
       }
     }
     loadOrders();
+
+    const handleDataChanged = () => {
+      loadOrders();
+    };
+    window.addEventListener('farmdirect:data-changed', handleDataChanged);
+    return () => window.removeEventListener('farmdirect:data-changed', handleDataChanged);
   }, [user]);
 
   return (

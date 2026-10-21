@@ -2,13 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Loader } from '../components/common/Loader';
 
-const FarmDirectPlatform = lazy(() => import('../features/home/FarmDirectPlatform').then(m => ({ default: m.FarmDirectPlatform })));
-const VisualPoetryPage = lazy(() => import('../features/visualpoetry/VisualPoetryPage').then(m => ({ default: m.VisualPoetryPage })));
-const OpenCallApp = lazy(() => import('../features/visualpoetry/saas/OpenCallApp').then(m => ({ default: m.OpenCallApp })));
-const CryptoSpherePage = lazy(() => import('../features/cryptosphere/CryptoSpherePage').then(m => ({ default: m.CryptoSpherePage })));
-const SkotHeroPage = lazy(() => import('../features/skot/SkotHeroPage').then(m => ({ default: m.SkotHeroPage })));
-const CreatixPage = lazy(() => import('../features/creatix/CreatixPage').then(m => ({ default: m.CreatixPage })));
 const HomePage = lazy(() => import('../features/home/HomePage').then(m => ({ default: m.HomePage })));
+const FarmDirectPlatform = lazy(() => import('../features/home/FarmDirectPlatform').then(m => ({ default: m.FarmDirectPlatform })));
 const MarketplacePage = lazy(() => import('../features/products/MarketplacePage').then(m => ({ default: m.MarketplacePage })));
 const ProductDetailsPage = lazy(() => import('../features/products/ProductDetailsPage').then(m => ({ default: m.ProductDetailsPage })));
 const CartPage = lazy(() => import('../features/cart/CartPage').then(m => ({ default: m.CartPage })));
@@ -23,7 +18,7 @@ const FarmerRegisterPage = lazy(() => import('../features/farmer/FarmerRegisterP
 const FarmerPublicProfilePage = lazy(() => import('../features/farmer/FarmerPublicProfilePage').then(m => ({ default: m.FarmerPublicProfilePage })));
 const AdminDashboard = lazy(() => import('../features/admin/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 
-// Lazy-loaded Informational & Trust Pages
+// Informational & Trust Pages
 const About = lazy(() => import('../pages/About').then(m => ({ default: m.About })));
 const Terms = lazy(() => import('../pages/PrivacyAndTerms').then(m => ({ default: m.Terms })));
 const Privacy = lazy(() => import('../pages/PrivacyAndTerms').then(m => ({ default: m.Privacy })));
@@ -34,36 +29,19 @@ export const AppRoutes: React.FC = () => {
   return (
     <Suspense fallback={<Loader size="md" message="Loading FarmDirect..." />}>
       <Routes>
-        {/* FarmDirect Master Landing Page on Root */}
+        {/* Core FarmDirect Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/platform" element={<FarmDirectPlatform />} />
-        <Route path="/visual-poetry" element={<VisualPoetryPage />} />
-
-        {/* OpenCall.ai Full SaaS Platform Architecture */}
-        <Route path="/app/*" element={<OpenCallApp />} />
-        <Route path="/dashboard" element={<OpenCallApp />} />
-        <Route path="/opencall" element={<OpenCallApp />} />
-        <Route path="/console" element={<OpenCallApp />} />
-
-        {/* CryptoSphere Landing Page */}
-        <Route path="/cryptosphere" element={<CryptoSpherePage />} />
-
-        {/* Skot Electric Moped Hero Section */}
-        <Route path="/skot" element={<SkotHeroPage />} />
-
-        {/* Creatix Creative Agency UI */}
-        <Route path="/creatix" element={<CreatixPage />} />
-
-        {/* FarmDirect Agriculture Marketplace Views */}
-        <Route path="/home" element={<HomePage />} />
         <Route path="/farmdirect" element={<HomePage />} />
+        <Route path="/platform" element={<FarmDirectPlatform />} />
+
+        {/* Marketplace & Catalog */}
         <Route path="/products" element={<MarketplacePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/product/:slug" element={<ProductDetailsPage />} />
         <Route path="/farmer/:id" element={<FarmerPublicProfilePage />} />
 
-        {/* Customer Purchasing */}
+        {/* Customer Purchasing & Orders */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
@@ -84,7 +62,7 @@ export const AppRoutes: React.FC = () => {
         {/* Admin Governance */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-        {/* Trust & Static Pages */}
+        {/* Trust & Policy Pages */}
         <Route path="/about" element={<About />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />

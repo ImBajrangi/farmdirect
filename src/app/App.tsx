@@ -15,15 +15,7 @@ const AppLayout: React.FC = () => {
   const location = useLocation();
   const isDedicatedView =
     location.pathname === '/' ||
-    location.pathname === '/platform' ||
-    location.pathname.startsWith('/app') ||
-    location.pathname === '/dashboard' ||
-    location.pathname === '/opencall' ||
-    location.pathname === '/console' ||
-    location.pathname === '/visual-poetry' ||
-    location.pathname === '/cryptosphere' ||
-    location.pathname === '/skot' ||
-    location.pathname === '/creatix';
+    location.pathname === '/platform';
 
   if (isDedicatedView) {
     return (

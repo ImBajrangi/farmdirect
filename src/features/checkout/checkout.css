@@ -308,14 +308,14 @@
 }
 
 .payment-option-row:hover {
-  border-color: rgba(21, 128, 61, 0.4);
+  border-color: rgba(0, 96, 68, 0.3);
   background-color: #fbfdfb;
 }
 
 .payment-option-row.active {
-  border-color: #15803d;
+  border-color: #006044;
   background-color: #f2f9f3;
-  box-shadow: 0 0 0 1px #15803d, 0 4px 12px rgba(21, 128, 61, 0.08);
+  box-shadow: 0 0 0 1px #006044, 0 4px 12px rgba(0, 96, 68, 0.08);
 }
 
 .payment-option-left {
@@ -329,7 +329,7 @@
   height: 44px;
   border-radius: 12px;
   background-color: #edf5ee;
-  color: #15803d;
+  color: #006044;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -338,7 +338,7 @@
 }
 
 .payment-option-row.active .payment-option-icon-box {
-  background-color: #15803d;
+  background-color: #006044;
   color: #ffffff;
 }
 

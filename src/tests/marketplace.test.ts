@@ -54,6 +54,9 @@ describe('Multi-Farmer Atomic Checkout & Stock Isolation', () => {
     expect(farmer1Prod).toBeDefined();
     expect(farmer2Prod).toBeDefined();
 
+    await marketplaceService.updateInventory(farmer1Prod.id, 20);
+    await marketplaceService.updateInventory(farmer2Prod.id, 20);
+
     const checkoutResult = await marketplaceService.processCheckout({
       customerId: 'user-test',
       customerProfile: {

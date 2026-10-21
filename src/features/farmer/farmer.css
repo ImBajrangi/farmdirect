@@ -5,7 +5,25 @@
   padding-bottom: var(--space-12);
 }
 
-/* 1. SaaS Farm Profile Header Card */
+/* 1. SaaS Farm Profile Header Card & Composite Hero */
+.farmer-composite-hero {
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(15, 46, 34, 0.03);
+}
+
+.farmer-composite-hero .farmer-saas-header {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+  padding: 1.25rem 1.75rem;
+  border-top: 1px solid rgba(15, 46, 34, 0.06);
+}
+
 .farmer-saas-header {
   background: #ffffff;
   border: 1px solid var(--color-border);
@@ -24,6 +42,46 @@
     justify-content: space-between;
     align-items: center;
   }
+}
+
+/* 2-Column Responsive Workdesk Grid */
+.farmer-workdesk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .farmer-workdesk-grid {
+    grid-template-columns: 1.6fr 1.05fr;
+  }
+}
+
+.farmer-sidebar-dossier-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 20px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(15, 46, 34, 0.03);
+}
+
+.farmer-dossier-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.farmer-dossier-title {
+  font-family: var(--font-display, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text, #0F2E22);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .farmer-profile-main {
@@ -59,10 +117,11 @@
 }
 
 .farmer-farm-name {
+  font-family: var(--font-display, sans-serif);
   font-size: 1.35rem;
-  font-weight: 700;
+  font-weight: 550;
   color: var(--color-text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   margin: 0;
   line-height: 1.2;
 }
@@ -72,11 +131,11 @@
   align-items: center;
   gap: 5px;
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #065f46;
+  font-weight: 550;
+  color: #006044;
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border-radius: 9999px;
 }
 
@@ -88,9 +147,9 @@
 }
 
 .farmer-status-pill.verified {
-  color: #0f766e;
-  background: #f0fdfa;
-  border: 1px solid #99f6e4;
+  color: #006044;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
 }
 
 .farmer-meta-dot {
@@ -118,11 +177,11 @@
   align-items: center;
   gap: 5px;
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #0f766e;
-  background: #f0fdfa;
-  border: 1px solid #ccfbf1;
-  padding: 2px 9px;
+  font-weight: 550;
+  color: #006044;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 2px 10px;
   border-radius: 9999px;
 }
 
@@ -141,9 +200,9 @@
   border: 1px solid var(--color-border);
   color: var(--color-text);
   font-size: 0.8125rem;
-  font-weight: 600;
-  padding: 0.5rem 0.875rem;
-  border-radius: var(--radius-md);
+  font-weight: 550;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full, 9999px);
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
@@ -170,18 +229,18 @@
 
 .farmer-kpi-card {
   background: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 20px;
   padding: 1.25rem 1.35rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 10px rgba(15, 46, 34, 0.03);
   display: flex;
   flex-direction: column;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .farmer-kpi-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  border-color: rgba(15, 46, 34, 0.16);
+  box-shadow: 0 4px 16px rgba(15, 46, 34, 0.05);
 }
 
 .farmer-kpi-top {
@@ -193,16 +252,16 @@
 
 .farmer-kpi-title {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #64748b;
+  color: var(--color-text-muted, #536F61);
 }
 
 .farmer-kpi-icon-wrap {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -223,7 +282,7 @@
 .farmer-kpi-icon-wrap.emerald {
   background: #f0fdf4;
   border: 1px solid #dcfce7;
-  color: #059669;
+  color: #006044;
 }
 
 .farmer-kpi-icon-wrap.purple {
@@ -233,16 +292,17 @@
 }
 
 .farmer-kpi-value {
+  font-family: var(--font-display, sans-serif);
   font-size: 1.875rem;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.03em;
+  font-weight: 550;
+  color: var(--color-text, #0F2E22);
+  letter-spacing: -0.025em;
   line-height: 1.1;
   margin-bottom: 0.4rem;
 }
 
 .farmer-kpi-value.revenue {
-  color: #15803d;
+  color: #006044;
 }
 
 .farmer-kpi-badge {
@@ -528,16 +588,50 @@
   margin-left: 1px;
 }
 
-/* Tactile Quick-Stock Stepper Box */
+/* Tactile Quick-Stock Stepper Box & Level Meter */
 .farmer-crop-stepper-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 0.5rem 0.75rem;
+  background: #f8faf8;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 12px;
+  padding: 0.625rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0.875rem;
+}
+
+.stepper-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.875rem;
+  width: 100%;
+}
+
+.farmer-stock-meter-track {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(15, 46, 34, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 2px 0 2px;
+}
+
+.farmer-stock-meter-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.farmer-stock-meter-fill.good {
+  background-color: #006044;
+}
+
+.farmer-stock-meter-fill.low {
+  background-color: #d97706;
+}
+
+.farmer-stock-meter-fill.out {
+  background-color: #dc2626;
 }
 
 .stepper-label-col {
@@ -548,19 +642,19 @@
 
 .stepper-title {
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #64748b;
+  color: var(--color-text-muted, #536F61);
 }
 
 .stepper-status {
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .stepper-status.good {
-  color: #047857;
+  color: #006044;
 }
 
 .stepper-status.low {
@@ -579,40 +673,40 @@
 
 .stepper-btn {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #334155;
+  border: 1px solid rgba(15, 46, 34, 0.16);
+  color: #0F2E22;
   font-size: 0.75rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 9999px;
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
 }
 
 .stepper-btn:hover:not(:disabled) {
-  background: #047857;
+  background: #006044;
   color: #ffffff;
-  border-color: #047857;
+  border-color: #006044;
 }
 
 .stepper-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
 .stepper-quantity-display {
   font-size: 0.8125rem;
-  font-weight: 700;
-  color: #0f172a;
-  min-width: 44px;
+  font-weight: 600;
+  color: #0F2E22;
+  min-width: 48px;
   text-align: center;
 }
 
 .stepper-quantity-display small {
   font-size: 0.6875rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--color-text-muted, #536F61);
 }
 
 /* Card Actions Bar */
@@ -1142,13 +1236,13 @@
 
 /* Product Form Box */
 .product-form-box {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  padding: var(--space-6);
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
   max-width: 700px;
   margin: 0 auto;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 20px rgba(15, 46, 34, 0.04);
 }
 
 .form-row-2 {
@@ -1172,6 +1266,60 @@
   cursor: pointer;
   margin-top: var(--space-2);
   margin-bottom: var(--space-4);
+}
+
+/* Modern Form Sections & Grouping */
+.form-section-card {
+  background: #fbfdfc;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.15s ease;
+}
+
+.form-section-card:focus-within {
+  border-color: rgba(0, 96, 68, 0.25);
+}
+
+.form-section-header {
+  margin-bottom: 1rem;
+}
+
+.form-section-title {
+  font-family: var(--font-display, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text, #0F2E22);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.2rem;
+}
+
+.form-section-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #536F61);
+}
+
+.product-image-preview-wrap {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #ffffff;
+  border: 1px dashed rgba(15, 46, 34, 0.15);
+  border-radius: 12px;
+}
+
+.product-image-preview-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(15, 46, 34, 0.1);
+  background: #f1f5f9;
 }
 
 /* ==========================================================================

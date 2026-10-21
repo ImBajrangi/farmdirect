@@ -13,6 +13,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useCart } from '../../features/cart/CartContext';
 import { UserRole } from '../../types';
+import { FruitBasketsLogoIcon } from '../common/FruitBasketsLogoIcon';
 import './layout.css';
 
 export const Header: React.FC = () => {
@@ -46,8 +47,10 @@ export const Header: React.FC = () => {
       <div className="nav-pill-wrapper">
         {/* Brand Lockup */}
         <Link to="/" className="header-brand">
-          <div className="header-logo-icon">🌱</div>
-          <span className="header-brand-title">FarmDirect.</span>
+          <div className="header-logo-icon">
+            <FruitBasketsLogoIcon size={18} color="#FFFFFF" />
+          </div>
+          <span className="header-brand-title">FarmDirect</span>
         </Link>
 
         {/* Desktop Search Pill */}

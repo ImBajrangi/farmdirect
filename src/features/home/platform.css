@@ -6,20 +6,20 @@
    ========================================================================== */
 
 :root {
-  --fd-canvas: #f3f7f4;
-  --fd-canvas-subtle: #eaf1ec;
+  --fd-canvas: #f7f9f6;
+  --fd-canvas-subtle: #eef3ef;
   --fd-card-bg: #ffffff;
-  --fd-forest: #0f2e22;
-  --fd-forest-light: #1b4d3a;
-  --fd-forest-soft: #285e48;
-  --fd-lime: #d9f758;
-  --fd-lime-hover: #cbf23f;
-  --fd-lime-subtle: rgba(217, 247, 88, 0.22);
+  --fd-forest: #006044;
+  --fd-forest-light: #004330;
+  --fd-forest-soft: #0F2E22;
+  --fd-lime: #ECF96E;
+  --fd-lime-hover: #e0f050;
+  --fd-lime-subtle: rgba(236, 249, 110, 0.25);
   --fd-text-main: #0f2e22;
-  --fd-text-muted: #4e6b5d;
-  --fd-text-faint: #789285;
-  --fd-border: rgba(15, 46, 34, 0.09);
-  --fd-border-medium: rgba(15, 46, 34, 0.16);
+  --fd-text-muted: #536F61;
+  --fd-text-faint: #7E978B;
+  --fd-border: rgba(15, 46, 34, 0.08);
+  --fd-border-medium: rgba(15, 46, 34, 0.14);
   --fd-shadow-sm: 0 4px 12px rgba(15, 46, 34, 0.03);
   --fd-shadow-card: 0 16px 40px -10px rgba(15, 46, 34, 0.06), 0 2px 6px rgba(15, 46, 34, 0.02);
   --fd-shadow-hover: 0 24px 48px -12px rgba(15, 46, 34, 0.12), 0 4px 12px rgba(15, 46, 34, 0.04);

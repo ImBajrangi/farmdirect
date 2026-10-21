@@ -39,13 +39,22 @@ export const CheckoutPage: React.FC = () => {
 
   // New Address inline form state
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
-  const [newRecipient, setNewRecipient] = useState('');
-  const [newPhone, setNewPhone] = useState('');
+  const [newRecipient, setNewRecipient] = useState(user?.full_name || '');
+  const [newPhone, setNewPhone] = useState(user?.phone || '');
   const [newLine1, setNewLine1] = useState('');
-  const [newCity, setNewCity] = useState('Nashik');
-  const [newDistrict, setNewDistrict] = useState('Nashik');
-  const [newPincode, setNewPincode] = useState('422002');
+  const [newCity, setNewCity] = useState('');
+  const [newDistrict, setNewDistrict] = useState('');
+  const [newState, setNewState] = useState('');
+  const [newPincode, setNewPincode] = useState('');
   const [newLabel, setNewLabel] = useState('Home');
+
+  // Automatically select address when addresses load from database
+  React.useEffect(() => {
+    if ((!selectedAddressId || !addresses.some(a => a.id === selectedAddressId)) && addresses.length > 0) {
+      const def = addresses.find((a) => a.is_default) || addresses[0];
+      if (def) setSelectedAddressId(def.id);
+    }
+  }, [addresses, selectedAddressId]);
 
   if (items.length === 0) {
     navigate('/cart');
@@ -64,24 +73,28 @@ export const CheckoutPage: React.FC = () => {
 
   const finalTotalPaise = totalSubtotalPaise + deliveryFeePaise;
 
-  const handleAddNewAddress = (e: React.FormEvent) => {
+  const handleAddNewAddress = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newRecipient || !newPhone || !newLine1 || !newPincode) return;
+    if (!newRecipient || !newPhone || !newLine1 || !newPincode || !newCity) return;
 
-    const created = addAddress({
-      label: newLabel,
-      recipient_name: newRecipient,
-      phone: newPhone,
-      address_line_1: newLine1,
-      city: newCity,
-      district: newDistrict,
-      state: 'Maharashtra',
-      pincode: newPincode,
-      is_default: false,
-    });
+    try {
+      const created = await addAddress({
+        label: newLabel || 'Home',
+        recipient_name: newRecipient,
+        phone: newPhone,
+        address_line_1: newLine1,
+        city: newCity,
+        district: newDistrict || newCity,
+        state: newState || 'Maharashtra',
+        pincode: newPincode,
+        is_default: addresses.length === 0,
+      });
 
-    setSelectedAddressId(created.id);
-    setShowNewAddressForm(false);
+      setSelectedAddressId(created.id);
+      setShowNewAddressForm(false);
+    } catch (err) {
+      console.error('Failed to add address:', err);
+    }
   };
 
   const completeCheckout = async (method: 'razorpay_online' | 'cod', paymentId?: string) => {
@@ -186,17 +199,26 @@ export const CheckoutPage: React.FC = () => {
                 <div className="form-grid-2">
                   <Input
                     label="City"
+                    placeholder="e.g. Pune / Nashik"
                     value={newCity}
                     onChange={(e) => setNewCity(e.target.value)}
                     required
                   />
                   <Input
-                    label="Pincode"
-                    value={newPincode}
-                    onChange={(e) => setNewPincode(e.target.value)}
+                    label="State"
+                    placeholder="e.g. Maharashtra"
+                    value={newState}
+                    onChange={(e) => setNewState(e.target.value)}
                     required
                   />
                 </div>
+                <Input
+                  label="Pincode"
+                  placeholder="6-digit pincode"
+                  value={newPincode}
+                  onChange={(e) => setNewPincode(e.target.value)}
+                  required
+                />
                 <div className="form-actions-row">
                   <Button
                     type="button"

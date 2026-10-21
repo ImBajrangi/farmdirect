@@ -42,6 +42,7 @@ import { Product, Category, Order, FarmerProfile, UnitOfSale, ServiceArea, Marke
 import { CustomDropdown, DropdownOption } from '../../components/common/CustomDropdown';
 import { formatPaise } from '../../utils/currency';
 import { ProductCard } from '../products/ProductCard';
+import { FruitBasketsLogoIcon } from '../../components/common/FruitBasketsLogoIcon';
 import './platform.css';
 import '../products/products.css';
 
@@ -349,7 +350,9 @@ export const FarmDirectPlatform: React.FC = () => {
         <header className="fd-island-pill">
           {/* Brand Wordmark */}
           <Link to="/" className="fd-brand-group">
-            <div className="fd-brand-badge-icon">🌱</div>
+            <div className="fd-brand-badge-icon">
+              <FruitBasketsLogoIcon size={20} color="#FFFFFF" />
+            </div>
             <span className="fd-brand-wordmark">FarmDirect</span>
             <span className="fd-brand-subtag">India Direct</span>
           </Link>

@@ -13,17 +13,17 @@ const LOCALIZED_CONTENT = {
   en: {
     badge: '🌅 6:00 AM HARVEST DISPATCH',
     titleMain: 'Fresh Farm Marketplace',
-    titleSub: ' — Direct From Nashik & Pune',
+    titleSub: ' — 100% Direct From Farmers',
     allProduce: 'All Harvest',
-    searchPlaceholder: 'Search fresh produce: Nashik Onions, Grapes, Spinach, Wheat, Gir Cow Ghee...',
+    searchPlaceholder: 'Search fresh produce: Farm Onions, Tomatoes, Grapes, Spinach, Wheat, Pure Ghee...',
     staplesLabel: '🔥 Quick:',
     staples: [
-      { name: 'Nashik Red Onions', query: 'onion' },
+      { name: 'Red Onions', query: 'onion' },
+      { name: 'Country Tomatoes', query: 'tomato' },
       { name: 'Thompson Grapes', query: 'grapes' },
-      { name: 'Tender Spinach', query: 'spinach' },
+      { name: 'Baby Spinach', query: 'spinach' },
       { name: 'Lokwan Wheat', query: 'wheat' },
       { name: 'Gir Cow Ghee', query: 'ghee' },
-      { name: 'Vine Tomatoes', query: 'tomato' },
     ],
     categories: {
       'cat-veg': { label: 'Fresh Vegetables', icon: '🥬' },
@@ -42,17 +42,17 @@ const LOCALIZED_CONTENT = {
   hi: {
     badge: '🌅 सकाळी 6:00 AM थेट शेतातून',
     titleMain: 'सीधे खेत से आपकी रसोई तक',
-    titleSub: ' — नासिक और पुणे से ताज़ा',
+    titleSub: ' — 100% किसानों से सीधा',
     allProduce: 'सर्व शेतमाल (All)',
-    searchPlaceholder: 'खोजें: नाशिक कांदा, Thompson Grapes, देशी पालक, लोकवन गहू, तूप...',
+    searchPlaceholder: 'खोजें: कांदा, गावरान टोमॅटो, द्राक्षे, कोवळा पालक, लोकवन गहू, शुद्ध तूप...',
     staplesLabel: '🔥 रोजची गरज:',
     staples: [
-      { name: 'नाशिक लाल कांदा', query: 'onion' },
-      { name: 'Thompson Grapes', query: 'grapes' },
-      { name: 'देशी कोवळा पालक', query: 'spinach' },
-      { name: 'लोकवन गहू', query: 'wheat' },
-      { name: 'गिर गाय बिलोना तूप', query: 'ghee' },
+      { name: 'लाल कांदा', query: 'onion' },
       { name: 'गावरान टोमॅटो', query: 'tomato' },
+      { name: 'थॉम्पसन द्राक्षे', query: 'grapes' },
+      { name: 'कोवळा पालक', query: 'spinach' },
+      { name: 'लोकवन गहू', query: 'wheat' },
+      { name: 'गिर गाय तूप', query: 'ghee' },
     ],
     categories: {
       'cat-veg': { label: 'ताजी भाजीपाला', icon: '🥬' },
@@ -62,7 +62,7 @@ const LOCALIZED_CONTENT = {
       'cat-spices': { label: 'मसाले व गूळ', icon: '🌶️' },
       'cat-dairy': { label: 'बिलोना तूप व डेअरी', icon: '🥛' },
     } as Record<string, { label: string; icon: string }>,
-    allHubs: 'सर्व हब्स (Nashik & Pune)',
+    allHubs: 'सर्व हब्स',
     sortNewest: 'आजची ताजी तोडणी',
     sortPriceAsc: 'कमी किंमत',
     sortPriceDesc: 'प्रीमियम आधी',
@@ -91,38 +91,47 @@ export const MarketplacePage: React.FC = () => {
   const [onlyOrganic, setOnlyOrganic] = useState(false);
   const [sortBy, setSortBy] = useState<MarketplaceFilters['sortBy']>('newest');
 
-  useEffect(() => {
-    async function loadMeta() {
-      const [cats, areas] = await Promise.all([
-        productService.getCategories(),
-        productService.getServiceAreas(),
-      ]);
-      setCategories(cats);
-      setServiceAreas(areas);
+  const loadMeta = async () => {
+    const [cats, areas] = await Promise.all([
+      productService.getCategories(),
+      productService.getServiceAreas(),
+    ]);
+    setCategories(cats);
+    setServiceAreas(areas);
+  };
+
+  const fetchFiltered = async () => {
+    setLoading(true);
+    try {
+      const filters: MarketplaceFilters = {
+        searchQuery,
+        categoryId: selectedCategory === 'all' ? undefined : selectedCategory,
+        serviceAreaId: selectedServiceArea === 'all' ? undefined : selectedServiceArea,
+        onlyOrganic,
+        sortBy,
+      };
+      const list = await productService.getProducts(filters);
+      setProducts(list);
+    } catch (err) {
+      console.error('Failed to load products', err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadMeta();
+
+    // Live Database Sync Listener: re-fetch immediately on any Supabase update
+    const handleDataChanged = () => {
+      loadMeta();
+      fetchFiltered();
+    };
+    window.addEventListener('farmdirect:data-changed', handleDataChanged);
+    return () => window.removeEventListener('farmdirect:data-changed', handleDataChanged);
   }, []);
 
   useEffect(() => {
-    async function fetchFiltered() {
-      setLoading(true);
-      try {
-        const filters: MarketplaceFilters = {
-          searchQuery,
-          categoryId: selectedCategory === 'all' ? undefined : selectedCategory,
-          serviceAreaId: selectedServiceArea === 'all' ? undefined : selectedServiceArea,
-          onlyOrganic,
-          sortBy,
-        };
-        const list = await productService.getProducts(filters);
-        setProducts(list);
-      } catch (err) {
-        console.error('Failed to load products', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     const timer = setTimeout(fetchFiltered, 200);
     return () => clearTimeout(timer);
   }, [searchQuery, selectedCategory, selectedServiceArea, onlyOrganic, sortBy]);

@@ -28,6 +28,7 @@ import { Order, Product, OrderStatus } from './farmer.types';
 import { formatPaise } from '../../utils/currency';
 import { Button } from '../../components/common/Button';
 import { Loader } from '../../components/common/Loader';
+import { ImagePlaceholder } from '../../components/common/ImagePlaceholder';
 import './farmer.css';
 
 export const FarmerDashboard: React.FC = () => {
@@ -43,7 +44,6 @@ export const FarmerDashboard: React.FC = () => {
   // Crop search and inventory filters
   const [cropFilter, setCropFilter] = useState<'all' | 'in_stock' | 'low_stock'>('all');
   const [cropSearch, setCropSearch] = useState<string>('');
-  const [isCreatingDemoOrder, setIsCreatingDemoOrder] = useState<boolean>(false);
 
   // Interactive Stock Edit Modal State
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -69,6 +69,13 @@ export const FarmerDashboard: React.FC = () => {
 
   useEffect(() => {
     loadData();
+
+    // Live Database Synchronization: update on real-time database changes
+    const handleDataChanged = () => {
+      loadData();
+    };
+    window.addEventListener('farmdirect:data-changed', handleDataChanged);
+    return () => window.removeEventListener('farmdirect:data-changed', handleDataChanged);
   }, [farmId]);
 
   const handleUpdateOrderStatus = async (
@@ -95,27 +102,6 @@ export const FarmerDashboard: React.FC = () => {
       await loadData();
     } catch {
       alert('Failed to update stock');
-    }
-  };
-
-  const handleCreateDemoOrder = async () => {
-    setIsCreatingDemoOrder(true);
-    try {
-      await farmerService.createDemoOrder(farmId);
-      await loadData();
-    } catch {
-      alert('Failed to create demo harvest order');
-    } finally {
-      setIsCreatingDemoOrder(false);
-    }
-  };
-
-  const handleClearDemoOrders = async () => {
-    try {
-      await farmerService.clearDemoOrders(farmId);
-      await loadData();
-    } catch {
-      alert('Failed to clear demo orders');
     }
   };
 
@@ -183,47 +169,57 @@ export const FarmerDashboard: React.FC = () => {
 
   return (
     <div className="page-container farmer-dashboard">
-      {/* SaaS Farm Profile Header Card */}
-      <div className="farmer-saas-header">
-        <div className="farmer-profile-main">
-          <div className="farmer-farm-emblem">
-            <Tractor size={28} />
-          </div>
-          <div className="farmer-profile-text">
-            <div className="farmer-title-row">
-              <h1 className="farmer-farm-name">
-                {farmerProfile?.farm_name || 'Patil Agro Orchards'}
-              </h1>
-              <span className="farmer-status-pill live">
-                <span className="live-dot" /> Live Node
-              </span>
-              <span className="farmer-status-pill verified">
-                <ShieldCheck size={12} /> PGS Natural
-              </span>
-            </div>
-            <div className="farmer-meta-chips">
-              <span className="farmer-meta-chip">
-                <MapPin size={13} />
-                {farmerProfile?.village || 'Dindori'}, {farmerProfile?.district || 'Nashik'} • {farmerProfile?.land_area_acres || 8.5} Registered Acres
-              </span>
-              <span className="farmer-meta-dot">•</span>
-              <span className="farmer-meta-chip">
-                Node ID: #FD-NSK-042
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* SaaS Farm Composite Hero with Landholding Cover Placeholder */}
+      <div className="farmer-composite-hero">
+        <ImagePlaceholder
+          aspectRatio="21:9"
+          height={140}
+          label="Farm Landholding Panoramic Cover (21:9)"
+          sublabel="Replace with 1920x600px farm landscape photography"
+          borderRadius="24px 24px 0 0"
+        />
 
-        <div className="farmer-header-actions">
-          <Link to={`/farmer/${farmId}`} className="farmer-btn-secondary">
-            <span>Public Storefront</span>
-            <ExternalLink size={14} />
-          </Link>
-          <Link to="/farmer/products/new">
-            <Button variant="primary" size="sm">
-              <Plus size={16} /> Add Harvest Produce
-            </Button>
-          </Link>
+        <div className="farmer-saas-header">
+          <div className="farmer-profile-main">
+            <div className="farmer-farm-emblem">
+              <Tractor size={28} />
+            </div>
+            <div className="farmer-profile-text">
+              <div className="farmer-title-row">
+                <h1 className="farmer-farm-name">
+                  {farmerProfile?.farm_name || 'Patil Agro Orchards'}
+                </h1>
+                <span className="farmer-status-pill live">
+                  <span className="live-dot" /> Live Node
+                </span>
+                <span className="farmer-status-pill verified">
+                  <ShieldCheck size={12} /> PGS Natural
+                </span>
+              </div>
+              <div className="farmer-meta-chips">
+                <span className="farmer-meta-chip">
+                  <MapPin size={13} />
+                  {farmerProfile?.village || 'Dindori'}, {farmerProfile?.district || 'Nashik'} • {farmerProfile?.land_area_acres || 8.5} Registered Acres
+                </span>
+                <span className="farmer-meta-dot">•</span>
+                <span className="farmer-meta-chip">
+                  Node ID: #FD-NSK-042
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="farmer-header-actions">
+            <Link to={`/farmer/${farmId}`} className="farmer-btn-secondary">
+              <span>Public Storefront</span>
+              <ExternalLink size={14} />
+            </Link>
+            <Link to="/farmer/products/new">
+              <Button variant="primary" size="sm">
+                <Plus size={16} /> Add Harvest Produce
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -282,54 +278,56 @@ export const FarmerDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Produce Inventory Management Section */}
-      <section className="farmer-section-block">
-        <div className="farmer-section-header">
-          <div>
-            <h2 className="farmer-section-title">
-              <Layers size={18} className="text-emerald-700" /> My Listed Produce ({filteredProducts.length})
-            </h2>
-            <p className="farmer-section-desc">
-              Manage harvest stock levels, prices per kg, and active marketplace visibility
-            </p>
-          </div>
+      {/* 2-Column Responsive Workdesk Grid */}
+      <div className="farmer-workdesk-grid">
+        {/* Left Column: Produce Inventory Management Section */}
+        <section className="farmer-section-block">
+          <div className="farmer-section-header">
+            <div>
+              <h2 className="farmer-section-title">
+                <Layers size={18} className="text-emerald-700" /> My Listed Produce ({filteredProducts.length})
+              </h2>
+              <p className="farmer-section-desc">
+                Manage harvest stock levels, prices per kg, and active marketplace visibility
+              </p>
+            </div>
 
-          <div className="farmer-produce-toolbar">
-            <div className="farmer-produce-search">
-              <Search size={14} className="farmer-search-icon" />
-              <input
-                type="text"
-                placeholder="Search crop name..."
-                value={cropSearch}
-                onChange={(e) => setCropSearch(e.target.value)}
-                className="farmer-search-input"
-              />
-            </div>
-            <div className="farmer-filter-pills">
-              <button
-                type="button"
-                className={`farmer-filter-pill ${cropFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setCropFilter('all')}
-              >
-                All ({products.length})
-              </button>
-              <button
-                type="button"
-                className={`farmer-filter-pill ${cropFilter === 'in_stock' ? 'active' : ''}`}
-                onClick={() => setCropFilter('in_stock')}
-              >
-                In Stock ({products.filter(p => (p.inventory?.available_quantity ?? 0) > 0).length})
-              </button>
-              <button
-                type="button"
-                className={`farmer-filter-pill ${cropFilter === 'low_stock' ? 'active' : ''}`}
-                onClick={() => setCropFilter('low_stock')}
-              >
-                Low / Out ({products.filter(p => (p.inventory?.available_quantity ?? 0) <= 50).length})
-              </button>
+            <div className="farmer-produce-toolbar">
+              <div className="farmer-produce-search">
+                <Search size={14} className="farmer-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search crop name..."
+                  value={cropSearch}
+                  onChange={(e) => setCropSearch(e.target.value)}
+                  className="farmer-search-input"
+                />
+              </div>
+              <div className="farmer-filter-pills">
+                <button
+                  type="button"
+                  className={`farmer-filter-pill ${cropFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setCropFilter('all')}
+                >
+                  All ({products.length})
+                </button>
+                <button
+                  type="button"
+                  className={`farmer-filter-pill ${cropFilter === 'in_stock' ? 'active' : ''}`}
+                  onClick={() => setCropFilter('in_stock')}
+                >
+                  In Stock ({products.filter(p => (p.inventory?.available_quantity ?? 0) > 0).length})
+                </button>
+                <button
+                  type="button"
+                  className={`farmer-filter-pill ${cropFilter === 'low_stock' ? 'active' : ''}`}
+                  onClick={() => setCropFilter('low_stock')}
+                >
+                  Low / Out ({products.filter(p => (p.inventory?.available_quantity ?? 0) <= 50).length})
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
         <div className="farmer-inventory-grid">
           {filteredProducts.map((prod) => {
@@ -369,35 +367,44 @@ export const FarmerDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Tactile Quick-Stock Stepper */}
+                  {/* Tactile Quick-Stock Stepper & Visual Level Meter */}
                   <div className="farmer-crop-stepper-box">
-                    <div className="stepper-label-col">
-                      <span className="stepper-title">Available Stock</span>
-                      <span className={`stepper-status ${isOutOfStock ? 'out' : isLowStock ? 'low' : 'good'}`}>
-                        {isOutOfStock ? 'Out of Stock' : isLowStock ? 'Low Stock Warning' : 'Healthy Inventory'}
-                      </span>
+                    <div className="stepper-top-row">
+                      <div className="stepper-label-col">
+                        <span className="stepper-title">Available Stock</span>
+                        <span className={`stepper-status ${isOutOfStock ? 'out' : isLowStock ? 'low' : 'good'}`}>
+                          {isOutOfStock ? 'Out of Stock' : isLowStock ? 'Low Stock Warning' : 'Healthy Inventory'}
+                        </span>
+                      </div>
+                      <div className="stepper-action-group">
+                        <button
+                          type="button"
+                          className="stepper-btn minus"
+                          onClick={() => handleQuickDelta(prod, -10)}
+                          title="Decrease by 10 kg"
+                          disabled={availableQty === 0}
+                        >
+                          −10
+                        </button>
+                        <span className="stepper-quantity-display">
+                          <strong>{availableQty}</strong> <small>{prod.unit}</small>
+                        </span>
+                        <button
+                          type="button"
+                          className="stepper-btn plus"
+                          onClick={() => handleQuickDelta(prod, +10)}
+                          title="Increase by 10 kg"
+                        >
+                          +10
+                        </button>
+                      </div>
                     </div>
-                    <div className="stepper-action-group">
-                      <button
-                        type="button"
-                        className="stepper-btn minus"
-                        onClick={() => handleQuickDelta(prod, -10)}
-                        title="Decrease by 10 kg"
-                        disabled={availableQty === 0}
-                      >
-                        −10
-                      </button>
-                      <span className="stepper-quantity-display">
-                        <strong>{availableQty}</strong> <small>{prod.unit}</small>
-                      </span>
-                      <button
-                        type="button"
-                        className="stepper-btn plus"
-                        onClick={() => handleQuickDelta(prod, +10)}
-                        title="Increase by 10 kg"
-                      >
-                        +10
-                      </button>
+
+                    <div className="farmer-stock-meter-track" title={`Stock level: ${availableQty} ${prod.unit}`}>
+                      <div
+                        className={`farmer-stock-meter-fill ${isOutOfStock ? 'out' : isLowStock ? 'low' : 'good'}`}
+                        style={{ width: `${isOutOfStock ? 0 : Math.min(100, Math.max(10, (availableQty / 200) * 100))}%` }}
+                      />
                     </div>
                   </div>
 
@@ -427,8 +434,34 @@ export const FarmerDashboard: React.FC = () => {
         </div>
       </section>
 
-      {/* Orders for Harvest & Dispatch Section */}
-      <section className="farmer-section-block">
+      {/* Right Column: Operational Sidebar (7/12 Land Record Dossier & Orders Desk) */}
+      <div className="farmer-sidebar-col">
+        {/* Land Record Verification Dossier Visual Card */}
+        <div className="farmer-sidebar-dossier-card">
+          <div className="farmer-dossier-header">
+            <h3 className="farmer-dossier-title">
+              <ShieldCheck size={16} color="#006044" />
+              <span>Land Record Dossier</span>
+            </h3>
+            <span className="farmer-status-pill verified">
+              <ShieldCheck size={12} /> Verified 7/12
+            </span>
+          </div>
+
+          <ImagePlaceholder
+            aspectRatio="16:9"
+            label="Mahabhulekh 7/12 Land Record Extract"
+            sublabel="Official land revenue verification (Node #FD-NSK-042)"
+            borderRadius="12px"
+          />
+
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
+            <span><strong>Dindori Taluka, Nashik</strong> • Gat No. 142/1A (8.5 Registered Acres). Verified PGS Natural agricultural cluster.</span>
+          </div>
+        </div>
+
+        {/* Orders for Harvest & Dispatch Section */}
+        <section className="farmer-section-block">
         <div className="farmer-section-header">
           <div>
             <h2 className="farmer-section-title">
@@ -472,28 +505,10 @@ export const FarmerDashboard: React.FC = () => {
               </button>
             </div>
 
-            {/* Quick Demo Order Actions */}
-            <div className="farmer-demo-order-group">
-              <button
-                type="button"
-                className="farmer-btn-demo"
-                onClick={handleCreateDemoOrder}
-                disabled={isCreatingDemoOrder}
-                title="Simulate customer harvest order"
-              >
-                <Zap size={13} />
-                <span>{isCreatingDemoOrder ? 'Creating...' : 'Test Order'}</span>
-              </button>
-              {orders.some((o) => o.id.startsWith('ord-demo-')) && (
-                <button
-                  type="button"
-                  className="farmer-btn-demo-clear"
-                  onClick={handleClearDemoOrders}
-                  title="Clear simulated test orders"
-                >
-                  <Trash2 size={13} />
-                </button>
-              )}
+            {/* Live Database Sync Indicator */}
+            <div className="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Live Database Sync</span>
             </div>
           </div>
         </div>
@@ -505,19 +520,8 @@ export const FarmerDashboard: React.FC = () => {
             </div>
             <h3 className="farmer-empty-title">All Harvest Orders Dispatched & Clear</h3>
             <p className="farmer-empty-desc">
-              No pending orders awaiting morning harvest or crate packing right now. New customer orders from your delivery zone will arrive here in real-time.
+              No pending orders awaiting morning harvest or crate packing right now. New customer orders from your delivery zone will arrive here in real-time directly from the database.
             </p>
-            <div className="farmer-empty-actions">
-              <button
-                type="button"
-                className="farmer-btn-generate-order"
-                onClick={handleCreateDemoOrder}
-                disabled={isCreatingDemoOrder}
-              >
-                <Zap size={14} />
-                <span>{isCreatingDemoOrder ? 'Generating...' : 'Simulate Test Harvest Order'}</span>
-              </button>
-            </div>
             <div className="farmer-empty-tip">
               <strong>💡 Pro Tip:</strong> Keep your crop availability updated before 8 PM to receive top priority for morning customer harvest routes.
             </div>
@@ -630,6 +634,8 @@ export const FarmerDashboard: React.FC = () => {
           </div>
         )}
       </section>
+    </div>
+  </div>
 
       {/* Interactive Stock Edit Modal */}
       {editingProduct && (

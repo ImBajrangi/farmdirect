@@ -22,6 +22,7 @@ import { FarmerProfile, Order, Product, ServiceArea, FarmerVerificationStatus } 
 import { formatPaise } from '../../utils/currency';
 import { Button } from '../../components/common/Button';
 import { Loader } from '../../components/common/Loader';
+import { ImagePlaceholder } from '../../components/common/ImagePlaceholder';
 import './admin.css';
 
 export const AdminDashboard: React.FC = () => {
@@ -94,30 +95,43 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="page-container admin-dashboard">
-      {/* SaaS Governance Header Card */}
-      <div className="admin-saas-header">
-        <div className="admin-profile-main">
-          <div className="admin-emblem">
-            <ShieldCheck size={28} />
-          </div>
-          <div className="admin-profile-text">
-            <div className="admin-title-row">
-              <h1 className="admin-title">Marketplace Governance & Platform Desk</h1>
-              <span className="admin-status-pill">
-                <span className="admin-live-dot" /> Operational Node
-              </span>
+      {/* SaaS Governance Overview Grid */}
+      <div className="admin-overview-hero-grid">
+        <div className="admin-saas-header">
+          <div className="admin-profile-main">
+            <div className="admin-emblem">
+              <ShieldCheck size={28} />
             </div>
-            <p className="admin-subtitle">
-              Field KYC audits, 7/12 land deed verifications, and real-time multi-tenant platform operations
-            </p>
+            <div className="admin-profile-text">
+              <div className="admin-title-row">
+                <h1 className="admin-title">Marketplace Governance & Platform Desk</h1>
+                <span className="admin-status-pill">
+                  <span className="admin-live-dot" /> Operational Node
+                </span>
+              </div>
+              <p className="admin-subtitle">
+                Field KYC audits, 7/12 land deed verifications, and real-time multi-tenant platform operations
+              </p>
+            </div>
+          </div>
+
+          <div className="admin-header-badge-row">
+            <span className="admin-role-badge">Super Admin</span>
+            <span className="admin-gateway-badge">
+              <Globe size={13} /> Nashik–Pune Hub
+            </span>
           </div>
         </div>
 
-        <div className="admin-header-badge-row">
-          <span className="admin-role-badge">Super Admin</span>
-          <span className="admin-gateway-badge">
-            <Globe size={13} /> Nashik–Pune Hub
-          </span>
+        {/* Intentional Neutral Grey Overview Map Placeholder */}
+        <div className="admin-overview-map-card">
+          <ImagePlaceholder
+            aspectRatio="16:9"
+            height={130}
+            label="Maharashtra Gateway Hub & Agricultural Cluster Map"
+            sublabel="Live telemetry coverage for Nashik & Pune regional nodes"
+            borderRadius="20px"
+          />
         </div>
       </div>
 
@@ -352,6 +366,104 @@ export const AdminDashboard: React.FC = () => {
                 })}
               </tbody>
             </table>
+          </div>
+
+          {/* Responsive Mobile Stacked Records (< 768px) */}
+          <div className="admin-mobile-records">
+            {filteredFarmers.map((farm) => {
+              const status = farm.verification_status || 'pending';
+              const isVerified = status === 'verified';
+              const isPending = status === 'pending';
+
+              return (
+                <div key={farm.id} className="admin-mobile-card">
+                  <div className="admin-mobile-card-top">
+                    <div>
+                      <h4 className="admin-mobile-farm-name">{farm.farm_name}</h4>
+                      <span className="admin-mobile-contact">
+                        {farm.phone || farm.user?.phone || 'Contact Verified'}
+                      </span>
+                    </div>
+                    <span className={`admin-verification-badge ${status}`}>
+                      {isVerified ? 'Verified 7/12' : isPending ? 'Pending Audit' : status}
+                    </span>
+                  </div>
+
+                  <div className="admin-mobile-card-meta">
+                    <span>
+                      <MapPin size={12} style={{ display: 'inline', verticalAlign: '-1px', marginRight: 3 }} />
+                      {farm.village}, {farm.district}
+                    </span>
+                    <span className="land-area-tag">{farm.land_area_acres || 8.5} Acres</span>
+                  </div>
+
+                  <div style={{ marginBottom: '0.625rem' }}>
+                    <button
+                      type="button"
+                      className="audit-deed-link"
+                      onClick={() => setAuditingFarmer(farm)}
+                    >
+                      <FileText size={12} /> View Deed Dossier
+                    </button>
+                  </div>
+
+                  <div className="admin-mobile-card-actions">
+                    {isVerified && (
+                      <>
+                        <button
+                          type="button"
+                          className="action-btn-neutral"
+                          style={{ flex: 1 }}
+                          onClick={() => setAuditingFarmer(farm)}
+                        >
+                          Audit Dossier
+                        </button>
+                        <button
+                          type="button"
+                          className="action-btn-danger"
+                          style={{ flex: 1 }}
+                          onClick={() => handleUpdateVerification(farm.id, 'rejected')}
+                        >
+                          Revoke
+                        </button>
+                      </>
+                    )}
+
+                    {isPending && (
+                      <>
+                        <button
+                          type="button"
+                          className="action-btn-success"
+                          style={{ flex: 1 }}
+                          onClick={() => handleUpdateVerification(farm.id, 'verified')}
+                        >
+                          <CheckCircle2 size={13} /> Approve KYC
+                        </button>
+                        <button
+                          type="button"
+                          className="action-btn-danger"
+                          style={{ flex: 1 }}
+                          onClick={() => handleUpdateVerification(farm.id, 'rejected')}
+                        >
+                          <XCircle size={13} /> Reject
+                        </button>
+                      </>
+                    )}
+
+                    {!isVerified && !isPending && (
+                      <button
+                        type="button"
+                        className="action-btn-success"
+                        style={{ width: '100%' }}
+                        onClick={() => handleUpdateVerification(farm.id, 'verified')}
+                      >
+                        <CheckCircle2 size={13} /> Re-instate Farm
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

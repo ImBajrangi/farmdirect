@@ -40,15 +40,19 @@
   --color-text-inverse: #FFFFFF;
 
   /* ─── 3. Brand Accent & Action Token (Lush Agricultural Green) ─────────── */
-  --accent: #15803D;                  /* Deep emerald agricultural green */
-  --accent-hover: #166534;            /* Interactive hover state */
+  --accent: #006044;                  /* Deep pine forest green from Landing Page */
+  --accent-hover: #004330;            /* Interactive hover state */
   --on-accent: #FFFFFF;               /* Crisp white text on accent */
-  --accent-subtle: rgba(21, 128, 61, 0.10);
+  --accent-subtle: rgba(0, 96, 68, 0.08);
 
-  /* Brand Aliases */
+  /* Brand Aliases matching Landing Page */
+  --brand-forest: #006044;
+  --brand-forest-dark: #004330;
+  --brand-lime: #ECF96E;
+  --brand-dark: #0F2E22;
   --color-primary: var(--accent);
   --color-primary-hover: var(--accent-hover);
-  --color-primary-dark: #14532D;
+  --color-primary-dark: #004330;
   --color-primary-light: var(--accent-subtle);
   --color-primary-subtle: var(--accent-subtle);
   --color-on-primary: var(--on-accent);

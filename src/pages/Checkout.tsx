@@ -59,11 +59,11 @@ export const Checkout: React.FC = () => {
   
   const finalTotalPaise = totalSubtotalPaise + deliveryFeePaise;
 
-  const handleAddNewAddress = (e: React.FormEvent) => {
+  const handleAddNewAddress = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newRecipient || !newPhone || !newLine1 || !newPincode) return;
 
-    const created = addAddress({
+    const created = await addAddress({
       label: newLabel,
       recipient_name: newRecipient,
       phone: newPhone,
