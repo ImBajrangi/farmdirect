@@ -9,6 +9,8 @@ export interface ImagePlaceholderProps {
   sublabel?: string;
   iconSize?: number;
   borderRadius?: string;
+  src?: string;
+  alt?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -18,9 +20,11 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
   height,
   width = '100%',
   label,
-  sublabel = 'Replace with custom image asset',
-  iconSize = 28,
+  sublabel,
+  iconSize = 24,
   borderRadius = '16px',
+  src,
+  alt = '',
   className = '',
   style = {},
 }) => {
@@ -43,6 +47,41 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
 
   const isAspectMode = aspectRatio !== 'auto' && !height;
 
+  if (src) {
+    return (
+      <div
+        className={`fd-image-container ${className}`}
+        style={{
+          position: 'relative',
+          width,
+          height: height || (isAspectMode ? undefined : '100%'),
+          paddingTop: isAspectMode ? getAspectRatioPadding() : undefined,
+          borderRadius,
+          overflow: 'hidden',
+          backgroundColor: '#f8fafc',
+          border: '1px solid rgba(15, 46, 34, 0.08)',
+          boxSizing: 'border-box',
+          ...style,
+        }}
+      >
+        <img
+          src={src}
+          alt={alt || label || 'Image'}
+          loading="lazy"
+          style={{
+            position: isAspectMode ? 'absolute' : 'relative',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`fd-image-placeholder ${className}`}
@@ -51,15 +90,15 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
         width,
         height: height || (isAspectMode ? undefined : '100%'),
         paddingTop: isAspectMode ? getAspectRatioPadding() : undefined,
-        backgroundColor: '#f1f5f9',
-        border: '1px dashed #cbd5e1',
+        backgroundColor: '#f8fafc',
+        border: '1px solid rgba(15, 46, 34, 0.08)',
         borderRadius,
         overflow: 'hidden',
         boxSizing: 'border-box',
         ...style,
       }}
       role="img"
-      aria-label={label || 'Image placeholder'}
+      aria-label={label || 'Visual preview area'}
     >
       <div
         style={{
@@ -81,14 +120,14 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
       >
         <div
           style={{
-            width: iconSize + 16,
-            height: iconSize + 16,
+            width: iconSize + 14,
+            height: iconSize + 14,
             borderRadius: '10px',
             backgroundColor: '#e2e8f0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#94a3b8',
+            color: '#64748b',
             flexShrink: 0,
           }}
         >
@@ -98,7 +137,7 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
           <span
             style={{
               fontSize: '0.8125rem',
-              fontWeight: 600,
+              fontWeight: 550,
               color: '#334155',
               marginTop: '4px',
               letterSpacing: '0.01em',
@@ -110,9 +149,8 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
         {sublabel && (
           <span
             style={{
-              fontSize: '0.6875rem',
-              color: '#94a3b8',
-              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: '0.75rem',
+              color: '#64748b',
             }}
           >
             {sublabel}

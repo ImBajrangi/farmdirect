@@ -27,8 +27,8 @@
 
   /* ─── 2. Typography & Text Palette ─────────────────────────────────────── */
   --text: #0F2E22;                    /* Deep readable forest text */
-  --text-muted: #4A6356;              /* Secondary description text */
-  --text-faint: #728A7E;              /* Captions, timestamps, subtags */
+  --text-muted: #385244;              /* Secondary description text (WCAG AAA compliant) */
+  --text-faint: #4A6356;              /* Captions, timestamps, subtags (WCAG AA compliant) */
 
   /* Aliases for Existing Layouts */
   --color-ink: var(--text);

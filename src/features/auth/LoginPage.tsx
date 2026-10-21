@@ -153,8 +153,8 @@ export const LoginPage: React.FC = () => {
             <div className="auth-placeholder-wrapper">
               <ImagePlaceholder
                 aspectRatio="16:9"
-                label="FarmDirect Platform & Harvest Showcase"
-                sublabel="Replace with 1200x675px agricultural photography"
+                label="Direct Farm-to-Consumer Agricultural Network"
+                sublabel="Connecting Maharashtra farmers with urban consumer clusters"
                 borderRadius="14px"
               />
             </div>

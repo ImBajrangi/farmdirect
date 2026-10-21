@@ -32,6 +32,7 @@ export const CheckoutPage: React.FC = () => {
   });
 
   const [deliveryType, setDeliveryType] = useState<'local_delivery' | 'pickup'>('local_delivery');
+  const [deliverySlot, setDeliverySlot] = useState<'morning' | 'evening'>('morning');
   const [paymentMethod, setPaymentMethod] = useState<'razorpay_online' | 'cod'>('razorpay_online');
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -259,11 +260,11 @@ export const CheckoutPage: React.FC = () => {
             </div>
           </section>
 
-          {/* Section 2: Fulfillment Choice */}
+          {/* Section 2: Delivery Slot & Fulfillment Choice (Wireframe 5) */}
           <section className="checkout-card">
             <div className="checkout-card-header">
               <h2 className="checkout-card-title">
-                <Truck size={20} /> 2. Delivery or Pickup
+                <Truck size={20} /> 2. Delivery Slot & Fulfillment
               </h2>
             </div>
             <div className="delivery-options-grid">
@@ -280,7 +281,7 @@ export const CheckoutPage: React.FC = () => {
                     <span className="delivery-option-title">Local Delivery</span>
                     <span className="delivery-badge-pill">Direct</span>
                   </div>
-                  <span className="delivery-option-desc">Direct to your doorstep in 24 hrs</span>
+                  <span className="delivery-option-desc">Direct to your doorstep from farm clusters</span>
                 </div>
                 <div className={`delivery-radio-dot ${deliveryType === 'local_delivery' ? 'checked' : ''}`} />
               </button>
@@ -298,18 +299,46 @@ export const CheckoutPage: React.FC = () => {
                     <span className="delivery-option-title">Farm Pickup</span>
                     <span className="delivery-badge-pill free">Free</span>
                   </div>
-                  <span className="delivery-option-desc">Pick up directly at the farm</span>
+                  <span className="delivery-option-desc">Pick up directly at the farm gate</span>
                 </div>
                 <div className={`delivery-radio-dot ${deliveryType === 'pickup' ? 'checked' : ''}`} />
               </button>
             </div>
 
-            <Input
-              label="Delivery / Pickup Instructions (Optional)"
-              placeholder="e.g. Leave with security guard, or call before arriving"
-              value={deliveryNotes}
-              onChange={(e) => setDeliveryNotes(e.target.value)}
-            />
+            {deliveryType === 'local_delivery' && (
+              <div className="delivery-slots-container" style={{ marginTop: '1rem' }}>
+                <span className="form-label" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>
+                  Select Delivery Slot:
+                </span>
+                <div className="delivery-slots-grid">
+                  <button
+                    type="button"
+                    className={`delivery-slot-btn ${deliverySlot === 'morning' ? 'active' : ''}`}
+                    onClick={() => setDeliverySlot('morning')}
+                  >
+                    <span className="slot-title">Morning Dawn Slot</span>
+                    <span className="slot-time">7:00 AM – 11:00 AM</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`delivery-slot-btn ${deliverySlot === 'evening' ? 'active' : ''}`}
+                    onClick={() => setDeliverySlot('evening')}
+                  >
+                    <span className="slot-title">Evening Fresh Route</span>
+                    <span className="slot-time">4:00 PM – 8:00 PM</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: '1rem' }}>
+              <Input
+                label="Delivery / Pickup Instructions (Optional)"
+                placeholder="e.g. Leave with security guard, or call before arriving"
+                value={deliveryNotes}
+                onChange={(e) => setDeliveryNotes(e.target.value)}
+              />
+            </div>
           </section>
 
           {/* Section 3: Payment Method */}

@@ -438,3 +438,56 @@
     height: 38px;
   }
 }
+
+/* ─── Delivery Slot Selector (Wireframe 5) ─────────────────────────────── */
+.delivery-slots-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 500px) {
+  .delivery-slots-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.delivery-slot-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 46, 34, 0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.delivery-slot-btn:hover {
+  background: #f8faf9;
+  border-color: rgba(15, 46, 34, 0.2);
+}
+
+.delivery-slot-btn.active {
+  background: #f0fdf4;
+  border-color: var(--color-primary, #006044);
+  box-shadow: 0 0 0 1px var(--color-primary, #006044);
+}
+
+.slot-title {
+  font-size: 0.84375rem;
+  font-weight: 600;
+  color: var(--color-text, #0f2e22);
+}
+
+.delivery-slot-btn.active .slot-title {
+  color: #006044;
+}
+
+.slot-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #536f61);
+}
+

@@ -472,3 +472,59 @@
     gap: 12px;
   }
 }
+
+/* ========================================================
+   Cart Desktop 68/32 Split Layout (Directive 7)
+   ======================================================== */
+.cart-page-container {
+  max-width: 1140px !important;
+}
+
+.cart-workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .cart-workspace-grid {
+    grid-template-columns: 68% 32%;
+  }
+}
+
+.cart-items-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-summary-column {
+  position: relative;
+}
+
+@media (min-width: 960px) {
+  .cart-sticky-summary {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+.cart-grand-total-amount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #006044;
+  letter-spacing: -0.02em;
+}
+
+.cart-trust-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #385244);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(15, 46, 34, 0.08);
+  justify-content: center;
+}
+

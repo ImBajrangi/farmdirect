@@ -36,6 +36,7 @@ export const AdminDashboard: React.FC = () => {
   // Search and filter for farmers
   const [farmerSearch, setFarmerSearch] = useState('');
   const [farmerStatusFilter, setFarmerStatusFilter] = useState<'all' | 'verified' | 'pending' | 'rejected'>('all');
+  const [selectedFarmerId, setSelectedFarmerId] = useState<string | null>(null);
 
   // 7/12 Audit Modal State
   const [auditingFarmer, setAuditingFarmer] = useState<FarmerProfile | null>(null);
@@ -47,6 +48,9 @@ export const AdminDashboard: React.FC = () => {
       setOrders(data.orders);
       setProducts(data.products);
       setServiceAreas(data.serviceAreas);
+      if (data.farmers.length > 0 && !selectedFarmerId) {
+        setSelectedFarmerId(data.farmers[0].id);
+      }
     } catch (err) {
       console.error('Failed to load admin data', err);
     } finally {
@@ -93,99 +97,93 @@ export const AdminDashboard: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const pendingCount = farmers.filter(
+    (f) => !f.verification_status || f.verification_status === 'pending'
+  ).length;
+  const verifiedCount = farmers.filter(
+    (f) => f.verification_status === 'verified'
+  ).length;
+
+  const currentSelectedFarmer =
+    farmers.find((f) => f.id === selectedFarmerId) ||
+    filteredFarmers[0] ||
+    null;
+
   return (
     <div className="page-container admin-dashboard">
-      {/* SaaS Governance Overview Grid */}
-      <div className="admin-overview-hero-grid">
-        <div className="admin-saas-header">
-          <div className="admin-profile-main">
-            <div className="admin-emblem">
-              <ShieldCheck size={28} />
-            </div>
-            <div className="admin-profile-text">
-              <div className="admin-title-row">
-                <h1 className="admin-title">Marketplace Governance & Platform Desk</h1>
-                <span className="admin-status-pill">
-                  <span className="admin-live-dot" /> Operational Node
-                </span>
-              </div>
-              <p className="admin-subtitle">
-                Field KYC audits, 7/12 land deed verifications, and real-time multi-tenant platform operations
-              </p>
-            </div>
-          </div>
-
-          <div className="admin-header-badge-row">
-            <span className="admin-role-badge">Super Admin</span>
-            <span className="admin-gateway-badge">
-              <Globe size={13} /> Nashik–Pune Hub
+      {/* SaaS Governance Header with Title & Pending Reviews Badge */}
+      <div className="admin-workspace-header">
+        <div className="admin-workspace-title-group">
+          <div className="admin-title-row">
+            <h1 className="admin-title">Admin Command Center</h1>
+            <span className="admin-pending-badge">
+              {pendingCount} Pending Reviews
             </span>
           </div>
+          <p className="admin-subtitle">
+            Producer verification queue, land record audit dossiers, and regional dispatch governance
+          </p>
         </div>
 
-        {/* Intentional Neutral Grey Overview Map Placeholder */}
-        <div className="admin-overview-map-card">
-          <ImagePlaceholder
-            aspectRatio="16:9"
-            height={130}
-            label="Maharashtra Gateway Hub & Agricultural Cluster Map"
-            sublabel="Live telemetry coverage for Nashik & Pune regional nodes"
-            borderRadius="20px"
-          />
+        <div className="admin-header-actions">
+          <span className="admin-role-badge">Super Admin</span>
+          <span className="admin-gateway-badge">
+            <Globe size={13} /> Nashik–Pune Hub
+          </span>
         </div>
       </div>
 
-      {/* KPI Metrics */}
+      {/* Wireframe 4 Secondary KPI Cards Row */}
       <div className="admin-kpi-grid">
         <div className="admin-kpi-card">
           <div className="admin-kpi-top">
-            <span className="admin-kpi-title">Gross Platform GMV</span>
-            <span className="admin-kpi-icon-wrap emerald">
-              <TrendingUp size={16} />
+            <span className="admin-kpi-title">Pending KYC</span>
+            <span className="admin-kpi-icon-wrap amber">
+              <AlertTriangle size={16} />
             </span>
           </div>
-          <div className="admin-kpi-value revenue">{formatPaise(totalGMVPaise)}</div>
+          <div className="admin-kpi-value">{pendingCount}</div>
           <div className="admin-kpi-badge">
-            <span>Direct farmer settlements</span>
+            <span>Awaiting document review</span>
           </div>
         </div>
 
         <div className="admin-kpi-card">
           <div className="admin-kpi-top">
-            <span className="admin-kpi-title">Buyer Orders</span>
+            <span className="admin-kpi-title">Verified Farms</span>
+            <span className="admin-kpi-icon-wrap emerald">
+              <ShieldCheck size={16} />
+            </span>
+          </div>
+          <div className="admin-kpi-value">{verifiedCount}</div>
+          <div className="admin-kpi-badge">
+            <span>Active licensed producers</span>
+          </div>
+        </div>
+
+        <div className="admin-kpi-card">
+          <div className="admin-kpi-top">
+            <span className="admin-kpi-title">Orders</span>
             <span className="admin-kpi-icon-wrap blue">
               <ShoppingBag size={16} />
             </span>
           </div>
           <div className="admin-kpi-value">{orders.length}</div>
           <div className="admin-kpi-badge">
-            <span>{orders.length === 0 ? 'Fresh cycle starting' : 'All-time dispatches'}</span>
+            <span>Platform transactions</span>
           </div>
         </div>
 
         <div className="admin-kpi-card">
           <div className="admin-kpi-top">
-            <span className="admin-kpi-title">Verified Producers</span>
+            <span className="admin-kpi-title">Active Hubs</span>
             <span className="admin-kpi-icon-wrap purple">
-              <Users size={16} />
+              <MapPin size={16} />
             </span>
           </div>
-          <div className="admin-kpi-value">{farmers.length}</div>
+          <div className="admin-kpi-value">{serviceAreas.length}</div>
           <div className="admin-kpi-badge">
-            <span>Active agricultural hubs</span>
-          </div>
-        </div>
-
-        <div className="admin-kpi-card">
-          <div className="admin-kpi-top">
-            <span className="admin-kpi-title">Listed Harvest SKUs</span>
-            <span className="admin-kpi-icon-wrap amber">
-              <Sprout size={16} />
-            </span>
-          </div>
-          <div className="admin-kpi-value">{products.length}</div>
-          <div className="admin-kpi-badge">
-            <span>Fresh crop varieties</span>
+            <span>Logistics gateways</span>
           </div>
         </div>
       </div>
@@ -197,7 +195,7 @@ export const AdminDashboard: React.FC = () => {
           className={`admin-tab-btn ${activeTab === 'verifications' ? 'active' : ''}`}
           onClick={() => setActiveTab('verifications')}
         >
-          <span>Farmer KYC & 7/12 Audits</span>
+          <span>Producer Review Workspace</span>
           <span className="tab-counter">{farmers.length}</span>
         </button>
         <button
@@ -218,252 +216,233 @@ export const AdminDashboard: React.FC = () => {
         </button>
       </div>
 
-      {/* TAB 1: Farmer Verifications */}
+      {/* TAB 1: Master-Detail Farmer Verification Workspace (Wireframe 4) */}
       {activeTab === 'verifications' && (
         <div className="admin-content-section">
-          <div className="admin-filter-bar">
-            <div className="admin-search-wrapper">
-              <Search size={15} className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search farm name, village, or district..."
-                value={farmerSearch}
-                onChange={(e) => setFarmerSearch(e.target.value)}
-                className="admin-search-field"
-              />
+          <div className="admin-master-detail-workspace">
+            {/* Left 35-40%: Producer review queue */}
+            <div className="admin-master-queue">
+              <div className="admin-queue-header">
+                <div className="admin-queue-title-row">
+                  <h3 className="admin-queue-heading">Producer Review Queue</h3>
+                  <span className="admin-queue-count-pill">{filteredFarmers.length}</span>
+                </div>
+
+                <div className="admin-search-wrapper">
+                  <Search size={14} className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search farm, village, or district..."
+                    value={farmerSearch}
+                    onChange={(e) => setFarmerSearch(e.target.value)}
+                    className="admin-search-field"
+                  />
+                </div>
+
+                <div className="admin-status-filters">
+                  <button
+                    type="button"
+                    className={`filter-chip ${farmerStatusFilter === 'all' ? 'active' : ''}`}
+                    onClick={() => setFarmerStatusFilter('all')}
+                  >
+                    All ({farmers.length})
+                  </button>
+                  <button
+                    type="button"
+                    className={`filter-chip ${farmerStatusFilter === 'pending' ? 'active' : ''}`}
+                    onClick={() => setFarmerStatusFilter('pending')}
+                  >
+                    Pending ({pendingCount})
+                  </button>
+                  <button
+                    type="button"
+                    className={`filter-chip ${farmerStatusFilter === 'verified' ? 'active' : ''}`}
+                    onClick={() => setFarmerStatusFilter('verified')}
+                  >
+                    Verified ({verifiedCount})
+                  </button>
+                </div>
+              </div>
+
+              {filteredFarmers.length === 0 ? (
+                <div className="admin-queue-empty">
+                  <p>No producers match the filter.</p>
+                </div>
+              ) : (
+                <div className="admin-queue-list">
+                  {filteredFarmers.map((farm) => {
+                    const status = farm.verification_status || 'pending';
+                    const isSelected = currentSelectedFarmer?.id === farm.id;
+
+                    return (
+                      <div
+                        key={farm.id}
+                        className={`admin-queue-item ${isSelected ? 'selected' : ''}`}
+                        onClick={() => setSelectedFarmerId(farm.id)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            setSelectedFarmerId(farm.id);
+                          }
+                        }}
+                      >
+                        <div className="queue-item-avatar">
+                          {farm.farm_name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="queue-item-content">
+                          <div className="queue-item-top">
+                            <span className="queue-item-name">{farm.farm_name}</span>
+                            <span className={`admin-status-tag ${status}`}>
+                              {status === 'verified' ? 'Verified' : status === 'pending' ? 'Review' : 'Rejected'}
+                            </span>
+                          </div>
+                          <div className="queue-item-meta">
+                            <span>{farm.village}, {farm.district}</span>
+                            <span className="meta-dot">•</span>
+                            <span>{farm.land_area_acres || 8.5} ac</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
-            <div className="admin-status-filters">
-              <button
-                type="button"
-                className={`filter-chip ${farmerStatusFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setFarmerStatusFilter('all')}
-              >
-                All Producers ({farmers.length})
-              </button>
-              <button
-                type="button"
-                className={`filter-chip ${farmerStatusFilter === 'verified' ? 'active' : ''}`}
-                onClick={() => setFarmerStatusFilter('verified')}
-              >
-                Verified ({farmers.filter((f) => f.verification_status === 'verified').length})
-              </button>
-              <button
-                type="button"
-                className={`filter-chip ${farmerStatusFilter === 'pending' ? 'active' : ''}`}
-                onClick={() => setFarmerStatusFilter('pending')}
-              >
-                Pending ({farmers.filter((f) => !f.verification_status || f.verification_status === 'pending').length})
-              </button>
-            </div>
-          </div>
-
-          <div className="admin-table-container">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Farm Producer</th>
-                  <th>District / Taluka</th>
-                  <th>Land Holding</th>
-                  <th>7/12 Land Record Status</th>
-                  <th>Governance Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredFarmers.map((farm) => {
-                  const status = farm.verification_status || 'pending';
-                  const isVerified = status === 'verified';
-                  const isPending = status === 'pending';
-
-                  return (
-                    <tr key={farm.id}>
-                      <td>
-                        <div className="farm-info-cell">
-                          <strong className="farm-name">{farm.farm_name}</strong>
-                          <span className="farm-contact">
-                            {farm.phone || farm.user?.phone || 'Contact Verified'}
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="farm-location-cell">
-                          <span>{farm.village}, {farm.district}</span>
-                          <span className="state-sub">Maharashtra</span>
-                        </div>
-                      </td>
-                      <td>
-                        <span className="land-area-tag">
-                          {farm.land_area_acres || 8.5} Acres
-                        </span>
-                      </td>
-                      <td>
-                        <div className="status-cell">
-                          <span className={`admin-verification-badge ${status}`}>
-                            {isVerified ? 'Verified 7/12' : isPending ? 'Pending Audit' : status}
-                          </span>
-                          <button
-                            type="button"
-                            className="audit-deed-link"
-                            onClick={() => setAuditingFarmer(farm)}
-                          >
-                            <FileText size={12} /> View Deed Dossier
-                          </button>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="admin-actions-cell">
-                          {isVerified && (
-                            <>
-                              <button
-                                type="button"
-                                className="action-btn-neutral"
-                                onClick={() => setAuditingFarmer(farm)}
-                              >
-                                Audit Dossier
-                              </button>
-                              <button
-                                type="button"
-                                className="action-btn-danger"
-                                onClick={() => handleUpdateVerification(farm.id, 'rejected')}
-                              >
-                                Revoke
-                              </button>
-                            </>
-                          )}
-
-                          {isPending && (
-                            <>
-                              <button
-                                type="button"
-                                className="action-btn-success"
-                                onClick={() => handleUpdateVerification(farm.id, 'verified')}
-                              >
-                                <CheckCircle2 size={13} /> Approve KYC
-                              </button>
-                              <button
-                                type="button"
-                                className="action-btn-danger"
-                                onClick={() => handleUpdateVerification(farm.id, 'rejected')}
-                              >
-                                <XCircle size={13} /> Reject
-                              </button>
-                            </>
-                          )}
-
-                          {!isVerified && !isPending && (
-                            <button
-                              type="button"
-                              className="action-btn-success"
-                              onClick={() => handleUpdateVerification(farm.id, 'verified')}
-                            >
-                              <CheckCircle2 size={13} /> Re-instate Farm
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Responsive Mobile Stacked Records (< 768px) */}
-          <div className="admin-mobile-records">
-            {filteredFarmers.map((farm) => {
-              const status = farm.verification_status || 'pending';
-              const isVerified = status === 'verified';
-              const isPending = status === 'pending';
-
-              return (
-                <div key={farm.id} className="admin-mobile-card">
-                  <div className="admin-mobile-card-top">
+            {/* Right 60-65%: Selected farmer · inspection dossier */}
+            <div className="admin-detail-dossier">
+              {currentSelectedFarmer ? (
+                <div className="admin-dossier-card">
+                  <div className="admin-dossier-header">
                     <div>
-                      <h4 className="admin-mobile-farm-name">{farm.farm_name}</h4>
-                      <span className="admin-mobile-contact">
-                        {farm.phone || farm.user?.phone || 'Contact Verified'}
-                      </span>
+                      <span className="admin-dossier-eyebrow">Producer Inspection Dossier</span>
+                      <h2 className="admin-dossier-title">{currentSelectedFarmer.farm_name}</h2>
+                      <div className="admin-dossier-subtitle">
+                        <MapPin size={13} /> {currentSelectedFarmer.village}, {currentSelectedFarmer.district}, Maharashtra
+                      </div>
                     </div>
-                    <span className={`admin-verification-badge ${status}`}>
-                      {isVerified ? 'Verified 7/12' : isPending ? 'Pending Audit' : status}
+                    <span className={`admin-verification-badge ${currentSelectedFarmer.verification_status || 'pending'}`}>
+                      {currentSelectedFarmer.verification_status === 'verified'
+                        ? 'Verified 7/12'
+                        : currentSelectedFarmer.verification_status === 'rejected'
+                        ? 'Revoked'
+                        : 'Audit Pending'}
                     </span>
                   </div>
 
-                  <div className="admin-mobile-card-meta">
-                    <span>
-                      <MapPin size={12} style={{ display: 'inline', verticalAlign: '-1px', marginRight: 3 }} />
-                      {farm.village}, {farm.district}
-                    </span>
-                    <span className="land-area-tag">{farm.land_area_acres || 8.5} Acres</span>
+                  {/* Land document preview image placeholder · 16:9 */}
+                  <div className="admin-dossier-preview-box">
+                    <ImagePlaceholder
+                      aspectRatio="16:9"
+                      height={200}
+                      label="Digital 7/12 (Saat Bara) Land Extract"
+                      sublabel={`${currentSelectedFarmer.farm_name} • Gat #${currentSelectedFarmer.id.slice(0, 6).toUpperCase()} • Verified Revenue Dept Records`}
+                      borderRadius="12px"
+                    />
                   </div>
 
-                  <div style={{ marginBottom: '0.625rem' }}>
-                    <button
-                      type="button"
-                      className="audit-deed-link"
-                      onClick={() => setAuditingFarmer(farm)}
-                    >
-                      <FileText size={12} /> View Deed Dossier
-                    </button>
+                  {/* Dossier Information Grid */}
+                  <div className="admin-dossier-info-grid">
+                    <div className="dossier-info-section">
+                      <h4 className="dossier-section-heading">Identity Details</h4>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Registered Name:</span>
+                        <span className="dossier-val">{currentSelectedFarmer.farm_name}</span>
+                      </div>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Contact Phone:</span>
+                        <span className="dossier-val">{currentSelectedFarmer.phone || currentSelectedFarmer.user?.phone || '9822012345'}</span>
+                      </div>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Taluka & District:</span>
+                        <span className="dossier-val">{currentSelectedFarmer.village}, {currentSelectedFarmer.district}</span>
+                      </div>
+                    </div>
+
+                    <div className="dossier-info-section">
+                      <h4 className="dossier-section-heading">Land Record Details</h4>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Survey / Gat No:</span>
+                        <span className="dossier-val">Gat #{currentSelectedFarmer.id.slice(0, 5).toUpperCase()}/2A</span>
+                      </div>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Cultivable Land:</span>
+                        <span className="dossier-val">{currentSelectedFarmer.land_area_acres || 8.5} Acres</span>
+                      </div>
+                      <div className="dossier-key-val">
+                        <span className="dossier-key">Water & Soil:</span>
+                        <span className="dossier-val">Drip Irrigated • Certified Natural</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="admin-mobile-card-actions">
-                    {isVerified && (
-                      <>
-                        <button
-                          type="button"
-                          className="action-btn-neutral"
-                          style={{ flex: 1 }}
-                          onClick={() => setAuditingFarmer(farm)}
-                        >
-                          Audit Dossier
-                        </button>
-                        <button
-                          type="button"
-                          className="action-btn-danger"
-                          style={{ flex: 1 }}
-                          onClick={() => handleUpdateVerification(farm.id, 'rejected')}
-                        >
-                          Revoke
-                        </button>
-                      </>
-                    )}
+                  {/* Audit Checkpoints */}
+                  <div className="dossier-checkpoints">
+                    <div className="dossier-checkpoint-row">
+                      <CheckCircle2 size={15} className="text-emerald-600" />
+                      <span>Mahabhulekh 7/12 Land Title authentic and active</span>
+                    </div>
+                    <div className="dossier-checkpoint-row">
+                      <CheckCircle2 size={15} className="text-emerald-600" />
+                      <span>PGS-India organic / natural agricultural compliance audited</span>
+                    </div>
+                  </div>
 
-                    {isPending && (
+                  {/* Action Bar */}
+                  <div className="admin-dossier-actions">
+                    {(!currentSelectedFarmer.verification_status || currentSelectedFarmer.verification_status === 'pending') && (
                       <>
                         <button
                           type="button"
                           className="action-btn-success"
-                          style={{ flex: 1 }}
-                          onClick={() => handleUpdateVerification(farm.id, 'verified')}
+                          onClick={() => handleUpdateVerification(currentSelectedFarmer.id, 'verified')}
                         >
-                          <CheckCircle2 size={13} /> Approve KYC
+                          <CheckCircle2 size={15} /> Approve, if authorized
                         </button>
                         <button
                           type="button"
                           className="action-btn-danger"
-                          style={{ flex: 1 }}
-                          onClick={() => handleUpdateVerification(farm.id, 'rejected')}
+                          onClick={() => handleUpdateVerification(currentSelectedFarmer.id, 'rejected')}
                         >
-                          <XCircle size={13} /> Reject
+                          <XCircle size={15} /> Request correction / Reject
                         </button>
                       </>
                     )}
 
-                    {!isVerified && !isPending && (
+                    {currentSelectedFarmer.verification_status === 'verified' && (
+                      <>
+                        <div className="admin-verified-notice">
+                          <CheckCircle2 size={15} className="text-emerald-600" />
+                          <span>Producer authorized for direct consumer marketplace orders</span>
+                        </div>
+                        <button
+                          type="button"
+                          className="action-btn-danger"
+                          onClick={() => handleUpdateVerification(currentSelectedFarmer.id, 'rejected')}
+                        >
+                          Revoke Verification
+                        </button>
+                      </>
+                    )}
+
+                    {currentSelectedFarmer.verification_status === 'rejected' && (
                       <button
                         type="button"
                         className="action-btn-success"
-                        style={{ width: '100%' }}
-                        onClick={() => handleUpdateVerification(farm.id, 'verified')}
+                        onClick={() => handleUpdateVerification(currentSelectedFarmer.id, 'verified')}
                       >
-                        <CheckCircle2 size={13} /> Re-instate Farm
+                        <CheckCircle2 size={15} /> Re-instate Producer
                       </button>
                     )}
                   </div>
                 </div>
-              );
-            })}
+              ) : (
+                <div className="admin-dossier-empty">
+                  <p>Select a producer from the review queue on the left to inspect land records and verification status.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

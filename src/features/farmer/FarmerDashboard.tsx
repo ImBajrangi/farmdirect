@@ -49,6 +49,7 @@ export const FarmerDashboard: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [stockInputValue, setStockInputValue] = useState<number>(0);
   const [isUpdatingStock, setIsUpdatingStock] = useState(false);
+  const [showLandDoc, setShowLandDoc] = useState(false);
 
   const farmId = farmerProfile?.id || 'farmer-1';
 
@@ -174,8 +175,8 @@ export const FarmerDashboard: React.FC = () => {
         <ImagePlaceholder
           aspectRatio="21:9"
           height={140}
-          label="Farm Landholding Panoramic Cover (21:9)"
-          sublabel="Replace with 1920x600px farm landscape photography"
+          label="Farm Landholding Panoramic Cover"
+          sublabel="Patil Agro Orchards • Dindori Cluster, Nashik"
           borderRadius="24px 24px 0 0"
         />
 
@@ -434,207 +435,215 @@ export const FarmerDashboard: React.FC = () => {
         </div>
       </section>
 
-      {/* Right Column: Operational Sidebar (7/12 Land Record Dossier & Orders Desk) */}
+      {/* Right Column: Operational Sidebar (Harvest Dispatch Queue + Compact Verification) */}
       <div className="farmer-sidebar-col">
-        {/* Land Record Verification Dossier Visual Card */}
-        <div className="farmer-sidebar-dossier-card">
-          <div className="farmer-dossier-header">
-            <h3 className="farmer-dossier-title">
-              <ShieldCheck size={16} color="#006044" />
-              <span>Land Record Dossier</span>
-            </h3>
-            <span className="farmer-status-pill verified">
-              <ShieldCheck size={12} /> Verified 7/12
-            </span>
-          </div>
-
-          <ImagePlaceholder
-            aspectRatio="16:9"
-            label="Mahabhulekh 7/12 Land Record Extract"
-            sublabel="Official land revenue verification (Node #FD-NSK-042)"
-            borderRadius="12px"
-          />
-
-          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
-            <span><strong>Dindori Taluka, Nashik</strong> • Gat No. 142/1A (8.5 Registered Acres). Verified PGS Natural agricultural cluster.</span>
-          </div>
-        </div>
-
-        {/* Orders for Harvest & Dispatch Section */}
-        <section className="farmer-section-block">
-        <div className="farmer-section-header">
-          <div>
-            <h2 className="farmer-section-title">
-              <PackageCheck size={20} className="text-emerald-700" /> Orders for Harvest & Dispatch ({orders.length})
-            </h2>
-            <p className="farmer-section-desc">
-              Morning harvest confirmation, grading, and crate hand-off tracking
-            </p>
-          </div>
-
-          <div className="farmer-orders-toolbar">
-            {/* Segment Filter */}
-            <div className="farmer-order-segments">
-              <button
-                type="button"
-                className={`farmer-segment-btn ${orderFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setOrderFilter('all')}
-              >
-                All ({orders.length})
-              </button>
-              <button
-                type="button"
-                className={`farmer-segment-btn ${orderFilter === 'pending' ? 'active' : ''}`}
-                onClick={() => setOrderFilter('pending')}
-              >
-                Awaiting ({pendingOrders.length})
-              </button>
-              <button
-                type="button"
-                className={`farmer-segment-btn ${orderFilter === 'in_prep' ? 'active' : ''}`}
-                onClick={() => setOrderFilter('in_prep')}
-              >
-                Packing ({inPrepOrders.length})
-              </button>
-              <button
-                type="button"
-                className={`farmer-segment-btn ${orderFilter === 'delivered' ? 'active' : ''}`}
-                onClick={() => setOrderFilter('delivered')}
-              >
-                Delivered ({deliveredOrders.length})
-              </button>
+        {/* Harvest Dispatch Queue (Top Priority Operational Rail) */}
+        <section className="farmer-section-block farmer-dispatch-queue-block">
+          <div className="farmer-section-header">
+            <div>
+              <h2 className="farmer-section-title">
+                <PackageCheck size={18} className="text-emerald-700" /> Harvest Dispatch Queue ({orders.length})
+              </h2>
+              <p className="farmer-section-desc">
+                Morning harvest grading and dispatch tracking
+              </p>
             </div>
 
-            {/* Live Database Sync Indicator */}
-            <div className="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Live Database Sync</span>
+            <div className="farmer-orders-toolbar">
+              {/* Segment Filter */}
+              <div className="farmer-order-segments">
+                <button
+                  type="button"
+                  className={`farmer-segment-btn ${orderFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setOrderFilter('all')}
+                >
+                  All ({orders.length})
+                </button>
+                <button
+                  type="button"
+                  className={`farmer-segment-btn ${orderFilter === 'pending' ? 'active' : ''}`}
+                  onClick={() => setOrderFilter('pending')}
+                >
+                  Pending ({pendingOrders.length})
+                </button>
+                <button
+                  type="button"
+                  className={`farmer-segment-btn ${orderFilter === 'in_prep' ? 'active' : ''}`}
+                  onClick={() => setOrderFilter('in_prep')}
+                >
+                  Packing ({inPrepOrders.length})
+                </button>
+                <button
+                  type="button"
+                  className={`farmer-segment-btn ${orderFilter === 'delivered' ? 'active' : ''}`}
+                  onClick={() => setOrderFilter('delivered')}
+                >
+                  Delivered ({deliveredOrders.length})
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {filteredOrders.length === 0 ? (
-          <div className="farmer-empty-orders-card">
-            <div className="farmer-empty-icon-wrap">
-              <PackageCheck size={28} />
+          {filteredOrders.length === 0 ? (
+            <div className="farmer-empty-orders-card">
+              <div className="farmer-empty-icon-wrap">
+                <PackageCheck size={26} />
+              </div>
+              <h3 className="farmer-empty-title">All Harvest Orders Dispatched</h3>
+              <p className="farmer-empty-desc">
+                No orders currently awaiting harvest or crate packing. Incoming customer orders appear here in real-time.
+              </p>
             </div>
-            <h3 className="farmer-empty-title">All Harvest Orders Dispatched & Clear</h3>
-            <p className="farmer-empty-desc">
-              No pending orders awaiting morning harvest or crate packing right now. New customer orders from your delivery zone will arrive here in real-time directly from the database.
-            </p>
-            <div className="farmer-empty-tip">
-              <strong>💡 Pro Tip:</strong> Keep your crop availability updated before 8 PM to receive top priority for morning customer harvest routes.
-            </div>
-          </div>
-        ) : (
-          <div className="farmer-orders-list">
-            {filteredOrders.map((order) => (
-              <div key={order.id} className="farmer-order-card">
-                <div className="farmer-order-card-header">
-                  <div className="farmer-order-identity">
-                    <span className="farmer-order-number">Order #{order.order_number}</span>
-                    <span className="farmer-order-time">
-                      {new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(order.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <span className={`order-status-badge ${order.status}`}>
-                    {order.status.replace(/_/g, ' ')}
-                  </span>
-                </div>
-
-                <div className="farmer-order-items-table">
-                  {order.items?.map((item) => (
-                    <div key={item.id} className="farmer-order-item-row">
-                      <div className="farmer-order-item-info">
-                        <span className="farmer-order-item-bullet" />
-                        <span className="farmer-order-item-title">{item.product_name}</span>
-                        <span className="farmer-order-item-qty">
-                          × {item.quantity} {item.unit}
-                        </span>
-                      </div>
-                      <span className="farmer-order-item-price">
-                        {formatPaise(item.total_price_paise)}
+          ) : (
+            <div className="farmer-orders-list">
+              {filteredOrders.map((order) => (
+                <div key={order.id} className="farmer-order-card">
+                  <div className="farmer-order-card-header">
+                    <div className="farmer-order-identity">
+                      <span className="farmer-order-number">Order #{order.order_number}</span>
+                      <span className="farmer-order-time">
+                        {new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(order.created_at).toLocaleDateString()}
                       </span>
                     </div>
-                  ))}
-                </div>
+                    <span className={`order-status-badge ${order.status}`}>
+                      {order.status.replace(/_/g, ' ')}
+                    </span>
+                  </div>
 
-                <div className="farmer-order-meta-footer">
-                  <div className="farmer-order-meta-col">
-                    <span className="meta-label">Fulfillment:</span>
-                    <strong>{order.delivery_type === 'pickup' ? 'Direct Farm Pickup' : 'Local Courier Dispatch'}</strong>
+                  <div className="farmer-order-items-table">
+                    {order.items?.map((item) => (
+                      <div key={item.id} className="farmer-order-item-row">
+                        <div className="farmer-order-item-info">
+                          <span className="farmer-order-item-bullet" />
+                          <span className="farmer-order-item-title">{item.product_name}</span>
+                          <span className="farmer-order-item-qty">
+                            × {item.quantity} {item.unit}
+                          </span>
+                        </div>
+                        <span className="farmer-order-item-price">
+                          {formatPaise(item.total_price_paise)}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="farmer-order-meta-col">
-                    <span className="meta-label">Recipient:</span>
-                    <span>{order.customer?.full_name || 'Customer'} ({order.delivery_address_snapshot.phone})</span>
-                  </div>
-                  <div className="farmer-order-total-col">
-                    <span className="meta-label">Total Amount:</span>
-                    <strong className="total-val">{formatPaise(order.total_amount_paise)}</strong>
-                  </div>
-                </div>
 
-                <div className="farmer-order-card-actions">
-                  {order.status === 'pending_confirmation' && (
-                    <>
+                  <div className="farmer-order-meta-footer">
+                    <div className="farmer-order-meta-col">
+                      <span className="meta-label">Fulfillment:</span>
+                      <strong>{order.delivery_type === 'pickup' ? 'Farm Gate Pickup' : 'Hub Dispatch'}</strong>
+                    </div>
+                    <div className="farmer-order-meta-col">
+                      <span className="meta-label">Recipient:</span>
+                      <span>{order.customer?.full_name || 'Customer'}</span>
+                    </div>
+                    <div className="farmer-order-total-col">
+                      <span className="meta-label">Total:</span>
+                      <strong className="total-val">{formatPaise(order.total_amount_paise)}</strong>
+                    </div>
+                  </div>
+
+                  <div className="farmer-order-card-actions">
+                    {order.status === 'pending_confirmation' && (
+                      <>
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          isLoading={updatingOrderId === order.id}
+                          onClick={() => handleUpdateOrderStatus(order.id, 'confirmed')}
+                        >
+                          <CheckCircle2 size={14} /> Accept Harvest Order
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          isLoading={updatingOrderId === order.id}
+                          onClick={() => handleUpdateOrderStatus(order.id, 'rejected', 'Produce out of stock')}
+                        >
+                          <XCircle size={14} /> Decline
+                        </Button>
+                      </>
+                    )}
+
+                    {order.status === 'confirmed' && (
                       <Button
                         variant="primary"
                         size="sm"
                         isLoading={updatingOrderId === order.id}
-                        onClick={() => handleUpdateOrderStatus(order.id, 'confirmed')}
+                        onClick={() => handleUpdateOrderStatus(order.id, 'preparing')}
                       >
-                        <CheckCircle2 size={14} /> Accept Harvest Order
+                        <Package size={14} /> Move to Fresh Packing
                       </Button>
+                    )}
+
+                    {order.status === 'preparing' && (
                       <Button
-                        variant="danger"
+                        variant="accent"
                         size="sm"
                         isLoading={updatingOrderId === order.id}
-                        onClick={() => handleUpdateOrderStatus(order.id, 'rejected', 'Produce out of stock')}
+                        onClick={() => handleUpdateOrderStatus(order.id, 'out_for_delivery')}
                       >
-                        <XCircle size={14} /> Decline
+                        <Truck size={14} /> Hand Over for Dispatch
                       </Button>
-                    </>
-                  )}
+                    )}
 
-                  {order.status === 'confirmed' && (
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      isLoading={updatingOrderId === order.id}
-                      onClick={() => handleUpdateOrderStatus(order.id, 'preparing')}
-                    >
-                      <Package size={14} /> Move to Fresh Packing
-                    </Button>
-                  )}
-
-                  {order.status === 'preparing' && (
-                    <Button
-                      variant="accent"
-                      size="sm"
-                      isLoading={updatingOrderId === order.id}
-                      onClick={() => handleUpdateOrderStatus(order.id, 'out_for_delivery')}
-                    >
-                      <Truck size={14} /> Hand Over for Dispatch
-                    </Button>
-                  )}
-
-                  {order.status === 'out_for_delivery' && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      isLoading={updatingOrderId === order.id}
-                      onClick={() => handleUpdateOrderStatus(order.id, 'delivered')}
-                    >
-                      <CheckCircle2 size={14} /> Mark Delivered
-                    </Button>
-                  )}
+                    {order.status === 'out_for_delivery' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        isLoading={updatingOrderId === order.id}
+                        onClick={() => handleUpdateOrderStatus(order.id, 'delivered')}
+                      >
+                        <CheckCircle2 size={14} /> Mark Delivered
+                      </Button>
+                    )}
+                  </div>
                 </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Compact Land Record Verification Status (Bottom of Rail) */}
+        <div className="farmer-compact-verification-card">
+          <div className="farmer-compact-verif-header">
+            <div className="farmer-compact-verif-left">
+              <div className="farmer-compact-verif-icon">
+                <ShieldCheck size={18} />
               </div>
-            ))}
+              <div>
+                <h4 className="farmer-compact-verif-title">Mahabhulekh 7/12 Land Record</h4>
+                <p className="farmer-compact-verif-sub">
+                  Gat No. 142/1A • {farmerProfile?.land_area_acres || 8.5} Registered Acres • Dindori, Nashik
+                </p>
+              </div>
+            </div>
+            <span className="farmer-status-pill verified">
+              <ShieldCheck size={12} /> Verified
+            </span>
           </div>
-        )}
-      </section>
-    </div>
+          <div className="farmer-compact-verif-footer">
+            <span className="farmer-compact-verif-meta">PGS Natural & Organic Accredited Cluster</span>
+            <button
+              type="button"
+              className="farmer-compact-doc-link"
+              onClick={() => setShowLandDoc(!showLandDoc)}
+            >
+              {showLandDoc ? 'Hide Document' : 'View Document'}
+            </button>
+          </div>
+
+          {showLandDoc && (
+            <div style={{ marginTop: '12px' }}>
+              <ImagePlaceholder
+                aspectRatio="16:9"
+                label="Mahabhulekh 7/12 Land Record Extract"
+                sublabel="Official land revenue verification (Node #FD-NSK-042)"
+                borderRadius="12px"
+              />
+            </div>
+          )}
+        </div>
+      </div>
   </div>
 
       {/* Interactive Stock Edit Modal */}

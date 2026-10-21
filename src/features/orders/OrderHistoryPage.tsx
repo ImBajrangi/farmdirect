@@ -8,6 +8,7 @@ import { Order } from './order.types';
 import { formatPaise } from '../../utils/currency';
 import { Button } from '../../components/common/Button';
 import { Loader } from '../../components/common/Loader';
+import { ImagePlaceholder } from '../../components/common/ImagePlaceholder';
 import './orders.css';
 
 export const OrderHistoryPage: React.FC = () => {
@@ -51,8 +52,14 @@ export const OrderHistoryPage: React.FC = () => {
         </div>
       ) : orders.length === 0 ? (
         <div className="orders-empty-card">
-          <div className="orders-empty-icon-wrap">
-            <Sprout size={22} />
+          <div className="orders-empty-visual-box" style={{ maxWidth: 260, margin: '0 auto 1rem' }}>
+            <ImagePlaceholder
+              aspectRatio="4:3"
+              height={150}
+              label="No Past Orders"
+              sublabel="Direct harvest tracking will appear here"
+              borderRadius="14px"
+            />
           </div>
 
           <h2 className="orders-empty-title">Your Harvest Basket is Clear</h2>
