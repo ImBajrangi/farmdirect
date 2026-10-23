@@ -104,7 +104,7 @@ export const Header: React.FC = () => {
         {/* ─── Top Main Header Bar ───────────────────────────────────────── */}
         <div className="xfarm-header-nav">
           {/* Brand Lockup */}
-          <Link to="/" className="xfarm-brand-lockup">
+          <Link to="/" className="xfarm-brand-lockup" aria-label="Fruit Baskets">
             <FruitBasketsLogoIcon size={34} color="#0F2E22" />
             <span className="xfarm-brand-text">Fruit Baskets</span>
           </Link>

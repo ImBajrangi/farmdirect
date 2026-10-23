@@ -20,6 +20,8 @@
   margin: 0 auto;
   padding: 12px 14px 6px 14px;
   box-sizing: border-box;
+  container-type: inline-size;
+  container-name: xfarm-header;
 }
 
 @media (min-width: 768px) {
@@ -77,9 +79,16 @@
   white-space: nowrap;
 }
 
-@media (max-width: 480px) {
+/* Hide logo text [Fruit Baskets] when space runs out and hamburger starts cutting from side */
+@media (max-width: 600px) {
   .xfarm-brand-text {
-    font-size: 1.15rem;
+    display: none;
+  }
+}
+
+@container xfarm-header (max-width: 600px) {
+  .xfarm-brand-text {
+    display: none;
   }
 }
 
@@ -405,8 +414,15 @@
 
 @media (max-width: 480px) {
   .xfarm-header-cta {
-    padding: 7px 12px;
+    padding: 6px 11px;
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .xfarm-header-cta {
+    padding: 6px 9px;
+    font-size: 0.71875rem;
   }
 }
 
@@ -421,6 +437,7 @@
   cursor: pointer;
   padding: 6px;
   border-radius: 8px;
+  flex-shrink: 0;
 }
 
 @media (min-width: 1140px) {
