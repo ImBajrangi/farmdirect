@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Award, MapPin, ArrowUpDown, X, Check, Sparkles } from 'lucide-react';
+import { Search, MapPin, ArrowUpDown, X, Check, Sparkles } from 'lucide-react';
 import { productService } from './product.service';
 import { Product, Category, ServiceArea, MarketplaceFilters } from './product.types';
 import { ProductList } from './ProductList';
@@ -178,43 +178,7 @@ export const MarketplacePage: React.FC = () => {
 
   return (
     <div className="page-container products-page">
-      {/* 1. Distinct Marketplace Header with Premium Value Proposition & Trust Badges */}
-      <header className="marketplace-hero-strip">
-        <div className="marketplace-header-row">
-          <div className="marketplace-header-text">
-            <div className="marketplace-eyebrow-badge">
-              <span className="eyebrow-dot" />
-              <span>{language === 'hi' ? 'सकाळी 6:00 AM थेट शेतातून तोडणी' : '6:00 AM MORNING HARVEST DISPATCH'}</span>
-            </div>
-            <h1 className="marketplace-page-title">
-              {copy.titleMain}
-              <span className="marketplace-page-sub">{copy.titleSub}</span>
-            </h1>
-            <p className="marketplace-lead-desc">
-              {language === 'hi'
-                ? 'बिना किसी बिचौलिए के सीधे सत्यापित किसानों से ताज़ा फ़सलें खरीदें।'
-                : 'Direct harvest dispatch from verified growers in Nashik and Pune. 100% direct farmer payouts with zero middlemen markups.'}
-            </p>
-          </div>
-
-          <div className="marketplace-trust-cluster">
-            <div className="trust-cluster-pill">
-              <Sparkles size={13} className="trust-cluster-icon" />
-              <span>PGS Organic</span>
-            </div>
-            <div className="trust-cluster-pill">
-              <Award size={13} className="trust-cluster-icon" />
-              <span>100% Direct Payout</span>
-            </div>
-            <div className="trust-cluster-pill">
-              <MapPin size={13} className="trust-cluster-icon" />
-              <span>Nashik & Pune Hubs</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* 2. Distinct 2-Column Marketplace Architecture: Filter Sidebar + Catalog Grid */}
+      {/* 2-Column Marketplace Architecture: Filter Sidebar + Catalog Grid */}
       <div className="marketplace-layout">
         {/* Left Filter Rail */}
         <aside className="marketplace-filter-rail">

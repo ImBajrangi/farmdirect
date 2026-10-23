@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Phone, ArrowUp, MessageSquare } from 'lucide-react';
+import { ShieldCheck, Phone, ArrowUp } from 'lucide-react';
+import { FruitBasketsLogoIcon } from '../common/FruitBasketsLogoIcon';
 import './layout.css';
 
 export const Footer: React.FC = () => {
@@ -14,88 +15,61 @@ export const Footer: React.FC = () => {
         <div className="footer-grid">
           {/* Brand & Wordmark */}
           <div className="flex-col gap-2">
-            <div className="footer-wordmark">FarmDirect.</div>
+            <div className="footer-brand-lockup">
+              <FruitBasketsLogoIcon size={32} color="#0F2E22" />
+              <span className="footer-wordmark">Fruit Baskets</span>
+            </div>
             <p className="footer-tagline">
-              Born for the direct agriculture era. Not bolted onto legacy middlemen cartels.
-              Direct farm-to-table supply network with 100% fair farmgate pricing and verified harvest integrity.
+              Direct farmgate harvests and fresh fruit baskets delivered from verified regional growers across Nashik and Pune.
             </p>
-            <div className="flex-row items-center gap-2 mt-2" style={{ color: 'var(--text)', fontSize: '0.8125rem' }}>
-              <ShieldCheck size={16} style={{ color: 'var(--accent)' }} />
-              <span>Pilot Corridor: Nashik & Western Pune</span>
-            </div>
-            <div className="flex-row items-center gap-2 mt-2">
-              <a
-                href="https://whatsapp.com"
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-pill-soft btn-sm"
-                style={{ fontSize: '0.75rem', gap: 6 }}
-              >
-                <MessageSquare size={13} style={{ color: 'var(--accent)' }} />
-                <span>Join Grower Community</span>
-              </a>
+            <div className="flex-row items-center gap-2 mt-2" style={{ color: 'var(--text-muted, #536F61)', fontSize: '0.8125rem' }}>
+              <ShieldCheck size={15} style={{ color: '#006044' }} />
+              <span>Nashik &amp; Western Pune Corridor</span>
             </div>
           </div>
 
-          {/* Column 1: Marketplace */}
+          {/* Column 1: Available Produce */}
           <div>
-            <div className="footer-col-title">Marketplace</div>
+            <div className="footer-col-title">Available Produce</div>
             <div className="flex-col gap-2">
-              <Link to="/marketplace" className="footer-link">Browse All Produce</Link>
-              <Link to="/marketplace?category=cat-veg" className="footer-link">Fresh Vegetables</Link>
-              <Link to="/marketplace?category=cat-fruit" className="footer-link">Orchard Fruits</Link>
-              <Link to="/marketplace?category=cat-grains" className="footer-link">Native Grains & Cereals</Link>
-              <Link to="/farmer/register" className="footer-link" style={{ color: 'var(--accent)', fontWeight: 600 }}>
-                Producer Registration (शेतकरी नोंदणी) →
-              </Link>
+              <Link to="/marketplace" className="footer-link">Fresh Harvest (All)</Link>
+              <Link to="/marketplace?category=fruits" className="footer-link">Curated Fruit Baskets</Link>
+              <Link to="/marketplace?category=vegetables" className="footer-link">Farm Vegetables</Link>
+              <Link to="/marketplace?category=grains" className="footer-link">Native Grains &amp; Cereals</Link>
+              <Link to="/farmers" className="footer-link">Verified Regional Farms</Link>
             </div>
           </div>
 
-          {/* Column 2: Trust & Policies */}
+          {/* Column 2: Platform & Trust */}
           <div>
-            <div className="footer-col-title">Platform & Trust</div>
+            <div className="footer-col-title">Platform &amp; Trust</div>
             <div className="flex-col gap-2">
-              <Link to="/about" className="footer-link">About FarmDirect</Link>
-              <Link to="/cancellation-refund" className="footer-link">Cancellation & Refunds</Link>
-              <Link to="/privacy" className="footer-link">Privacy Policy (DPDP)</Link>
-              <Link to="/terms" className="footer-link">Terms & Conditions</Link>
-              <Link to="/support" className="footer-link">Help & FAQs</Link>
+              <Link to="/about" className="footer-link">About Fruit Baskets</Link>
+              <Link to="/farmers" className="footer-link">Our Growers</Link>
+              <Link to="/cancellation-refund" className="footer-link">Cancellation &amp; Refunds</Link>
+              <Link to="/privacy" className="footer-link">Privacy Policy</Link>
+              <Link to="/terms" className="footer-link">Terms &amp; Conditions</Link>
             </div>
           </div>
 
           {/* Column 3: Field Operations */}
           <div>
-            <div className="footer-col-title">Helpline & Field Hub</div>
+            <div className="footer-col-title">Helpline &amp; Support</div>
             <div className="flex-col gap-2">
-              <span className="text-caption" style={{ color: 'var(--text-faint)' }}>Direct Farmer Line:</span>
-              <div className="flex-row items-center gap-2" style={{ color: 'var(--text)', fontWeight: 600, fontSize: '0.875rem' }}>
-                <Phone size={15} style={{ color: 'var(--accent)' }} />
+              <div className="flex-row items-center gap-2" style={{ color: 'var(--text, #0F2E22)', fontWeight: 600, fontSize: '0.875rem' }}>
+                <Phone size={15} style={{ color: '#006044' }} />
                 <span>+91 9XXXX XXXXX</span>
               </div>
-              <div
-                style={{
-                  padding: '12px 16px',
-                  backgroundColor: 'var(--bg-elevated)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-sm)',
-                  marginTop: 8,
-                }}
-              >
-                <div style={{ color: 'var(--text)', fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>
-                  NPOP / PGS-India Verified
-                </div>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                  Organic produce is certified strictly against authenticated Mahabhulekh 7/12 land records and laboratory reports.
-                </p>
-              </div>
+              <p style={{ fontSize: '0.78125rem', color: 'var(--text-muted, #536F61)', lineHeight: 1.45, marginTop: 4 }}>
+                Direct support for daily harvest dispatches, fruit baskets, and farmgate orders.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Bottom Credits & Back to Top */}
         <div className="footer-bottom-credits">
-          <p>© {new Date().getFullYear()} FarmDirect Inc. Built for Indian Agriculture.</p>
-          <p>Nashik–Pune Regional Agricultural Gateway</p>
+          <p>© {new Date().getFullYear()} Fruit Baskets / FarmDirect. Built for Direct Agriculture.</p>
           <button onClick={scrollToTop} className="back-to-top-btn" aria-label="Back to top">
             <span>Back to top</span>
             <ArrowUp size={14} />

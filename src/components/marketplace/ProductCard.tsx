@@ -215,37 +215,62 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* Card B Bottom Split Layout */}
-      <div className="product-footer-split-b">
-        {currentQty > 0 ? (
-          /* Active cart state: Title + Dedicated spacious row for Price and +/- Stepper */
-          <div className="product-active-cart-container-b">
-            <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
-              {cleanTitle}
-            </Link>
+      {/* Harmonious Synchronized Footer (Google / Apple Design Hierarchy) */}
+      <div className="product-footer-unified-b">
+        {/* Title: 2-line clamped with fixed min-height for perfectly uniform grid rows */}
+        <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
+          {cleanTitle}
+        </Link>
 
-            <div className="product-active-cart-row-b">
-              <div className="product-active-price-wrap-b">
-                <span className="product-active-price-val-b">
-                  {formatPaise(displayPricePaise, language)}
-                </span>
-                <span className="product-active-unit-sub-b">
-                  {currentQty} × {unitLabel} · {formatPaise(product.price_paise, language)}/{product.unit || 'kg'}
-                </span>
-              </div>
+        {/* Origin & Unit Tags: Always anchor the produce details */}
+        <div className="product-tags-row-b">
+          <span
+            className="product-trait-pill-b"
+            style={{
+              backgroundColor: theme.pillBg,
+              color: theme.pillText,
+            }}
+          >
+            {village}
+          </span>
+          <span
+            className="product-trait-pill-b"
+            style={{
+              backgroundColor: theme.pillBg,
+              color: theme.pillText,
+            }}
+          >
+            {unitLabel}
+          </span>
+        </div>
 
-              <div className="product-stepper-b product-stepper-spacious">
+        {/* Synchronized Price & Action Row: Anchored base row */}
+        <div className="product-bottom-bar-b">
+          <div className="product-price-block-b">
+            <span className="product-price-val-b">
+              {formatPaise(displayPricePaise, language)}
+            </span>
+            <span className="product-unit-sub-b">
+              {currentQty > 0
+                ? `${currentQty} × ${unitLabel}`
+                : `per ${unitLabel}`}
+            </span>
+          </div>
+
+          <div className="product-action-slot-b">
+            {isOutOfStock ? (
+              <span className="product-soldout-b">Sold Out</span>
+            ) : currentQty > 0 ? (
+              <div className="product-stepper-b">
                 <button
                   type="button"
                   onClick={() => updateQuantity(product.id, currentQty - (product.unit_step || 1))}
                   className="stepper-btn-b"
                   aria-label="Decrease quantity"
                 >
-                  <Minus size={14} strokeWidth={2.6} />
+                  <Minus size={13} strokeWidth={2.6} />
                 </button>
-                <span className="stepper-qty-b">
-                  {currentQty}
-                </span>
+                <span className="stepper-qty-b">{currentQty}</span>
                 <button
                   type="button"
                   onClick={() => addToCart(product)}
@@ -253,62 +278,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   className="stepper-btn-b"
                   aria-label="Increase quantity"
                 >
-                  <Plus size={14} strokeWidth={2.6} />
+                  <Plus size={13} strokeWidth={2.6} />
                 </button>
               </div>
-            </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => addToCart(product)}
+                className="product-order-btn-b"
+                aria-label={`Order ${cleanTitle} Now`}
+              >
+                <span>Order Now</span>
+                <ArrowUpRight size={13} strokeWidth={2.4} />
+              </button>
+            )}
           </div>
-        ) : (
-          /* Default state: Title + Borderless Tags on left, Price + Order Now on right */
-          <>
-            <div className="product-left-col-b">
-              <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
-                {cleanTitle}
-              </Link>
-
-              <div className="product-tags-row-b">
-                <span
-                  className="product-trait-pill-b"
-                  style={{
-                    backgroundColor: theme.pillBg,
-                    color: theme.pillText,
-                  }}
-                >
-                  {village}
-                </span>
-                <span
-                  className="product-trait-pill-b"
-                  style={{
-                    backgroundColor: theme.pillBg,
-                    color: theme.pillText,
-                  }}
-                >
-                  {unitLabel}
-                </span>
-              </div>
-            </div>
-
-            <div className="product-right-col-b">
-              <div className="product-price-val-b" title={`₹${product.price_paise / 100} / ${unitLabel}`}>
-                {formatPaise(displayPricePaise, language)}
-              </div>
-
-              {isOutOfStock ? (
-                <span className="product-soldout-b">Sold Out</span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => addToCart(product)}
-                  className="product-order-btn-b"
-                  aria-label={`Order ${cleanTitle} Now`}
-                >
-                  <span>Order Now</span>
-                  <ArrowUpRight size={13} strokeWidth={2.4} />
-                </button>
-              )}
-            </div>
-          </>
-        )}
+        </div>
       </div>
     </div>
   );

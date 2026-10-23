@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   ShoppingBag,
@@ -7,80 +7,30 @@ import {
   X,
   Languages,
   Tractor,
-  ShieldCheck,
   Sprout,
-  ThermometerSnowflake,
-  PackageCheck,
-  ChevronDown,
-  Check,
+  ArrowRight,
 } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useAuth } from '../../features/auth/AuthContext';
 import { useCart } from '../../features/cart/CartContext';
-import { UserRole } from '../../types';
 import { FruitBasketsLogoIcon } from '../common/FruitBasketsLogoIcon';
 import './layout.css';
 
 export const Header: React.FC = () => {
   const { t, language, setLanguage } = useTranslation();
-  const { currentRole, switchRole } = useAuth();
   const { itemCount } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [portalMenuOpen, setPortalMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const portalMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close portal dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (portalMenuRef.current && !portalMenuRef.current.contains(event.target as Node)) {
-        setPortalMenuOpen(false);
-      }
-    };
-    if (portalMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [portalMenuOpen]);
-
-
-  // Active link detection based on current pathname and query params
+  // Active link detection: strictly inactive on landing page (/), only active on their dedicated page
   const searchParams = new URLSearchParams(location.search);
   const categoryParam = searchParams.get('category');
 
   const isBasketsActive = location.pathname === '/marketplace' && categoryParam === 'fruits';
-  const isHarvestActive =
-    (location.pathname === '/marketplace' && categoryParam !== 'fruits') ||
-    location.pathname === '/' ||
-    location.pathname === '/home';
-  const isFarmsActive =
-    location.pathname === '/farmers' ||
-    (location.pathname.startsWith('/farmer/') &&
-      location.pathname !== '/farmer/dashboard' &&
-      location.pathname !== '/farmer/add-product');
-  const isPlatformActive = location.pathname === '/platform';
-  const isOrdersActive = location.pathname === '/orders' || location.pathname.startsWith('/order');
-  const isFarmerDashActive =
-    location.pathname === '/farmer/dashboard' || location.pathname === '/farmer/add-product';
-  const isAdminDashActive = location.pathname === '/admin/dashboard';
-
-  const handleColdChainClick = (e: React.MouseEvent) => {
-    if (location.pathname === '/' || location.pathname === '/home') {
-      e.preventDefault();
-      const el = document.getElementById('cold-chain');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      e.preventDefault();
-      navigate('/#cold-chain');
-    }
-  };
+  const isHarvestActive = location.pathname === '/marketplace' && categoryParam !== 'fruits';
+  const isFarmsActive = location.pathname === '/farmers';
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,16 +40,27 @@ export const Header: React.FC = () => {
     }
   };
 
-  const handleRoleChange = (role: UserRole) => {
-    switchRole(role);
-    setMobileMenuOpen(false);
-    if (role === 'farmer') navigate('/farmer/dashboard');
-    else if (role === 'admin') navigate('/admin/dashboard');
-    else navigate('/marketplace');
-  };
-
   return (
     <header className="xfarm-unified-header">
+      {/* ─── Continuous Top Announcement Bar ──────────────────────────────── */}
+      <div className="xfarm-top-announcement-bar">
+        <div className="xfarm-announcement-inner">
+          <div className="xfarm-announcement-badge">
+            <span className="xfarm-announcement-dot" />
+            <span>6:00 AM DISPATCH</span>
+          </div>
+          <span className="xfarm-announcement-text">
+            {language === 'hi'
+              ? 'नाशिक व पुणे थेट शेतातून ताजी तोडणी · शून्य मध्यस्थ · ₹४९९ वरील ऑर्डरवर मोफत डिलिव्हरी'
+              : 'Direct Farmgate Morning Harvest Across Nashik & Western Pune · 100% Direct Farmer Payouts · Free Delivery > ₹499'}
+          </span>
+          <Link to="/marketplace" className="xfarm-announcement-link">
+            <span>{language === 'hi' ? 'खरेदी करा' : 'Order Now'}</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
+      </div>
+
       <div className="xfarm-unified-header-inner">
         {/* ─── Top Main Header Bar ───────────────────────────────────────── */}
         <div className="xfarm-header-nav">
@@ -109,7 +70,7 @@ export const Header: React.FC = () => {
             <span className="xfarm-brand-text">Fruit Baskets</span>
           </Link>
 
-          {/* Desktop Floating Pill Navigation */}
+          {/* Desktop Floating Pill Navigation: Exactly 3 Items */}
           <nav className="xfarm-pill-nav" aria-label="Main Navigation">
             <Link
               to="/marketplace"
@@ -127,117 +88,15 @@ export const Header: React.FC = () => {
             </Link>
             <Link
               to="/farmers"
-              className={`xfarm-nav-link ${isFarmsActive ? 'active' : ''}`}
+              className={`xfarm-nav-link ${isFarmsActive ? 'active-lime' : ''}`}
             >
               <Tractor size={15} />
               <span>Verified Farms</span>
-            </Link>
-            <a
-              href="#cold-chain"
-              onClick={handleColdChainClick}
-              className="xfarm-nav-link"
-            >
-              <ThermometerSnowflake size={15} />
-              <span>24h Cold-Chain</span>
-            </a>
-            <Link
-              to="/platform"
-              className={`xfarm-nav-link ${isPlatformActive ? 'active' : ''}`}
-            >
-              <ShieldCheck size={15} />
-              <span>7/12 Land Verified</span>
             </Link>
           </nav>
 
           {/* Right Action & Utility Controls */}
           <div className="xfarm-header-actions">
-            {/* Desktop Portal Switcher Dropdown */}
-            <div className="xfarm-portal-menu-wrapper" ref={portalMenuRef}>
-              <button
-                type="button"
-                onClick={() => setPortalMenuOpen(!portalMenuOpen)}
-                className={`xfarm-portal-pill-btn ${portalMenuOpen ? 'open' : ''}`}
-                title="Switch Portal Experience"
-                aria-expanded={portalMenuOpen}
-                aria-haspopup="true"
-              >
-                {currentRole === 'customer' && <ShoppingBag size={14} className="xfarm-portal-pill-icon" />}
-                {currentRole === 'farmer' && <Tractor size={14} className="xfarm-portal-pill-icon" />}
-                {currentRole === 'admin' && <ShieldCheck size={14} className="xfarm-portal-pill-icon" />}
-                <span className="xfarm-portal-label">
-                  {currentRole === 'customer'
-                    ? 'Buyer Mode'
-                    : currentRole === 'farmer'
-                    ? 'Farmer Portal'
-                    : 'Admin Console'}
-                </span>
-                <ChevronDown size={12} className={`xfarm-chevron ${portalMenuOpen ? 'rotate' : ''}`} />
-              </button>
-
-              {portalMenuOpen && (
-                <div className="xfarm-portal-dropdown" role="menu">
-                  <div className="xfarm-portal-dropdown-header">Select Portal Experience</div>
-
-                  <button
-                    type="button"
-                    role="menuitem"
-                    className={`xfarm-portal-option ${currentRole === 'customer' ? 'active' : ''}`}
-                    onClick={() => {
-                      handleRoleChange('customer');
-                      setPortalMenuOpen(false);
-                    }}
-                  >
-                    <div className="xfarm-portal-option-icon">
-                      <ShoppingBag size={15} />
-                    </div>
-                    <div className="xfarm-portal-option-text">
-                      <span className="xfarm-portal-name">Buyer Store</span>
-                      <span className="xfarm-portal-desc">Shop fresh fruit baskets & cold-chain produce</span>
-                    </div>
-                    {currentRole === 'customer' && <Check size={14} className="xfarm-portal-check" />}
-                  </button>
-
-                  <button
-                    type="button"
-                    role="menuitem"
-                    className={`xfarm-portal-option ${currentRole === 'farmer' ? 'active' : ''}`}
-                    onClick={() => {
-                      handleRoleChange('farmer');
-                      setPortalMenuOpen(false);
-                    }}
-                  >
-                    <div className="xfarm-portal-option-icon">
-                      <Tractor size={15} />
-                    </div>
-                    <div className="xfarm-portal-option-text">
-                      <span className="xfarm-portal-name">Farmer Portal</span>
-                      <span className="xfarm-portal-desc">Manage harvest listings & 7/12 land records</span>
-                    </div>
-                    {currentRole === 'farmer' && <Check size={14} className="xfarm-portal-check" />}
-                  </button>
-
-                  <button
-                    type="button"
-                    role="menuitem"
-                    className={`xfarm-portal-option ${currentRole === 'admin' ? 'active' : ''}`}
-                    onClick={() => {
-                      handleRoleChange('admin');
-                      setPortalMenuOpen(false);
-                    }}
-                  >
-                    <div className="xfarm-portal-option-icon">
-                      <ShieldCheck size={15} />
-                    </div>
-                    <div className="xfarm-portal-option-text">
-                      <span className="xfarm-portal-name">Admin Console</span>
-                      <span className="xfarm-portal-desc">Quality audits, cold-chain & farm approvals</span>
-                    </div>
-                    {currentRole === 'admin' && <Check size={14} className="xfarm-portal-check" />}
-                  </button>
-                </div>
-              )}
-            </div>
-
             {/* Language Switcher Pill */}
             <button
               type="button"
@@ -255,9 +114,9 @@ export const Header: React.FC = () => {
               {itemCount > 0 && <span className="xfarm-cart-count">{itemCount}</span>}
             </Link>
 
-            {/* Primary Action CTA */}
+            {/* Primary Action CTA (Desktop/Tablet) */}
             <Link to="/marketplace" className="xfarm-header-cta">
-              <span>Order Farm Fresh</span>
+              <span>Order Now</span>
             </Link>
 
             {/* Mobile Menu Toggle */}
@@ -272,7 +131,7 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* ─── Mobile / Tablet Horizontal Scrollable Chips Rail ───────────── */}
+        {/* ─── Mobile / Tablet Horizontal Scrollable Chips Rail (Exactly 3 Items) ───── */}
         <nav className="xfarm-mobile-chips-wrapper" aria-label="Mobile Navigation Sections">
           <div className="xfarm-mobile-chips-track">
             <Link
@@ -296,28 +155,6 @@ export const Header: React.FC = () => {
               <Tractor size={13} />
               <span>Verified Farms</span>
             </Link>
-            <a
-              href="#cold-chain"
-              onClick={handleColdChainClick}
-              className="xfarm-chip-pill"
-            >
-              <ThermometerSnowflake size={13} />
-              <span>24h Cold-Chain</span>
-            </a>
-            <Link
-              to="/platform"
-              className={`xfarm-chip-pill ${isPlatformActive ? 'active' : ''}`}
-            >
-              <ShieldCheck size={13} />
-              <span>7/12 Land Verified</span>
-            </Link>
-            <Link
-              to="/orders"
-              className={`xfarm-chip-pill ${isOrdersActive ? 'active' : ''}`}
-            >
-              <PackageCheck size={13} />
-              <span>My Orders</span>
-            </Link>
           </div>
         </nav>
       </div>
@@ -325,6 +162,7 @@ export const Header: React.FC = () => {
       {/* ─── Mobile Expandable Drawer Panel ──────────────────────────────── */}
       {mobileMenuOpen && (
         <div className="xfarm-mobile-drawer">
+          {/* Quick Search */}
           <form onSubmit={handleSearchSubmit} className="xfarm-mobile-search-form">
             <Search size={16} className="xfarm-search-icon" />
             <input
@@ -336,35 +174,58 @@ export const Header: React.FC = () => {
             />
           </form>
 
-          {/* Quick Portal Switcher */}
-          <div className="xfarm-drawer-section">
-            <div className="xfarm-drawer-section-title">Select Portal Mode:</div>
-            <div className="xfarm-drawer-roles">
-              <button
-                type="button"
-                onClick={() => handleRoleChange('customer')}
-                className={`xfarm-role-btn ${currentRole === 'customer' ? 'active' : ''}`}
-              >
-                <ShoppingBag size={14} />
-                <span>Buyer Store</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleRoleChange('farmer')}
-                className={`xfarm-role-btn ${currentRole === 'farmer' ? 'active' : ''}`}
-              >
-                <Tractor size={14} />
-                <span>Farmer Portal</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleRoleChange('admin')}
-                className={`xfarm-role-btn ${currentRole === 'admin' ? 'active' : ''}`}
-              >
-                <ShieldCheck size={14} />
-                <span>Admin Console</span>
-              </button>
-            </div>
+          {/* Primary Marketplace 2-Item Menu */}
+          <div className="xfarm-drawer-marketplace-hero">
+            <Link
+              to="/marketplace"
+              onClick={() => setMobileMenuOpen(false)}
+              className="xfarm-drawer-harvest-card"
+            >
+              <div className="xfarm-drawer-harvest-icon">
+                <Sprout size={20} />
+              </div>
+              <div className="xfarm-drawer-harvest-info">
+                <span className="xfarm-drawer-harvest-title">Fresh Harvest</span>
+                <span className="xfarm-drawer-harvest-desc">Direct farmgate listings</span>
+              </div>
+            </Link>
+
+            <Link
+              to="/marketplace"
+              onClick={() => setMobileMenuOpen(false)}
+              className="xfarm-drawer-order-now-btn"
+            >
+              <span>Order Now</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          {/* Clean Navigation Links */}
+          <div className="xfarm-drawer-links">
+            <Link
+              to="/marketplace?category=fruits"
+              onClick={() => setMobileMenuOpen(false)}
+              className="xfarm-drawer-link"
+            >
+              <ShoppingBag size={16} />
+              <span>Fruit Baskets</span>
+            </Link>
+            <Link
+              to="/farmers"
+              onClick={() => setMobileMenuOpen(false)}
+              className="xfarm-drawer-link"
+            >
+              <Tractor size={16} />
+              <span>Verified Farms</span>
+            </Link>
+            <Link
+              to="/cart"
+              onClick={() => setMobileMenuOpen(false)}
+              className="xfarm-drawer-link"
+            >
+              <ShoppingBag size={16} />
+              <span>{t.nav.cart} ({itemCount})</span>
+            </Link>
           </div>
 
           {/* Language Switcher Row in Drawer */}
@@ -377,50 +238,6 @@ export const Header: React.FC = () => {
               <Languages size={15} />
               <span>Language: {language === 'en' ? 'हिन्दी (Switch to Hindi)' : 'English (Switch to English)'}</span>
             </button>
-          </div>
-
-
-          {/* Quick Route Links */}
-          <div className="xfarm-drawer-links">
-            <Link
-              to="/marketplace"
-              onClick={() => setMobileMenuOpen(false)}
-              className="xfarm-drawer-link"
-            >
-              <Sprout size={16} />
-              <span>{t.nav.marketplace}</span>
-            </Link>
-            <Link
-              to="/orders"
-              onClick={() => setMobileMenuOpen(false)}
-              className="xfarm-drawer-link"
-            >
-              <PackageCheck size={16} />
-              <span>{t.nav.orders}</span>
-            </Link>
-            <Link
-              to="/cart"
-              onClick={() => setMobileMenuOpen(false)}
-              className="xfarm-drawer-link"
-            >
-              <ShoppingBag size={16} />
-              <span>{t.nav.cart} ({itemCount})</span>
-            </Link>
-            <Link
-              to="/platform"
-              onClick={() => setMobileMenuOpen(false)}
-              className="xfarm-drawer-link"
-            >
-              <ShieldCheck size={16} />
-              <span>7/12 Land Transparency</span>
-            </Link>
-            <Link
-              to="/about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="xfarm-drawer-link"
-            >
-              <span>About FarmDirect</span>
-            </Link>
           </div>
         </div>
       )}
