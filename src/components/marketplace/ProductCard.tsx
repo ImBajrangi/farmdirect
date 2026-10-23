@@ -6,12 +6,20 @@ import { formatPaise } from '../../lib/formatting/currency';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useCart } from '../../features/cart/CartContext';
 import '../../features/products/products.css';
+import { isVegetableProduct, isFruitProduct } from '../../features/products/ProductList';
 
 interface ProductCardProps {
   product: Product;
 }
 
-interface ItemTheme {
+export interface CategoryBadge {
+  labelEn: string;
+  labelHi: string;
+  icon: string;
+  type: 'veg' | 'fruit' | 'grain' | 'dairy' | 'pulse' | 'spice';
+}
+
+export interface ItemTheme {
   shellBg: string;
   borderColor: string;
   canvasBg: string;
@@ -19,98 +27,180 @@ interface ItemTheme {
   ribbonText: string;
   accentColor: string;
   shadowColor: string;
+  categoryBadge: CategoryBadge;
 }
 
-function getItemTheme(slug: string): ItemTheme {
-  const s = slug.toLowerCase();
+function getItemTheme(product: Product): ItemTheme {
+  const s = ((product.slug || '') + ' ' + (product.name || '')).toLowerCase();
+  const catSlug = product.category?.slug?.toLowerCase() || '';
+  const catId = product.category_id || '';
 
-  // 1. Red Onions -> Soft Warm Organic Blush Canvas
-  if (s.includes('onion') || s.includes('kanda')) {
+  // 1. FRUITS & BASKETS (Lavender / Berry Ruby / Orchard Violet)
+  if (isFruitProduct(product as any)) {
+    // 1a. Strawberries & Berries -> Rich Berry Blush
+    if (s.includes('strawberr') || s.includes('berry')) {
+      return {
+        shellBg: '#FFFFFF',
+        borderColor: 'rgba(225, 29, 72, 0.18)',
+        canvasBg: '#FFF1F2',
+        ribbonBg: '#FFE4E6',
+        ribbonText: '#BE123C',
+        accentColor: '#E11D48',
+        shadowColor: 'rgba(225, 29, 72, 0.08)',
+        categoryBadge: { labelEn: 'Fruit', labelHi: 'फळे', icon: '', type: 'fruit' },
+      };
+    }
+
+    // 1b. Apples -> Crisp Orchard Red-Blush
+    if (s.includes('apple') || s.includes('seb')) {
+      return {
+        shellBg: '#FFFFFF',
+        borderColor: 'rgba(220, 38, 38, 0.16)',
+        canvasBg: '#FFF5F5',
+        ribbonBg: '#FEE2E2',
+        ribbonText: '#B91C1C',
+        accentColor: '#DC2626',
+        shadowColor: 'rgba(220, 38, 38, 0.08)',
+        categoryBadge: { labelEn: 'Fruit', labelHi: 'फळे', icon: '🍎', type: 'fruit' },
+      };
+    }
+
+    // 1c. Curated Seasonal Fruit Basket -> Regal Orchard Lilac
+    if (s.includes('basket')) {
+      return {
+        shellBg: '#FFFFFF',
+        borderColor: 'rgba(147, 51, 234, 0.20)',
+        canvasBg: '#FAF5FF',
+        ribbonBg: '#F3E8FF',
+        ribbonText: '#7E22CE',
+        accentColor: '#9333EA',
+        shadowColor: 'rgba(147, 51, 234, 0.09)',
+        categoryBadge: { labelEn: 'Fruit Basket', labelHi: 'फळ बास्केट', icon: '🧺', type: 'fruit' },
+      };
+    }
+
+    // 1d. Grapes & Other Sun-Ripened Fruits -> Orchard Lilac / Violet
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
-      canvasBg: '#FFF5F5',
-      ribbonBg: '#FFE4E6',
-      ribbonText: '#9F1239',
-      accentColor: '#BE123C',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
-    };
-  }
-
-  // 2. Grapes -> Soft Lilac Accent
-  if (s.includes('grape') || s.includes('draksh')) {
-    return {
-      shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
-      canvasBg: '#F5F3FF',
+      borderColor: 'rgba(147, 51, 234, 0.18)',
+      canvasBg: '#FAF5FF',
       ribbonBg: '#EDE9FE',
       ribbonText: '#6B21A8',
-      accentColor: '#7E22CE',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
+      accentColor: '#9333EA',
+      shadowColor: 'rgba(147, 51, 234, 0.08)',
+      categoryBadge: { labelEn: 'Fruit', labelHi: 'फळे', icon: '🍇', type: 'fruit' },
     };
   }
 
-  // 3. Spinach & Green Veggies -> Soft Mint Canvas
-  if (s.includes('spinach') || s.includes('palak') || s.includes('methi')) {
+  // 2. VEGETABLES (Crisp Morning Mint & Leaf Emerald / Earthy Onion Blush)
+  if (isVegetableProduct(product as any)) {
+    // 2a. Red Onions -> Soft Earthy Rose Blush Canvas
+    if (s.includes('onion') || s.includes('kanda')) {
+      return {
+        shellBg: '#FFFFFF',
+        borderColor: 'rgba(190, 18, 60, 0.16)',
+        canvasBg: '#FFF5F5',
+        ribbonBg: '#FFE4E6',
+        ribbonText: '#9F1239',
+        accentColor: '#BE123C',
+        shadowColor: 'rgba(190, 18, 60, 0.06)',
+        categoryBadge: { labelEn: 'Fresh Veg', labelHi: 'भाजीपाला', icon: '🧅', type: 'veg' },
+      };
+    }
+
+    // 2b. Tomatoes -> Vibrant Garden Coral
+    if (s.includes('tomato') || s.includes('tamatar')) {
+      return {
+        shellBg: '#FFFFFF',
+        borderColor: 'rgba(220, 38, 38, 0.16)',
+        canvasBg: '#FEF2F2',
+        ribbonBg: '#FEE2E2',
+        ribbonText: '#991B1B',
+        accentColor: '#DC2626',
+        shadowColor: 'rgba(220, 38, 38, 0.06)',
+        categoryBadge: { labelEn: 'Fresh Veg', labelHi: 'भाजीपाला', icon: '🍅', type: 'veg' },
+      };
+    }
+
+    // 2c. Spinach & Leafy Greens & General Veggies -> Botanical Dew Mint
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
+      borderColor: 'rgba(22, 163, 74, 0.18)',
       canvasBg: '#F0FDF4',
       ribbonBg: '#DCFCE7',
       ribbonText: '#15803D',
       accentColor: '#16A34A',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
+      shadowColor: 'rgba(22, 163, 74, 0.06)',
+      categoryBadge: { labelEn: 'Fresh Veg', labelHi: 'भाजीपाला', icon: '🥬', type: 'veg' },
     };
   }
 
-  // 4. Wheat / Grains -> Soft Warm Amber Canvas
-  if (s.includes('wheat') || s.includes('gehu') || s.includes('grain') || s.includes('cereal') || s.includes('rice')) {
+  // 3. GRAINS & CEREALS -> Warm Sun-Baked Amber Gold
+  if (catId === 'cat-grains' || catSlug.includes('grain') || s.includes('wheat') || s.includes('gehu') || s.includes('rice') || s.includes('cereal')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
+      borderColor: 'rgba(180, 83, 9, 0.16)',
       canvasBg: '#FFFBEB',
       ribbonBg: '#FEF3C7',
       ribbonText: '#92400E',
       accentColor: '#B45309',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
+      shadowColor: 'rgba(180, 83, 9, 0.06)',
+      categoryBadge: { labelEn: 'Grain', labelHi: 'धान्य', icon: '🌾', type: 'grain' },
     };
   }
 
-  // 5. Gir Cow Ghee & Dairy -> Soft Sunlit Cream Canvas
-  if (s.includes('ghee') || s.includes('dairy') || s.includes('toop') || s.includes('milk')) {
+  // 4. DAIRY & FARM ESSENTIALS -> Warm Vedic Cream Gold
+  if (catId === 'cat-dairy' || catSlug.includes('dairy') || s.includes('ghee') || s.includes('toop') || s.includes('milk') || s.includes('butter')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
+      borderColor: 'rgba(161, 98, 7, 0.16)',
       canvasBg: '#FEFCE8',
       ribbonBg: '#FEF9C3',
       ribbonText: '#854D0E',
       accentColor: '#A16207',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
+      shadowColor: 'rgba(161, 98, 7, 0.06)',
+      categoryBadge: { labelEn: 'Pure Dairy', labelHi: 'डेअरी', icon: '🥛', type: 'dairy' },
     };
   }
 
-  // 6. Tomatoes & Spices -> Soft Pastel Coral Canvas
-  if (s.includes('tomato') || s.includes('chilli') || s.includes('spice') || s.includes('masala')) {
+  // 5. SPICES & SEASONINGS -> Warm Sun-Dried Terracotta
+  if (catId === 'cat-spices' || catSlug.includes('spice') || s.includes('spice') || s.includes('masala') || s.includes('turmeric') || s.includes('chilli')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(15, 46, 34, 0.08)',
-      canvasBg: '#FEF2F2',
-      ribbonBg: '#FEE2E2',
-      ribbonText: '#991B1B',
-      accentColor: '#DC2626',
-      shadowColor: 'rgba(15, 46, 34, 0.06)',
+      borderColor: 'rgba(234, 88, 12, 0.16)',
+      canvasBg: '#FFF7ED',
+      ribbonBg: '#FFEDD5',
+      ribbonText: '#C2410C',
+      accentColor: '#EA580C',
+      shadowColor: 'rgba(234, 88, 12, 0.06)',
+      categoryBadge: { labelEn: 'Spice', labelHi: 'मसाले', icon: '🌶️', type: 'spice' },
     };
   }
 
-  // Default Organic Leaf Green
+  // 6. PULSES & LENTILS -> Natural Hearth Amber
+  if (catId === 'cat-pulses' || catSlug.includes('pulse') || s.includes('dal') || s.includes('lentil')) {
+    return {
+      shellBg: '#FFFFFF',
+      borderColor: 'rgba(217, 119, 6, 0.16)',
+      canvasBg: '#FFFBEB',
+      ribbonBg: '#FEF3C7',
+      ribbonText: '#B45309',
+      accentColor: '#D97706',
+      shadowColor: 'rgba(217, 119, 6, 0.06)',
+      categoryBadge: { labelEn: 'Pulse', labelHi: 'कडधान्य', icon: '🥣', type: 'pulse' },
+    };
+  }
+
+  // Fallback: Default Farm Direct Organic Dew Green
   return {
     shellBg: '#FFFFFF',
-    borderColor: 'rgba(15, 46, 34, 0.08)',
+    borderColor: 'rgba(15, 46, 34, 0.10)',
     canvasBg: '#F4F7F4',
     ribbonBg: '#DCFCE7',
     ribbonText: '#15803D',
     accentColor: '#16A34A',
     shadowColor: 'rgba(15, 46, 34, 0.06)',
+    categoryBadge: { labelEn: 'Farm Direct', labelHi: 'थेट शेतातून', icon: '🌱', type: 'veg' },
   };
 }
 
@@ -129,7 +219,7 @@ function parseProductTitle(rawName: string, nameHi?: string, lang?: string): Par
   if (title.includes('Nashik Garva Red Onions') || title.includes('Nashik Red Onions')) title = 'Nashik Red Onions';
   else if (title.includes('Thompson Seedless')) title = 'Thompson Grapes';
   else if (title.includes('Tender Spinach')) title = 'Tender Spinach';
-  else if (title.includes('Lokwan Heritage')) title = 'Lokwan Wheat';
+  else if (title.includes('Lokwan')) title = 'Lokwan Wheat';
   else if (title.includes('Gir Cow Bilona')) title = 'Gir Cow Ghee';
   else if (title.includes('Country Tomatoes') || title.includes('देशी लाल टमाटर')) title = 'Vine Tomatoes';
 
@@ -174,13 +264,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const availableQty = product.inventory?.available_quantity ?? 999;
   const isOutOfStock = availableQty <= 0;
 
-  const imageUrl = product.images?.[0]?.image_url || 
+  const imageUrl = product.images?.[0]?.image_url ||
     'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
 
   const titleData = parseProductTitle(product.name, product.name_hi, language);
   const village = product.farmer?.village || 'Nashik';
   const unitLabel = product.unit ? `1 ${product.unit}` : '1 kg';
-  const theme = getItemTheme(product.slug);
+  const theme = getItemTheme(product);
 
   // Dynamic price scaling with quantity
   const effectiveQty = currentQty > 0 ? currentQty : 1;
@@ -226,8 +316,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* Origin & Quality Badges: Organic Sage & Mint Accents */}
+        {/* Produce Category Pill & Farm Badges */}
         <div className="product-tags-row-b">
+          {theme.categoryBadge && (
+            <span className={`product-category-pill-b ${theme.categoryBadge.type}`}>
+              <span className="cat-pill-icon">{theme.categoryBadge.icon}</span>
+              <span>{language === 'hi' ? theme.categoryBadge.labelHi : theme.categoryBadge.labelEn}</span>
+            </span>
+          )}
           <span className="product-trait-pill-b origin">
             <MapPin size={11} className="trait-icon" />
             <span>{village}</span>

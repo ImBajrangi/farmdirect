@@ -877,8 +877,8 @@
   color: var(--accent, #15803d);
 }
 
-@media (max-width: 640px) {
-  .status-hide-mobile {
-    display: none;
+@media (max-width: 768px) {
+  .software-status-bar {
+    display: none !important;
   }
 }

@@ -28,8 +28,9 @@ export const Header: React.FC = () => {
   const searchParams = new URLSearchParams(location.search);
   const categoryParam = searchParams.get('category');
 
-  const isBasketsActive = location.pathname === '/marketplace' && categoryParam === 'fruits';
-  const isHarvestActive = location.pathname === '/marketplace' && categoryParam !== 'fruits';
+  const isFruitsCategory = categoryParam === 'fruits' || categoryParam === 'cat-fruit' || categoryParam === '350d3d9d-b0a2-467a-ad08-8bd67dde51ee';
+  const isBasketsActive = location.pathname === '/marketplace' && isFruitsCategory;
+  const isHarvestActive = location.pathname === '/marketplace' && !isFruitsCategory;
   const isFarmsActive = location.pathname === '/farmers';
 
   const handleSearchSubmit = (e: React.FormEvent) => {

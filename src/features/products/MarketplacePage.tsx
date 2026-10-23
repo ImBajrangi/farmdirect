@@ -15,15 +15,15 @@ const LOCALIZED_CONTENT = {
     titleMain: 'Fresh Farm Marketplace',
     titleSub: ' — 100% Direct From Farmers',
     allProduce: 'All Harvest',
-    searchPlaceholder: 'Search fresh produce: Farm Onions, Tomatoes, Grapes, Spinach, Wheat, Pure Ghee...',
-    staplesLabel: '🔥 Quick:',
+    searchPlaceholder: 'Search fresh produce: Farm Onions, Tomatoes, Grapes, Spinach, Apples, Strawberries...',
+    staplesLabel: '🔥 Popular:',
     staples: [
       { name: 'Red Onions', query: 'onion' },
       { name: 'Country Tomatoes', query: 'tomato' },
       { name: 'Thompson Grapes', query: 'grapes' },
       { name: 'Baby Spinach', query: 'spinach' },
-      { name: 'Lokwan Wheat', query: 'wheat' },
-      { name: 'Gir Cow Ghee', query: 'ghee' },
+      { name: 'Crisp Apples', query: 'apple' },
+      { name: 'Strawberries', query: 'strawberry' },
     ],
     categories: {
       'cat-veg': { label: 'Fresh Vegetables', icon: '🥬' },
@@ -44,15 +44,15 @@ const LOCALIZED_CONTENT = {
     titleMain: 'सीधे खेत से आपकी रसोई तक',
     titleSub: ' — 100% किसानों से सीधा',
     allProduce: 'सर्व शेतमाल (All)',
-    searchPlaceholder: 'खोजें: कांदा, गावरान टोमॅटो, द्राक्षे, कोवळा पालक, लोकवन गहू, शुद्ध तूप...',
-    staplesLabel: '🔥 रोजची गरज:',
+    searchPlaceholder: 'खोजें: कांदा, गावरान टोमॅटो, द्राक्षे, कोवळा पालक, सफरचंद, स्ट्रॉबेरी...',
+    staplesLabel: '🔥 लोकप्रिय तोडणी:',
     staples: [
       { name: 'लाल कांदा', query: 'onion' },
       { name: 'गावरान टोमॅटो', query: 'tomato' },
       { name: 'थॉम्पसन द्राक्षे', query: 'grapes' },
       { name: 'कोवळा पालक', query: 'spinach' },
-      { name: 'लोकवन गहू', query: 'wheat' },
-      { name: 'गिर गाय तूप', query: 'ghee' },
+      { name: 'सफरचंद', query: 'apple' },
+      { name: 'स्ट्रॉबेरी', query: 'strawberry' },
     ],
     categories: {
       'cat-veg': { label: 'ताजी भाजीपाला', icon: '🥬' },
@@ -131,24 +131,47 @@ export const MarketplacePage: React.FC = () => {
     return () => window.removeEventListener('farmdirect:data-changed', handleDataChanged);
   }, []);
 
+  // Immediate re-fetch when category, hub, organic flag, or sort option changes
+  useEffect(() => {
+    fetchFiltered();
+  }, [selectedCategory, selectedServiceArea, onlyOrganic, sortBy]);
+
+  // Debounced re-fetch specifically for typed search query to avoid lag
   useEffect(() => {
     const timer = setTimeout(fetchFiltered, 200);
     return () => clearTimeout(timer);
-  }, [searchQuery, selectedCategory, selectedServiceArea, onlyOrganic, sortBy]);
+  }, [searchQuery]);
+
+  // Synchronize searchQuery & category with URL params whenever URL changes (Header nav, back/forward)
+  useEffect(() => {
+    const q = searchParams.get('q') || '';
+    if (q !== searchQuery) {
+      setSearchQuery(q);
+    }
+    const cat = searchParams.get('category') || 'all';
+    if (cat !== selectedCategory) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
 
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
+    const nextParams = new URLSearchParams(searchParams);
     if (catId === 'all') {
-      searchParams.delete('category');
+      nextParams.delete('category');
     } else {
-      searchParams.set('category', catId);
+      nextParams.set('category', catId);
     }
-    setSearchParams(searchParams);
+    setSearchParams(nextParams);
   };
 
   const handleStapleClick = (query: string) => {
     setSearchQuery(query);
     setSelectedCategory('all');
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('category');
+    nextParams.set('q', query);
+    setSearchParams(nextParams);
   };
 
   // Dropdown Options
@@ -167,14 +190,6 @@ export const MarketplacePage: React.FC = () => {
     { value: 'price_asc', label: copy.sortPriceAsc, icon: '💰' },
     { value: 'price_desc', label: copy.sortPriceDesc, icon: '💎' },
   ];
-
-  // Synchronize searchQuery with URL params if changed externally
-  useEffect(() => {
-    const q = searchParams.get('q') || '';
-    if (q !== searchQuery) {
-      setSearchQuery(q);
-    }
-  }, [searchParams]);
 
   return (
     <div className="page-container products-page">
@@ -213,18 +228,24 @@ export const MarketplacePage: React.FC = () => {
               </button>
 
               {categories.map((c) => {
-                const isSelected = selectedCategory === c.id;
-                const friendly = copy.categories[c.id];
+                const isSelected =
+                  selectedCategory === c.id ||
+                  selectedCategory === c.slug ||
+                  ((selectedCategory === 'fruits' || selectedCategory === 'cat-fruit' || selectedCategory === '350d3d9d-b0a2-467a-ad08-8bd67dde51ee') &&
+                    (c.slug === 'fruits' || c.id === 'cat-fruit' || c.id === '350d3d9d-b0a2-467a-ad08-8bd67dde51ee')) ||
+                  ((selectedCategory === 'vegetables' || selectedCategory === 'cat-veg' || selectedCategory === '8c123559-8f88-41f2-889e-462b2c8774cb') &&
+                    (c.slug === 'vegetables' || c.id === 'cat-veg' || c.id === '8c123559-8f88-41f2-889e-462b2c8774cb'));
+                const friendly = copy.categories[c.id] || copy.categories[c.slug];
                 const label = friendly
                   ? friendly.label
                   : (language === 'hi' && c.name_hi ? c.name_hi : c.name);
-                const icon = friendly ? friendly.icon : '🥬';
+                const icon = friendly ? friendly.icon : (c.slug === 'fruits' ? '🍇' : '🥬');
 
                 return (
                   <button
                     key={c.id}
                     type="button"
-                    onClick={() => handleCategorySelect(c.id)}
+                    onClick={() => handleCategorySelect(c.slug || c.id)}
                     className={`filter-cat-item ${isSelected ? 'active' : ''}`}
                     role="tab"
                     aria-selected={isSelected}
@@ -337,8 +358,8 @@ export const MarketplacePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Produce Grid */}
-          <ProductList products={products} isLoading={loading} />
+          {/* Produce Grid with Distributed Sections */}
+          <ProductList products={products} isLoading={loading} activeCategory={selectedCategory} />
         </main>
       </div>
     </div>

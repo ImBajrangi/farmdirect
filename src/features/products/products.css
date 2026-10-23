@@ -19,6 +19,8 @@
   }
 }
 
+
+
 /* ─── Distinct Marketplace Hero Header (Clean, Light, Apple-Caliber) ──── */
 .marketplace-hero-strip {
   margin: 8px 0 28px;
@@ -644,6 +646,73 @@
   flex-wrap: nowrap;
   overflow: hidden;
   height: 24px;
+}
+
+/* Produce Category Color Segregation Pill (Borderless, space-saving automatic visual segregation) */
+.product-category-pill-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease;
+}
+
+.product-category-pill-b .cat-pill-icon {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.product-category-pill-b.fruit {
+  background: #F3E8FF;
+  color: #7E22CE;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-category-pill-b.veg {
+  background: #DCFCE7;
+  color: #15803D;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-category-pill-b.grain {
+  background: #FEF3C7;
+  color: #92400E;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-category-pill-b.dairy {
+  background: #FEF9C3;
+  color: #854D0E;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-category-pill-b.pulse {
+  background: #FEF3C7;
+  color: #B45309;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-category-pill-b.spice {
+  background: #FFEDD5;
+  color: #C2410C;
+  border: none !important;
+  outline: none !important;
 }
 
 .product-trait-pill-b {

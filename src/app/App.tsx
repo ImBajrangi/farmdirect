@@ -6,6 +6,7 @@ import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { SoftwareStatusBar } from '../components/layout/SoftwareStatusBar';
 import { Sidebar } from '../components/layout/Sidebar';
+import { SmartScrollRestoration } from '../components/common/SmartScrollRestoration';
 import '../styles/variables.css';
 import '../styles/global.css';
 import '../styles/typography.css';
@@ -25,6 +26,7 @@ const AppLayout: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-background, #FFFFFF)' }}>
+      <SmartScrollRestoration />
       <Header />
       <main style={{ flex: 1 }}>
         <AppRoutes />

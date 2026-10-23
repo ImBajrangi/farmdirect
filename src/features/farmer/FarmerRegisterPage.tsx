@@ -301,7 +301,7 @@ export const FarmerRegisterPage: React.FC = () => {
                     </div>
 
                     <div className="form-field-group">
-                      <label className="form-label">Farm Heritage & Soil Practices (Optional)</label>
+                      <label className="form-label">Farm Practices & Soil Care (Optional)</label>
                       <textarea
                         className="input-field"
                         rows={3}

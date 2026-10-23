@@ -55,9 +55,14 @@ const REVERSE_CUSTOMER_MAP: Record<string, string> = {
   '15ed0375-402d-447e-8be0-e6a7004a3e67': 'cust-audit-2',
 };
 
+export function isUuid(id?: string): boolean {
+  if (!id) return false;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+}
+
 export function toValidUuid(id?: string): string {
   if (!id) return '00000000-0000-4000-8000-000000000001';
-  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+  if (isUuid(id)) {
     return id;
   }
   let h = 0;
@@ -413,11 +418,28 @@ export const marketplaceService = {
         );
       }
       if (filters.categoryId && filters.categoryId !== 'all') {
-        result = result.filter(p => 
-          p.category_id === filters.categoryId || 
-          p.category?.id === filters.categoryId ||
-          p.category?.slug === filters.categoryId
-        );
+        const catTarget = filters.categoryId.toLowerCase();
+        result = result.filter(p => {
+          if (
+            p.category_id === filters.categoryId || 
+            p.category?.id === filters.categoryId ||
+            p.category?.slug === filters.categoryId
+          ) return true;
+
+          // Cross-alias matching for fruits category & baskets
+          if (
+            (catTarget === 'fruits' || catTarget === 'cat-fruit' || catTarget === '350d3d9d-b0a2-467a-ad08-8bd67dde51ee') &&
+            (p.category_id === 'cat-fruit' || p.category_id === '350d3d9d-b0a2-467a-ad08-8bd67dde51ee' || p.category?.slug === 'fruits')
+          ) return true;
+
+          // Cross-alias matching for vegetables
+          if (
+            (catTarget === 'vegetables' || catTarget === 'cat-veg' || catTarget === '8c123559-8f88-41f2-889e-462b2c8774cb') &&
+            (p.category_id === 'cat-veg' || p.category_id === '8c123559-8f88-41f2-889e-462b2c8774cb' || p.category?.slug === 'vegetables')
+          ) return true;
+
+          return false;
+        });
       }
       if (filters.serviceAreaId && filters.serviceAreaId !== 'all') {
         result = result.filter(p => 
@@ -456,7 +478,7 @@ export const marketplaceService = {
     const db = getActiveDbClient();
     if (db) {
       try {
-        const { data, error } = await db
+        let productQuery = db
           .from('products')
           .select(`
             *,
@@ -464,9 +486,15 @@ export const marketplaceService = {
             farmer:farmer_profiles(*),
             images:product_images(*),
             inventory:inventory(*)
-          `)
-          .or(`slug.eq.${slug},id.eq.${slug}`)
-          .single();
+          `);
+
+        if (isUuid(slug)) {
+          productQuery = productQuery.or(`slug.eq.${slug},id.eq.${slug}`);
+        } else {
+          productQuery = productQuery.eq('slug', slug);
+        }
+
+        const { data, error } = await productQuery.single();
 
         if (!error && data) {
           const inv = Array.isArray(data.inventory) ? data.inventory[0] : data.inventory;
@@ -676,11 +704,13 @@ export const marketplaceService = {
     const safeId = resolveCustomerUuid(userId);
 
     try {
-      const { data, error } = await db
-        .from('addresses')
-        .select('*')
-        .or(`user_id.eq.${userId},user_id.eq.${safeId}`)
-        .order('is_default', { ascending: false });
+      let addrQuery = db.from('addresses').select('*');
+      if (isUuid(userId) && userId !== safeId) {
+        addrQuery = addrQuery.or(`user_id.eq.${userId},user_id.eq.${safeId}`);
+      } else {
+        addrQuery = addrQuery.eq('user_id', safeId);
+      }
+      const { data, error } = await addrQuery.order('is_default', { ascending: false });
 
       if (!error && data) {
         return data as Address[];
@@ -729,7 +759,13 @@ export const marketplaceService = {
     const safeId = resolveCustomerUuid(userId);
 
     try {
-      const { data, error } = await db.from('profiles').select('*').or(`id.eq.${userId},id.eq.${safeId}`).single();
+      let profQuery = db.from('profiles').select('*');
+      if (isUuid(userId) && userId !== safeId) {
+        profQuery = profQuery.or(`id.eq.${userId},id.eq.${safeId}`);
+      } else {
+        profQuery = profQuery.eq('id', safeId);
+      }
+      const { data, error } = await profQuery.single();
       if (!error && data) return data as Profile;
     } catch {
       // Fallback
@@ -742,17 +778,20 @@ export const marketplaceService = {
     if (!db) throw new Error('Database not configured');
     const safeId = resolveCustomerUuid(userId);
 
-    const { data, error } = await db
-      .from('profiles')
-      .update({
-        full_name: updates.full_name,
-        phone: updates.phone,
-        preferred_language: updates.preferred_language || 'en',
-        updated_at: new Date().toISOString()
-      })
-      .or(`id.eq.${userId},id.eq.${safeId}`)
-      .select()
-      .single();
+      let updQuery = db
+        .from('profiles')
+        .update({
+          full_name: updates.full_name,
+          phone: updates.phone,
+          preferred_language: updates.preferred_language || 'en',
+          updated_at: new Date().toISOString()
+        });
+      if (isUuid(userId) && userId !== safeId) {
+        updQuery = updQuery.or(`id.eq.${userId},id.eq.${safeId}`);
+      } else {
+        updQuery = updQuery.eq('id', safeId);
+      }
+      const { data, error } = await updQuery.select().single();
 
     if (error || !data) throw new Error(error?.message || 'Failed to update profile');
     return data as Profile;
@@ -879,10 +918,18 @@ export const marketplaceService = {
 
       if (role === 'farmer' && userId) {
         const safeFarmerId = resolveFarmerUuid(userId);
-        query = query.or(`farmer_id.eq.${userId},farmer_id.eq.${safeFarmerId}`);
+        if (isUuid(userId) && userId !== safeFarmerId) {
+          query = query.or(`farmer_id.eq.${userId},farmer_id.eq.${safeFarmerId}`);
+        } else {
+          query = query.eq('farmer_id', safeFarmerId);
+        }
       } else if (role === 'customer' && userId) {
         const safeCustomerId = resolveCustomerUuid(userId);
-        query = query.or(`customer_id.eq.${userId},customer_id.eq.${safeCustomerId}`);
+        if (isUuid(userId) && userId !== safeCustomerId) {
+          query = query.or(`customer_id.eq.${userId},customer_id.eq.${safeCustomerId}`);
+        } else {
+          query = query.eq('customer_id', safeCustomerId);
+        }
       }
 
       const { data, error } = await query;
@@ -907,15 +954,21 @@ export const marketplaceService = {
     let order: Order | null = null;
     if (db) {
       try {
-        const { data, error } = await db
+        let orderQuery = db
           .from('orders')
           .select(`
             *,
             items:order_items(*),
             farmer:farmer_profiles(*)
-          `)
-          .or(`id.eq.${orderId},order_number.eq.${orderId}`)
-          .single();
+          `);
+
+        if (isUuid(orderId)) {
+          orderQuery = orderQuery.or(`id.eq.${orderId},order_number.eq.${orderId}`);
+        } else {
+          orderQuery = orderQuery.eq('order_number', orderId);
+        }
+
+        const { data, error } = await orderQuery.single();
 
         if (!error && data) {
           order = {

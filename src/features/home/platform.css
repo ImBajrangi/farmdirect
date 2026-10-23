@@ -1103,8 +1103,8 @@
   background-color: rgba(21, 128, 61, 0.10);
   border-color: var(--theme-accent, #15803d);
   color: #14532d;
-  font-weight: 700;
-  box-shadow: 0 0 0 1px var(--theme-accent, #15803d), 0 4px 12px rgba(21, 128, 61, 0.08);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.08);
 }
 
 .fd-quick-chip-check {
