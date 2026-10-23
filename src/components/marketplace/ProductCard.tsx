@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Minus, ArrowUpRight } from 'lucide-react';
+import { Plus, Minus, ArrowRight, MapPin, ShieldCheck } from 'lucide-react';
 import { Product } from '../../types';
 import { formatPaise } from '../../lib/formatting/currency';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -17,9 +17,6 @@ interface ItemTheme {
   canvasBg: string;
   ribbonBg: string;
   ribbonText: string;
-  pillBg: string;
-  pillText: string;
-  pillBorder: string;
   accentColor: string;
   shadowColor: string;
 }
@@ -27,97 +24,79 @@ interface ItemTheme {
 function getItemTheme(slug: string): ItemTheme {
   const s = slug.toLowerCase();
 
-  // 1. Red Onions -> Soft Blush Rose & Deep Crimson Accents
+  // 1. Red Onions -> Soft Warm Organic Blush Canvas
   if (s.includes('onion') || s.includes('kanda')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(225, 29, 72, 0.12)',
-      canvasBg: '#FFF1F2',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
+      canvasBg: '#FFF5F5',
       ribbonBg: '#FFE4E6',
       ribbonText: '#9F1239',
-      pillBg: 'rgba(225, 29, 72, 0.06)',
-      pillText: '#9F1239',
-      pillBorder: 'rgba(225, 29, 72, 0.16)',
       accentColor: '#BE123C',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 2. Grapes -> Soft Lilac & Deep Violet Accents
+  // 2. Grapes -> Soft Lilac Accent
   if (s.includes('grape') || s.includes('draksh')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(147, 51, 234, 0.12)',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
       canvasBg: '#F5F3FF',
       ribbonBg: '#EDE9FE',
       ribbonText: '#6B21A8',
-      pillBg: 'rgba(147, 51, 234, 0.06)',
-      pillText: '#6B21A8',
-      pillBorder: 'rgba(147, 51, 234, 0.16)',
       accentColor: '#7E22CE',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 3. Spinach & Green Veggies -> Soft Mint & Emerald Accents
+  // 3. Spinach & Green Veggies -> Soft Mint Canvas
   if (s.includes('spinach') || s.includes('palak') || s.includes('methi')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(22, 163, 74, 0.12)',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
       canvasBg: '#F0FDF4',
       ribbonBg: '#DCFCE7',
       ribbonText: '#15803D',
-      pillBg: 'rgba(22, 163, 74, 0.06)',
-      pillText: '#15803D',
-      pillBorder: 'rgba(22, 163, 74, 0.16)',
       accentColor: '#16A34A',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 4. Wheat / Grains -> Soft Warm Amber & Golden Harvest Accents
+  // 4. Wheat / Grains -> Soft Warm Amber Canvas
   if (s.includes('wheat') || s.includes('gehu') || s.includes('grain') || s.includes('cereal') || s.includes('rice')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(217, 119, 6, 0.12)',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
       canvasBg: '#FFFBEB',
       ribbonBg: '#FEF3C7',
       ribbonText: '#92400E',
-      pillBg: 'rgba(217, 119, 6, 0.06)',
-      pillText: '#92400E',
-      pillBorder: 'rgba(217, 119, 6, 0.16)',
       accentColor: '#B45309',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 5. Gir Cow Ghee & Dairy -> Soft Sunlit Cream & Honey Gold Accents
+  // 5. Gir Cow Ghee & Dairy -> Soft Sunlit Cream Canvas
   if (s.includes('ghee') || s.includes('dairy') || s.includes('toop') || s.includes('milk')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(202, 138, 4, 0.12)',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
       canvasBg: '#FEFCE8',
       ribbonBg: '#FEF9C3',
       ribbonText: '#854D0E',
-      pillBg: 'rgba(202, 138, 4, 0.06)',
-      pillText: '#854D0E',
-      pillBorder: 'rgba(202, 138, 4, 0.16)',
       accentColor: '#A16207',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
   }
 
-  // 6. Tomatoes & Spices -> Soft Pastel Coral & Ripe Field Crimson Accents
+  // 6. Tomatoes & Spices -> Soft Pastel Coral Canvas
   if (s.includes('tomato') || s.includes('chilli') || s.includes('spice') || s.includes('masala')) {
     return {
       shellBg: '#FFFFFF',
-      borderColor: 'rgba(239, 68, 68, 0.12)',
+      borderColor: 'rgba(15, 46, 34, 0.08)',
       canvasBg: '#FEF2F2',
       ribbonBg: '#FEE2E2',
       ribbonText: '#991B1B',
-      pillBg: 'rgba(239, 68, 68, 0.06)',
-      pillText: '#991B1B',
-      pillBorder: 'rgba(239, 68, 68, 0.16)',
       accentColor: '#DC2626',
       shadowColor: 'rgba(15, 46, 34, 0.06)',
     };
@@ -126,26 +105,46 @@ function getItemTheme(slug: string): ItemTheme {
   // Default Organic Leaf Green
   return {
     shellBg: '#FFFFFF',
-    borderColor: 'rgba(22, 163, 74, 0.12)',
-    canvasBg: '#F0FDF4',
+    borderColor: 'rgba(15, 46, 34, 0.08)',
+    canvasBg: '#F4F7F4',
     ribbonBg: '#DCFCE7',
     ribbonText: '#15803D',
-    pillBg: 'rgba(22, 163, 74, 0.06)',
-    pillText: '#15803D',
-    pillBorder: 'rgba(22, 163, 74, 0.16)',
     accentColor: '#16A34A',
     shadowColor: 'rgba(15, 46, 34, 0.06)',
   };
 }
 
-function getCleanTitle(name: string): string {
-  if (name.includes('Nashik Garva Red Onions')) return 'Nashik Red Onions';
-  if (name.includes('Thompson Seedless')) return 'Thompson Grapes';
-  if (name.includes('Tender Spinach')) return 'Tender Spinach';
-  if (name.includes('Lokwan Heritage')) return 'Lokwan Wheat';
-  if (name.includes('Gir Cow Bilona')) return 'Gir Cow Ghee';
-  if (name.includes('Country Tomatoes') || name.includes('देशी लाल टमाटर')) return 'Vine Tomatoes';
-  return name;
+interface ParsedTitle {
+  primary: string;
+  regional?: string;
+}
+
+function parseProductTitle(rawName: string, nameHi?: string, lang?: string): ParsedTitle {
+  // If language is Hindi and nameHi is available
+  if (lang === 'hi' && nameHi) {
+    return { primary: nameHi };
+  }
+
+  let title = rawName;
+  if (title.includes('Nashik Garva Red Onions') || title.includes('Nashik Red Onions')) title = 'Nashik Red Onions';
+  else if (title.includes('Thompson Seedless')) title = 'Thompson Grapes';
+  else if (title.includes('Tender Spinach')) title = 'Tender Spinach';
+  else if (title.includes('Lokwan Heritage')) title = 'Lokwan Wheat';
+  else if (title.includes('Gir Cow Bilona')) title = 'Gir Cow Ghee';
+  else if (title.includes('Country Tomatoes') || title.includes('देशी लाल टमाटर')) title = 'Vine Tomatoes';
+
+  // Check for bilingual parenthetical names e.g. "Nashik Red Onions (नाशिक लाल कांदा)"
+  const parenMatch = rawName.match(/^(.*?)\s*\((.*?)\)$/);
+  if (parenMatch) {
+    const main = parenMatch[1].trim();
+    const sub = parenMatch[2].trim();
+    if (lang === 'hi') {
+      return { primary: sub, regional: main };
+    }
+    return { primary: title, regional: sub };
+  }
+
+  return { primary: title };
 }
 
 function formatHarvestDate(dateStr?: string, lang?: string): string {
@@ -178,7 +177,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const imageUrl = product.images?.[0]?.image_url || 
     'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
 
-  const cleanTitle = getCleanTitle(language === 'hi' && product.name_hi ? product.name_hi : product.name);
+  const titleData = parseProductTitle(product.name, product.name_hi, language);
   const village = product.farmer?.village || 'Nashik';
   const unitLabel = product.unit ? `1 ${product.unit}` : '1 kg';
   const theme = getItemTheme(product.slug);
@@ -198,8 +197,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       {/* Top Media Canvas */}
       <div className="product-canvas-b" style={{ backgroundColor: theme.canvasBg }}>
-        <Link to={`/product/${product.slug}`} className="product-canvas-link-b" aria-label={cleanTitle}>
-          <img src={imageUrl} alt={cleanTitle} loading="lazy" className="product-canvas-img-b" />
+        <Link to={`/product/${product.slug}`} className="product-canvas-link-b" aria-label={titleData.primary}>
+          <img src={imageUrl} alt={titleData.primary} loading="lazy" className="product-canvas-img-b" />
         </Link>
 
         {/* Curved Olive Bottom Ribbon */}
@@ -217,44 +216,44 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Harmonious Synchronized Footer (Google / Apple Design Hierarchy) */}
       <div className="product-footer-unified-b">
-        {/* Title: 2-line clamped with fixed min-height for perfectly uniform grid rows */}
-        <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
-          {cleanTitle}
-        </Link>
+        {/* Title Group: Clean Primary Name + Regional Subtitle */}
+        <div className="product-title-group-b">
+          <Link to={`/product/${product.slug}`} className="product-title-b" title={product.name}>
+            {titleData.primary}
+          </Link>
+          {titleData.regional && (
+            <span className="product-regional-sub-b">{titleData.regional}</span>
+          )}
+        </div>
 
-        {/* Origin & Unit Tags: Always anchor the produce details */}
+        {/* Origin & Quality Badges: Organic Sage & Mint Accents */}
         <div className="product-tags-row-b">
-          <span
-            className="product-trait-pill-b"
-            style={{
-              backgroundColor: theme.pillBg,
-              color: theme.pillText,
-            }}
-          >
-            {village}
+          <span className="product-trait-pill-b origin">
+            <MapPin size={11} className="trait-icon" />
+            <span>{village}</span>
           </span>
-          <span
-            className="product-trait-pill-b"
-            style={{
-              backgroundColor: theme.pillBg,
-              color: theme.pillText,
-            }}
-          >
-            {unitLabel}
+          <span className="product-trait-pill-b verified">
+            <ShieldCheck size={11} className="trait-icon" />
+            <span>Direct Farm</span>
           </span>
         </div>
 
         {/* Synchronized Price & Action Row: Anchored base row */}
         <div className="product-bottom-bar-b">
           <div className="product-price-block-b">
-            <span className="product-price-val-b">
-              {formatPaise(displayPricePaise, language)}
-            </span>
-            <span className="product-unit-sub-b">
-              {currentQty > 0
-                ? `${currentQty} × ${unitLabel}`
-                : `per ${unitLabel}`}
-            </span>
+            <div className="product-price-main-b">
+              <span className="product-price-val-b">
+                {formatPaise(displayPricePaise, language)}
+              </span>
+              <span className="product-unit-inline-b">
+                / {unitLabel}
+              </span>
+            </div>
+            {currentQty > 0 && (
+              <span className="product-qty-sub-b">
+                {currentQty} × {unitLabel}
+              </span>
+            )}
           </div>
 
           <div className="product-action-slot-b">
@@ -286,10 +285,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 type="button"
                 onClick={() => addToCart(product)}
                 className="product-order-btn-b"
-                aria-label={`Order ${cleanTitle} Now`}
+                aria-label={`Order ${titleData.primary} Now`}
               >
                 <span>Order Now</span>
-                <ArrowUpRight size={13} strokeWidth={2.4} />
+                <ArrowRight size={13} strokeWidth={2.4} className="order-btn-arrow" />
               </button>
             )}
           </div>

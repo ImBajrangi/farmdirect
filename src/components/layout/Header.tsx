@@ -45,10 +45,6 @@ export const Header: React.FC = () => {
       {/* ─── Continuous Top Announcement Bar ──────────────────────────────── */}
       <div className="xfarm-top-announcement-bar">
         <div className="xfarm-announcement-inner">
-          <div className="xfarm-announcement-badge">
-            <span className="xfarm-announcement-dot" />
-            <span>6:00 AM DISPATCH</span>
-          </div>
           <span className="xfarm-announcement-text">
             {language === 'hi'
               ? 'नाशिक व पुणे थेट शेतातून ताजी तोडणी · शून्य मध्यस्थ · ₹४९९ वरील ऑर्डरवर मोफत डिलिव्हरी'
@@ -66,7 +62,7 @@ export const Header: React.FC = () => {
         <div className="xfarm-header-nav">
           {/* Brand Lockup */}
           <Link to="/" className="xfarm-brand-lockup" aria-label="Fruit Baskets">
-            <FruitBasketsLogoIcon size={34} color="#0F2E22" />
+            <FruitBasketsLogoIcon className="xfarm-brand-icon" color="#0F2E22" />
             <span className="xfarm-brand-text">Fruit Baskets</span>
           </Link>
 
@@ -76,21 +72,21 @@ export const Header: React.FC = () => {
               to="/marketplace"
               className={`xfarm-nav-link ${isHarvestActive ? 'active-lime' : ''}`}
             >
-              <Sprout size={15} />
+              <Sprout size={16} className="xfarm-nav-icon" />
               <span>Fresh Harvest</span>
             </Link>
             <Link
               to="/marketplace?category=fruits"
               className={`xfarm-nav-link ${isBasketsActive ? 'active-lime' : ''}`}
             >
-              <ShoppingBag size={15} />
+              <ShoppingBag size={16} className="xfarm-nav-icon" />
               <span>Fruit Baskets</span>
             </Link>
             <Link
               to="/farmers"
               className={`xfarm-nav-link ${isFarmsActive ? 'active-lime' : ''}`}
             >
-              <Tractor size={15} />
+              <Tractor size={16} className="xfarm-nav-icon" />
               <span>Verified Farms</span>
             </Link>
           </nav>
@@ -104,13 +100,13 @@ export const Header: React.FC = () => {
               className="xfarm-lang-btn"
               title="Switch Language"
             >
-              <Languages size={14} />
+              <Languages size={15} className="xfarm-action-icon" />
               <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
             </button>
 
             {/* Cart Pill with Live Count */}
             <Link to="/cart" className="xfarm-cart-pill" aria-label="Shopping Cart">
-              <ShoppingBag size={16} />
+              <ShoppingBag size={16} className="xfarm-action-icon" />
               {itemCount > 0 && <span className="xfarm-cart-count">{itemCount}</span>}
             </Link>
 
@@ -126,7 +122,11 @@ export const Header: React.FC = () => {
               className="xfarm-mobile-toggle"
               aria-label="Toggle Menu"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? (
+                <X size={18} className="xfarm-toggle-icon" />
+              ) : (
+                <Menu size={18} className="xfarm-toggle-icon" />
+              )}
             </button>
           </div>
         </div>

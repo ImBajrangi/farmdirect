@@ -1,20 +1,34 @@
 import React from 'react';
 
 // Official Fruit Baskets vector icon (seed sprout droplet + 4 radiating citrus slices)
-export const FruitBasketsLogoIcon: React.FC<{ size?: number; className?: string; color?: string }> = ({
-  size = 32,
+export const FruitBasketsLogoIcon: React.FC<{
+  size?: number;
+  className?: string;
+  color?: string;
+  style?: React.CSSProperties;
+}> = ({
+  size,
   className = '',
   color = 'currentColor',
-}) => (
-  <svg
-    width={size}
-    height={Math.round(size * (148.378 / 173))}
-    viewBox="0 0 173 148.378"
-    fill={color}
-    className={className}
-    style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}
-    aria-label="Fruit Baskets Logo"
-  >
+  style,
+}) => {
+  const computedHeight = size ? Math.round(size * (148.378 / 173)) : undefined;
+
+  return (
+    <svg
+      width={size}
+      height={computedHeight}
+      viewBox="0 0 173 148.378"
+      fill={color}
+      className={className}
+      style={{
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        flexShrink: 0,
+        ...style,
+      }}
+      aria-label="Fruit Baskets Logo"
+    >
     <g id="Fresh_x5F_Fruit_x5F_Baskets">
       <g>
         {/* Top seed sprout droplet */}
@@ -46,3 +60,4 @@ export const FruitBasketsLogoIcon: React.FC<{ size?: number; className?: string;
     </g>
   </svg>
 );
+};
