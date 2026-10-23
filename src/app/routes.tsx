@@ -39,6 +39,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/products" element={<MarketplacePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/product/:slug" element={<ProductDetailsPage />} />
+        <Route path="/farmers" element={<Navigate to="/platform" replace />} />
         <Route path="/farmer/:id" element={<FarmerPublicProfilePage />} />
 
         {/* Customer Purchasing & Orders */}

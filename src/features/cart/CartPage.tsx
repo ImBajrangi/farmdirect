@@ -141,23 +141,7 @@ export const CartPage: FC = () => {
 
   return (
     <div className="page-container page-content cart-page-container">
-      {/* Stepper */}
-      <div className="cart-software-stepper">
-        <div className="cart-step active">
-          <span className="cart-step-num">1</span>
-          <span className="cart-step-name">Review Basket</span>
-        </div>
-        <div className="cart-step-divider" />
-        <div className="cart-step">
-          <span className="cart-step-num">2</span>
-          <span className="cart-step-name">Delivery Address</span>
-        </div>
-        <div className="cart-step-divider" />
-        <div className="cart-step">
-          <span className="cart-step-num">3</span>
-          <span className="cart-step-name">Payment & Dispatch</span>
-        </div>
-      </div>
+
 
       <div className="flex-row items-center justify-between" style={{ marginBottom: 20 }}>
         <div>

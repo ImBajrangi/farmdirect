@@ -184,10 +184,15 @@ export const FarmDirectPlatform: React.FC = () => {
   const [quickSuccess, setQuickSuccess] = useState(false);
 
   // Synchronize persona with auth context
+  useEffect(() => {
+    setSelectedPersona(currentRole);
+  }, [currentRole]);
+
   const handlePersonaSelect = (persona: 'customer' | 'farmer' | 'admin') => {
     setSelectedPersona(persona);
     switchRole(persona);
   };
+
 
   // Reload master datasets
   const refreshData = async () => {
@@ -345,64 +350,7 @@ export const FarmDirectPlatform: React.FC = () => {
 
   return (
     <div className="fd-platform-root">
-      {/* ─── 1. Organic Floating Island Header ───────────────────────────── */}
-      <div className="fd-island-header">
-        <header className="fd-island-pill">
-          {/* Brand Wordmark */}
-          <Link to="/" className="fd-brand-group">
-            <div className="fd-brand-badge-icon">
-              <FruitBasketsLogoIcon size={20} color="#FFFFFF" />
-            </div>
-            <span className="fd-brand-wordmark">FarmDirect</span>
-            <span className="fd-brand-subtag">India Direct</span>
-          </Link>
 
-          {/* Persona Switcher (Stadium Pill) */}
-          <nav className="fd-persona-stadium" role="tablist">
-            <button
-              onClick={() => handlePersonaSelect('customer')}
-              className={`fd-persona-tab ${selectedPersona === 'customer' ? 'active' : ''}`}
-            >
-              <ShoppingBag size={14} />
-              <span>{language === 'hi' ? 'ग्राहक' : 'Buyer'}</span>
-            </button>
-            <button
-              onClick={() => handlePersonaSelect('farmer')}
-              className={`fd-persona-tab farmer ${selectedPersona === 'farmer' ? 'active' : ''}`}
-            >
-              <Tractor size={14} />
-              <span>{language === 'hi' ? 'किसान' : 'Farmer'}</span>
-            </button>
-            <button
-              onClick={() => handlePersonaSelect('admin')}
-              className={`fd-persona-tab admin ${selectedPersona === 'admin' ? 'active' : ''}`}
-            >
-              <ShieldCheck size={14} />
-              <span>{language === 'hi' ? 'प्रशासक' : 'Admin'}</span>
-            </button>
-          </nav>
-
-          {/* Action Pills */}
-          <div className="fd-actions-group">
-            {/* Language Switcher */}
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-              className="fd-ghost-pill"
-              title="Change Language"
-            >
-              <Languages size={14} />
-              <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
-            </button>
-
-            {/* Cart Button */}
-            <Link to="/cart" className="fd-cart-trigger">
-              <ShoppingBag size={15} />
-              <span>{formatPaise(grandTotalPaise, language)}</span>
-              {itemCount > 0 && <span className="fd-cart-count">{itemCount}</span>}
-            </Link>
-          </div>
-        </header>
-      </div>
 
       {/* ─── 2. Farmer / Admin Context Banner (Buyer goes directly to catalog) ─ */}
       {selectedPersona !== 'customer' && (

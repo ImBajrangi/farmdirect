@@ -275,35 +275,36 @@ export const MarketplacePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Farming Practices Block */}
-          <div className="filter-block">
-            <span className="filter-block-title">{language === 'hi' ? 'प्रमाणीकरण' : 'Standards'}</span>
-            <button
-              type="button"
-              onClick={() => setOnlyOrganic(!onlyOrganic)}
-              className={`filter-toggle-pill ${onlyOrganic ? 'active' : ''}`}
-              aria-pressed={onlyOrganic}
-            >
-              <div className="filter-toggle-content">
-                <Sparkles size={14} className="toggle-sparkle" />
-                <span>{copy.organicOnly}</span>
-              </div>
-              <span className={`filter-toggle-switch ${onlyOrganic ? 'on' : ''}`}>
-                <span className="switch-thumb" />
-              </span>
-            </button>
-          </div>
+          {/* Farming Practices & Delivery Hub Group */}
+          <div className="filter-secondary-group">
+            <div className="filter-block">
+              <span className="filter-block-title">{language === 'hi' ? 'प्रमाणीकरण' : 'Standards'}</span>
+              <button
+                type="button"
+                onClick={() => setOnlyOrganic(!onlyOrganic)}
+                className={`filter-toggle-pill ${onlyOrganic ? 'active' : ''}`}
+                aria-pressed={onlyOrganic}
+              >
+                <div className="filter-toggle-content">
+                  <Sparkles size={14} className="toggle-sparkle" />
+                  <span>{copy.organicOnly}</span>
+                </div>
+                <span className={`filter-toggle-switch ${onlyOrganic ? 'on' : ''}`}>
+                  <span className="switch-thumb" />
+                </span>
+              </button>
+            </div>
 
-          {/* Delivery Hub Block */}
-          <div className="filter-block">
-            <span className="filter-block-title">{language === 'hi' ? 'सेवा क्षेत्र' : 'Delivery Hub'}</span>
-            <CustomDropdown
-              value={selectedServiceArea}
-              options={serviceAreaOptions}
-              onChange={setSelectedServiceArea}
-              icon={<MapPin size={13} />}
-              ariaLabel="Select Hub"
-            />
+            <div className="filter-block">
+              <span className="filter-block-title">{language === 'hi' ? 'सेवा क्षेत्र' : 'Delivery Hub'}</span>
+              <CustomDropdown
+                value={selectedServiceArea}
+                options={serviceAreaOptions}
+                onChange={setSelectedServiceArea}
+                icon={<MapPin size={13} />}
+                ariaLabel="Select Hub"
+              />
+            </div>
           </div>
         </aside>
 

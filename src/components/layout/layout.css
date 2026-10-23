@@ -1,255 +1,613 @@
 /* ==========================================================================
-   FarmDirect Layout Stylesheet
+   FarmDirect / Fruit Baskets Layout Stylesheet
    Clean White Organic Architecture · Crisp Green Accents · High Legibility
    ========================================================================== */
 
-/* ─── Top Floating Sticky Header ─────────────────────────────────────────── */
-.app-header {
+/* ─── Platform-Wide Fruit Baskets Unified Header ────────────────────────── */
+.xfarm-unified-header {
   position: sticky;
-  top: 12px;
-  z-index: 40;
+  top: 0;
+  z-index: 50;
   width: 100%;
-  padding: 0 var(--space-md, 16px);
-  margin-bottom: var(--space-lg, 24px);
+  background-color: #FFFFFF;
+  border-bottom: 1px solid rgba(15, 46, 34, 0.07);
   box-sizing: border-box;
 }
 
-@media (max-width: 640px) {
-  .app-header {
-    top: 6px;
-    padding: 0 10px;
-    margin-bottom: 12px;
+.xfarm-unified-header-inner {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 12px 14px 6px 14px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .xfarm-unified-header-inner {
+    padding: 12px 20px;
   }
 }
 
-.nav-pill-wrapper {
-  max-width: var(--container-width-desktop, 1200px);
-  margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border, rgba(15, 46, 34, 0.1));
-  border-radius: var(--radius-full, 9999px);
-  padding: 8px 18px;
+@media (min-width: 1140px) {
+  .xfarm-unified-header-inner {
+    padding: 14px 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .xfarm-unified-header-inner {
+    padding: 16px 36px;
+    max-width: 1720px;
+  }
+}
+
+/* Row 1: Brand, Pill Nav, Actions */
+.xfarm-header-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  box-shadow: 0 4px 20px rgba(15, 46, 34, 0.06);
-  transition: all var(--transition-normal, 0.25s ease);
+  gap: 8px;
+  margin-bottom: 0;
+  flex-wrap: nowrap !important;
+  width: 100%;
   box-sizing: border-box;
 }
 
-@media (max-width: 640px) {
-  .nav-pill-wrapper {
-    padding: 6px 10px;
-    gap: 8px;
-  }
-  .header-brand {
-    gap: 6px;
-  }
-  .header-logo-icon {
-    width: 28px !important;
-    height: 28px !important;
-    font-size: 0.85rem !important;
-    border-radius: 8px !important;
-  }
-  .header-brand-title {
-    font-size: 1.05rem !important;
-  }
-  .header-actions {
-    gap: 6px;
-  }
-  .header-cart-label {
-    display: none;
-  }
-  .header-cart-btn {
-    padding: 6px 9px !important;
-  }
-  .cart-button-badge {
-    margin-left: 2px !important;
-    padding: 1px 5px !important;
-    font-size: 0.625rem !important;
+@media (max-width: 1139px) {
+  .xfarm-header-nav {
+    margin-bottom: 6px;
   }
 }
 
-/* Brand Lockup */
-.header-brand {
+.xfarm-brand-lockup {
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  color: #0F2E22;
+  flex-shrink: 0;
 }
 
-.header-logo-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background-color: var(--accent, #006044);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: 550;
-  box-shadow: 0 2px 8px rgba(0, 96, 68, 0.25);
-}
-
-.header-brand-title {
+.xfarm-brand-text {
   font-family: var(--font-display, sans-serif);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 550;
-  color: var(--text, #0f2e22);
-  letter-spacing: -0.02em;
-  line-height: 1;
+  letter-spacing: -0.025em;
+  color: #0F2E22;
+  white-space: nowrap;
 }
 
-/* Inline Desktop Search Pill */
-.header-search-form {
+@media (max-width: 480px) {
+  .xfarm-brand-text {
+    font-size: 1.15rem;
+  }
+}
+
+/* Center Floating Segmented Theme-Relatable Pill Nav */
+.xfarm-pill-nav {
   display: none;
-  flex: 1;
-  max-width: 340px;
-  position: relative;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
-@media (min-width: 840px) {
-  .header-search-form {
+@media (min-width: 1140px) {
+  .xfarm-pill-nav {
     display: flex;
   }
 }
 
-.header-search-input {
-  width: 100%;
-  background-color: #f4f7f4;
-  border: 1px solid var(--border, rgba(15, 46, 34, 0.1));
-  border-radius: var(--radius-full, 9999px);
-  padding: 8px 16px 8px 36px;
-  font-size: 0.875rem;
+.xfarm-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 9999px;
+  font-size: 0.78125rem;
   font-weight: 500;
-  color: var(--text, #0f2e22);
-  outline: none;
-  transition: all var(--transition-fast, 0.15s ease);
+  color: #536F61;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
 }
 
-.header-search-input:focus {
-  outline: 2px solid var(--accent, #15803d);
-  border-color: transparent;
-  background-color: #ffffff;
+@media (min-width: 1360px) {
+  .xfarm-nav-link {
+    padding: 7px 14px;
+    font-size: 0.8125rem;
+    gap: 6px;
+  }
 }
 
-.header-search-icon {
+.xfarm-nav-link:hover {
+  color: #0F2E22;
+  background-color: rgba(0, 96, 68, 0.05);
+}
+
+.xfarm-nav-link.active {
+  background-color: rgba(0, 96, 68, 0.08);
+  color: #006044;
+  font-weight: 550;
+}
+
+.xfarm-nav-link.active-lime {
+  background-color: #ECF96E;
+  color: #0F2E22;
+  font-weight: 550;
+  box-shadow: 0 2px 8px rgba(236, 249, 110, 0.4);
+}
+
+/* Right Action Controls */
+.xfarm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .xfarm-header-actions {
+    gap: 8px;
+  }
+}
+
+@media (min-width: 1360px) {
+  .xfarm-header-actions {
+    gap: 10px;
+  }
+}
+
+/* Portal Switcher Dropdown (Desktop) */
+.xfarm-portal-menu-wrapper {
+  position: relative;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .xfarm-portal-menu-wrapper {
+    display: block;
+  }
+}
+
+.xfarm-portal-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #F4F7F4;
+  border: 1px solid rgba(15, 46, 34, 0.1);
+  color: #0F2E22;
+  border-radius: 9999px;
+  padding: 7px 13px;
+  font-size: 0.78125rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.xfarm-portal-pill-btn:hover {
+  background-color: #E8F0EA;
+  border-color: rgba(15, 46, 34, 0.2);
+}
+
+.xfarm-portal-pill-btn.open {
+  background-color: #E8F0EA;
+  border-color: #006044;
+  box-shadow: 0 0 0 2px rgba(0, 96, 68, 0.12);
+}
+
+.xfarm-portal-pill-icon {
+  color: #006044;
+  flex-shrink: 0;
+}
+
+.xfarm-portal-label {
+  color: #0F2E22;
+}
+
+.xfarm-chevron {
+  transition: transform 0.2s ease;
+  color: #536F61;
+}
+
+.xfarm-chevron.rotate {
+  transform: rotate(180deg);
+}
+
+/* Floating Portal Dropdown Popover */
+.xfarm-portal-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 295px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 46, 34, 0.1);
+  box-shadow: 0 14px 36px -4px rgba(15, 46, 34, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  z-index: 100;
+  animation: xfarmDropdownFade 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes xfarmDropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.xfarm-portal-dropdown-header {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #536F61;
+  padding: 6px 10px 8px 10px;
+  border-bottom: 1px solid rgba(15, 46, 34, 0.06);
+  margin-bottom: 6px;
+}
+
+.xfarm-portal-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.xfarm-portal-option:hover {
+  background-color: #F4F7F4;
+}
+
+.xfarm-portal-option.active {
+  background-color: rgba(0, 96, 68, 0.07);
+}
+
+.xfarm-portal-option-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #E8F0EA;
+  color: #006044;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.xfarm-portal-option.active .xfarm-portal-option-icon {
+  background: #006044;
+  color: #FFFFFF;
+}
+
+.xfarm-portal-option-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.xfarm-portal-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0F2E22;
+  line-height: 1.2;
+}
+
+.xfarm-portal-desc {
+  font-size: 0.6875rem;
+  color: #536F61;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.xfarm-portal-check {
+  color: #006044;
+  flex-shrink: 0;
+}
+
+
+/* Language Toggle Pill */
+.xfarm-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #F4F7F4;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  color: #0F2E22;
+  border-radius: 9999px;
+  padding: 7px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.xfarm-lang-btn:hover {
+  background-color: #E8F0EA;
+}
+
+/* Cart Pill */
+.xfarm-cart-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #F4F7F4;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  color: #0F2E22;
+  border-radius: 9999px;
+  padding: 7px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.xfarm-cart-pill:hover {
+  background-color: #E8F0EA;
+}
+
+.xfarm-cart-count {
+  background-color: #006044;
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 1px 6px;
+  line-height: 1.2;
+}
+
+/* Primary Green CTA Button */
+.xfarm-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #006044;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  border: none;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 96, 68, 0.22);
+}
+
+.xfarm-header-cta:hover {
+  background-color: #0F2E22;
+  box-shadow: 0 6px 18px rgba(15, 46, 34, 0.28);
+}
+
+@media (max-width: 480px) {
+  .xfarm-header-cta {
+    padding: 7px 12px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Mobile Menu Toggle */
+.xfarm-mobile-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #0F2E22;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+@media (min-width: 1140px) {
+  .xfarm-mobile-toggle {
+    display: none;
+  }
+}
+
+/* Row 2: Mobile / Tablet Horizontal Scrollable Chip Rail */
+.xfarm-mobile-chips-wrapper {
+  display: flex;
+  margin: 4px 0 6px 0;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 0 6px 0;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1140px) {
+  .xfarm-mobile-chips-wrapper {
+    display: none;
+  }
+}
+
+.xfarm-mobile-chips-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.xfarm-mobile-chips-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  padding: 2px 2px;
+}
+
+.xfarm-chip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: #F4F7F4;
+  border: 1px solid rgba(15, 46, 34, 0.08);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #0F2E22;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.xfarm-chip-pill:hover,
+.xfarm-chip-pill:active {
+  background: #E8F0EA;
+}
+
+.xfarm-chip-pill.active {
+  background: #ECF96E;
+  border-color: rgba(236, 249, 110, 0.7);
+  color: #0F2E22;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(236, 249, 110, 0.35);
+}
+
+/* Mobile Drawer Panel */
+.xfarm-mobile-drawer {
+  background-color: #FFFFFF;
+  border-top: 1px solid rgba(15, 46, 34, 0.07);
+  padding: 16px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 12px 32px rgba(15, 46, 34, 0.1);
+}
+
+.xfarm-mobile-search-form {
+  position: relative;
+  width: 100%;
+}
+
+.xfarm-search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-faint, #728a7e);
+  color: #728A7E;
   pointer-events: none;
 }
 
-/* Center Nav Links */
-.header-nav-links {
-  display: none;
-  align-items: center;
-  gap: 20px;
+.xfarm-search-input {
+  width: 100%;
+  padding: 9px 14px 9px 38px;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 46, 34, 0.12);
+  background: #F4F7F4;
+  font-size: 0.8125rem;
+  color: #0F2E22;
+  box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
-  .header-nav-links {
-    display: flex;
-  }
+.xfarm-drawer-section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #536F61;
+  margin-bottom: 8px;
 }
 
-.header-link {
-  font-size: 0.875rem;
-  font-weight: 450;
-  color: var(--text-muted, #4a6356);
-  transition: color var(--transition-fast, 0.15s ease);
-  text-decoration: none;
-}
-
-.header-link:hover {
-  color: var(--accent, #15803d);
-}
-
-/* Action Controls */
-.header-actions {
+.xfarm-drawer-roles {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
 }
 
-.cart-button-badge {
-  background-color: var(--brand-lime, #ECF96E);
-  color: #0f2e22;
-  font-size: 0.6875rem;
-  font-weight: 550;
-  border-radius: var(--radius-full, 9999px);
-  padding: 1px 7px;
-  margin-left: 4px;
-}
-
-/* Header Persona/Role Switcher */
-.header-persona-switcher {
-  display: none;
-  background-color: #f4f7f4;
-  border: 1px solid rgba(15, 46, 34, 0.1);
-  border-radius: var(--radius-full, 9999px);
-  padding: 3px;
-  align-items: center;
-  gap: 2px;
-}
-
-@media (min-width: 920px) {
-  .header-persona-switcher {
-    display: inline-flex;
-  }
-}
-
-.header-persona-btn {
-  padding: 4px 12px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted, #4a6356);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-fast, 0.15s ease);
-}
-
-.header-persona-btn:hover {
-  color: var(--text, #0f2e22);
-}
-
-.header-persona-btn.active {
-  background-color: var(--accent, #006044);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 96, 68, 0.25);
-}
-
-.header-mobile-toggle {
+.xfarm-role-btn {
   display: flex;
-  padding: 0 8px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid rgba(15, 46, 34, 0.1);
+  background: #F4F7F4;
+  color: #0F2E22;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
 }
 
-@media (min-width: 768px) {
-  .header-mobile-toggle {
-    display: none !important;
-  }
+.xfarm-role-btn.active {
+  background: #006044;
+  color: #FFFFFF;
+  border-color: #006044;
+  box-shadow: 0 2px 8px rgba(0, 96, 68, 0.22);
 }
 
-/* Mobile Dropdown Panel */
-.mobile-nav-panel {
-  max-width: var(--container-width-desktop, 1200px);
-  margin: 8px auto 0 auto;
-  background-color: #ffffff;
-  border: 1px solid var(--border, rgba(15, 46, 34, 0.1));
-  border-radius: 18px;
-  padding: 16px;
+.xfarm-drawer-lang-row {
+  padding-top: 4px;
+}
+
+.xfarm-drawer-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px dashed rgba(15, 46, 34, 0.2);
+  background: transparent;
+  color: #0F2E22;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.xfarm-drawer-lang-btn:hover {
+  background: #F4F7F4;
+}
+
+.xfarm-drawer-links {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 10px 30px rgba(15, 46, 34, 0.08);
+  gap: 4px;
+}
+
+.xfarm-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0F2E22;
+  transition: background 0.15s ease;
+}
+
+.xfarm-drawer-link:hover {
+  background: #F4F7F4;
 }
 
 /* ─── Bottom Navigation (Mobile First) ──────────────────────────────────── */

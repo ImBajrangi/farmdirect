@@ -13,18 +13,6 @@ import '../styles/utilities.css';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
-  const isDedicatedView =
-    location.pathname === '/' ||
-    location.pathname === '/platform';
-
-  if (isDedicatedView) {
-    return (
-      <main style={{ minHeight: '100vh' }}>
-        <AppRoutes />
-        {location.pathname === '/' && <Sidebar />}
-      </main>
-    );
-  }
 
   const isMarketingPage =
     location.pathname === '/' ||
@@ -36,7 +24,7 @@ const AppLayout: React.FC = () => {
     location.pathname === '/home';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-background)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-background, #FFFFFF)' }}>
       <Header />
       <main style={{ flex: 1 }}>
         <AppRoutes />

@@ -154,7 +154,6 @@ const VERTICAL_FARMING_SLIDES: VerticalFarmingSlide[] = [
 
 export const HomePage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [activeNav, setActiveNav] = useState<'harvest' | 'baskets' | 'farms' | 'coldchain' | 'trust'>('harvest');
   const [activeSlide, setActiveSlide] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -194,110 +193,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className="xfarm-page-wrapper">
       <div className="xfarm-master-card">
-        {/* ─── 1. Header Navigation ───────────────────────────────────────── */}
-        <header className="xfarm-header-nav">
-          <Link to="/" className="xfarm-brand-lockup">
-            <FruitBasketsLogoIcon size={34} color="#0F2E22" />
-            <span className="xfarm-brand-text">Fruit Baskets</span>
-          </Link>
-
-          {/* Center Floating Segmented Theme-Relatable Pill Nav */}
-          <nav className="xfarm-pill-nav" aria-label="Main Navigation">
-            <Link
-              to="/marketplace"
-              className={`xfarm-nav-link ${activeNav === 'harvest' ? 'active-lime' : ''}`}
-              onClick={() => setActiveNav('harvest')}
-            >
-              <Sprout size={15} />
-              <span>Fresh Harvest</span>
-            </Link>
-            <Link
-              to="/marketplace?category=fruits"
-              className={`xfarm-nav-link ${activeNav === 'baskets' ? 'active-lime' : ''}`}
-              onClick={() => setActiveNav('baskets')}
-            >
-              <ShoppingBag size={15} />
-              <span>Fruit Baskets</span>
-            </Link>
-            <Link
-              to="/farmers"
-              className={`xfarm-nav-link ${activeNav === 'farms' ? 'active' : ''}`}
-              onClick={() => setActiveNav('farms')}
-            >
-              <Tractor size={15} />
-              <span>Verified Farms</span>
-            </Link>
-            <a
-              href="#cold-chain"
-              className={`xfarm-nav-link ${activeNav === 'coldchain' ? 'active' : ''}`}
-              onClick={() => setActiveNav('coldchain')}
-            >
-              <ThermometerSnowflake size={15} />
-              <span>24h Cold-Chain</span>
-            </a>
-            <Link
-              to="/platform"
-              className={`xfarm-nav-link ${activeNav === 'trust' ? 'active' : ''}`}
-              onClick={() => setActiveNav('trust')}
-            >
-              <ShieldCheck size={15} />
-              <span>7/12 Land Verified</span>
-            </Link>
-          </nav>
-
-          {/* Right Action CTA */}
-          <Link to="/marketplace" className="xfarm-header-cta">
-            <span>Order Farm Fresh</span>
-          </Link>
-        </header>
-
-        {/* ─── Mobile Horizontal Scrollable Chip Rail ──────────────────────── */}
-        <nav className="xfarm-mobile-chips-wrapper" aria-label="Mobile Sections">
-          <div className="xfarm-mobile-chips-track">
-            <Link
-              to="/marketplace"
-              className={`xfarm-chip-pill ${activeNav === 'harvest' ? 'active' : ''}`}
-              onClick={() => setActiveNav('harvest')}
-            >
-              <Sprout size={13} />
-              <span>Fresh Harvest</span>
-            </Link>
-            <Link
-              to="/marketplace?category=fruits"
-              className={`xfarm-chip-pill ${activeNav === 'baskets' ? 'active' : ''}`}
-              onClick={() => setActiveNav('baskets')}
-            >
-              <ShoppingBag size={13} />
-              <span>Fruit Baskets</span>
-            </Link>
-            <Link
-              to="/farmers"
-              className={`xfarm-chip-pill ${activeNav === 'farms' ? 'active' : ''}`}
-              onClick={() => setActiveNav('farms')}
-            >
-              <Tractor size={13} />
-              <span>Verified Farms</span>
-            </Link>
-            <a
-              href="#cold-chain"
-              className={`xfarm-chip-pill ${activeNav === 'coldchain' ? 'active' : ''}`}
-              onClick={() => setActiveNav('coldchain')}
-            >
-              <ThermometerSnowflake size={13} />
-              <span>24h Cold-Chain</span>
-            </a>
-            <Link
-              to="/platform"
-              className={`xfarm-chip-pill ${activeNav === 'trust' ? 'active' : ''}`}
-              onClick={() => setActiveNav('trust')}
-            >
-              <ShieldCheck size={13} />
-              <span>7/12 Land Verified</span>
-            </Link>
-          </div>
-        </nav>
-
-        {/* ─── 2. Hero Headline: "What Is Our Success?" ────────────────────── */}
+        {/* ─── Hero Headline: "What Is Our Success?" ────────────────────── */}
         <div className="xfarm-hero-heading-row">
           <h1 className="xfarm-main-title">What Is Our Success?</h1>
           <Link to="/about" className="xfarm-learn-more-link">
