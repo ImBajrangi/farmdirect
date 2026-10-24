@@ -28,6 +28,20 @@ export const LiquidBotSpeedDial: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [botState, setBotState] = useState<'default' | 'working' | 'sleeping'>('default');
   const [currentAgent, setCurrentAgent] = useState<FarmAgent>(FARM_DIRECT_AGENTS[0]);
+  const [assistantShading, setAssistantShading] = useState<'plastic' | 'fabric'>(
+    (FARM_DIRECT_AGENTS[0].shading as 'plastic' | 'fabric') || 'plastic'
+  );
+
+  const toggleAssistantShading = () => {
+    setAssistantShading((prev) => (prev === 'plastic' ? 'fabric' : 'plastic'));
+  };
+
+  useEffect(() => {
+    if (currentAgent.shading) {
+      setAssistantShading((currentAgent.shading as 'plastic' | 'fabric') || 'plastic');
+    }
+  }, [currentAgent]);
+
   const [inputQuery, setInputQuery] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -89,13 +103,15 @@ export const LiquidBotSpeedDial: React.FC = () => {
   };
 
   // Handle speed dial item actions
-  const handleAction = (type: 'chat' | 'orders' | 'whatsapp') => {
+  const handleAction = (type: 'chat' | 'orders' | 'fleet' | 'whatsapp') => {
     setOpen(false);
     if (type === 'chat') {
       setModalOpen(true);
       setBotState('default');
     } else if (type === 'orders') {
       navigate('/orders');
+    } else if (type === 'fleet') {
+      window.dispatchEvent(new CustomEvent('open-agent-fleet'));
     } else if (type === 'whatsapp') {
       window.open('https://wa.me/919900000000?text=Hello%20FarmDirect%20Team!%20I%20need%20assistance.', '_blank');
     }
@@ -178,12 +194,32 @@ export const LiquidBotSpeedDial: React.FC = () => {
           fill="#202020"
           style={{ width: 140, height: 140, position: 'relative', pointerEvents: 'none' }}
         >
-          {/* Action 1: Order Tracking */}
+          {/* Action 1: Autonomous Agent Fleet */}
           <Liquid.Item
             style={{ position: 'absolute', right: 12, bottom: 12, pointerEvents: open ? 'auto' : 'none' }}
-            x={open ? -54 : 0}
-            y={open ? -34 : 0}
+            x={open ? -64 : 0}
+            y={0}
             transition={{ duration: open ? 290 : 210, ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+          >
+            <button
+              className="round-btn"
+              onClick={() => handleAction('fleet')}
+              aria-label="View Autonomous Agent Fleet"
+              data-label="Agent Fleet"
+              tabIndex={open ? 0 : -1}
+              style={{ opacity: open ? 1 : 0, transition: 'opacity 0.15s ease' }}
+            >
+              <Users size={20} color="#60A5FA" />
+            </button>
+          </Liquid.Item>
+
+          {/* Action 2: Order Tracking */}
+          <Liquid.Item
+            style={{ position: 'absolute', right: 12, bottom: 12, pointerEvents: open ? 'auto' : 'none' }}
+            x={open ? -48 : 0}
+            y={open ? -48 : 0}
+            transition={{ duration: open ? 290 : 210, ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+            delay={open ? 18 : 10}
           >
             <button
               className="round-btn"
@@ -191,18 +227,19 @@ export const LiquidBotSpeedDial: React.FC = () => {
               aria-label="Track Orders"
               data-label="Track Order"
               tabIndex={open ? 0 : -1}
+              style={{ opacity: open ? 1 : 0, transition: 'opacity 0.15s ease' }}
             >
               <Package size={20} color="#6EE7B7" />
             </button>
           </Liquid.Item>
 
-          {/* Action 2: AI Kisan Assistant Chat */}
+          {/* Action 3: AI Kisan Assistant Chat */}
           <Liquid.Item
             style={{ position: 'absolute', right: 12, bottom: 12, pointerEvents: open ? 'auto' : 'none' }}
             x={0}
             y={open ? -64 : 0}
             transition={{ duration: open ? 290 : 210, ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
-            delay={open ? 22 : 0}
+            delay={open ? 36 : 0}
           >
             <button
               className="round-btn"
@@ -210,6 +247,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
               aria-label="Ask Kisan AI Assistant"
               data-label="Ask Kisan AI"
               tabIndex={open ? 0 : -1}
+              style={{ opacity: open ? 1 : 0, transition: 'opacity 0.15s ease' }}
             >
               <Sparkles size={20} color="#FBBF24" />
             </button>
@@ -244,7 +282,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
                   glasses={currentAgent.glasses}
                   headphones={currentAgent.headphones}
                   bowTie={currentAgent.bowTie}
-                  shading={currentAgent.shading}
+                  shading={assistantShading}
                   size={38}
                   state="default"
                 />
@@ -275,7 +313,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
                   glasses={currentAgent.glasses}
                   headphones={currentAgent.headphones}
                   bowTie={currentAgent.bowTie}
-                  shading={currentAgent.shading}
+                  shading={assistantShading}
                   size={96}
                   state={botState}
                   className="bot-avatar-hero-canvas"
@@ -290,6 +328,14 @@ export const LiquidBotSpeedDial: React.FC = () => {
                   <span className={`bot-state-indicator-badge ${botState}`}>
                     {currentAgent.badge}
                   </span>
+                  <button
+                    type="button"
+                    onClick={toggleAssistantShading}
+                    className="bot-shading-toggle-btn"
+                    title={`Toggle shading texture: currently ${assistantShading}`}
+                  >
+                    {assistantShading === 'fabric' ? '🧸 Fabric' : '✨ Plastic'}
+                  </button>
                 </div>
                 <p className="bot-header-subtitle">
                   {currentAgent.role}
@@ -350,25 +396,41 @@ export const LiquidBotSpeedDial: React.FC = () => {
               ))}
               {isTyping && (
                 <div className="bot-message-row assistant">
-                  <BotAvatar
-                    type={currentAgent.type}
-                    face={currentAgent.face}
-                    hat={currentAgent.hat}
-                    glasses={currentAgent.glasses}
-                    headphones={currentAgent.headphones}
-                    bowTie={currentAgent.bowTie}
-                    shading={currentAgent.shading}
-                    size={28}
-                    state="working"
-                  />
+                  {!streamingText ? (
+                    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ThinkingOrb state="searching" size={64} color="#15803D" />
+                    </div>
+                  ) : (
+                    <BotAvatar
+                      type={currentAgent.type}
+                      face={currentAgent.face}
+                      hat={currentAgent.hat}
+                      glasses={currentAgent.glasses}
+                      headphones={currentAgent.headphones}
+                      bowTie={currentAgent.bowTie}
+                      shading={assistantShading}
+                      size={28}
+                      state="working"
+                    />
+                  )}
                   <div className="bot-message-bubble assistant bot-streaming-bubble">
                     <div className="bot-streaming-header">
-                      <ThinkingOrb state="working" size={20} color="#16a34a" />
+                      <ThinkingOrb
+                        state={streamingText ? 'composing' : 'searching'}
+                        size={20}
+                        color="#16a34a"
+                      />
                       <span className="bot-streaming-agent-name">{currentAgent.name}</span>
-                      <span className="bot-streaming-pill">Generating</span>
+                      <span className="bot-streaming-pill">
+                        {streamingText ? 'Composing' : 'Searching telemetry...'}
+                      </span>
                     </div>
                     <div className="bot-streaming-content">
-                      {streamingText || <span className="bot-streaming-placeholder">Analyzing harvest telemetry...</span>}
+                      {streamingText || (
+                        <span className="bot-streaming-placeholder">
+                          Querying live Nashik & Pune farmgate network...
+                        </span>
+                      )}
                       <span className="bot-streaming-cursor" />
                     </div>
                   </div>

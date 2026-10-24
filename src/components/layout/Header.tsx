@@ -42,9 +42,9 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="xfarm-unified-header">
-      {/* ─── Continuous Top Announcement Bar ──────────────────────────────── */}
-      <div className="xfarm-top-announcement-bar">
+    <>
+      {/* ─── Top Announcement Bar (Smooth relative scroll, natural flow above sticky nav) ──── */}
+      <div className="xfarm-top-announcement-bar" role="banner" aria-label="Fresh Harvest Announcement">
         <div className="xfarm-announcement-inner">
           <span className="xfarm-announcement-text">
             {language === 'hi'
@@ -57,6 +57,8 @@ export const Header: React.FC = () => {
           </Link>
         </div>
       </div>
+
+      <header className="xfarm-unified-header">
 
       <div className="xfarm-unified-header-inner">
         {/* ─── Top Main Header Bar ───────────────────────────────────────── */}
@@ -243,5 +245,6 @@ export const Header: React.FC = () => {
         </div>
       )}
     </header>
+    </>
   );
 };

@@ -110,25 +110,126 @@ export const FARM_DIRECT_AGENTS: FarmAgent[] = [
     greeting: 'Guarding fresh organic orchards and ensuring zero transit adulteration!',
     badge: 'Field Guard',
   },
+  {
+    id: 'chintu',
+    name: 'Chintu',
+    role: 'Fresh Basket Curator',
+    type: 'circle',
+    face: 'eyes',
+    hat: 'party',
+    glasses: 'none',
+    headphones: false,
+    bowTie: false,
+    shading: 'plastic',
+    greeting: 'Handpicking ripe Alphonso mangos and farm-fresh seasonal fruit hampers!',
+    badge: 'Fruit Baskets',
+  },
+  {
+    id: 'heera',
+    name: 'Heera',
+    role: 'Soil & Climate IoT Sensor',
+    type: 'hexagon',
+    face: 'eyes',
+    hat: 'none',
+    glasses: 'round',
+    headphones: false,
+    bowTie: false,
+    shading: 'plastic',
+    greeting: 'Calibrating N-P-K nutrient sensors, soil pH, and microclimate telemetry.',
+    badge: 'Soil Intel',
+  },
+  {
+    id: 'bheem',
+    name: 'Bheem',
+    role: 'Eco Crate & Cargo Lead',
+    type: 'square',
+    face: 'mouth',
+    hat: 'beanie',
+    glasses: 'none',
+    headphones: false,
+    bowTie: false,
+    shading: 'plastic',
+    greeting: 'Ensuring biodegradable cushioned crates protect delicate fruits on highways.',
+    badge: 'Transit Pack',
+  },
+  {
+    id: 'trishul',
+    name: 'Trishul',
+    role: 'Solar Pump & Irrigation',
+    type: 'triangle',
+    face: 'eyes',
+    hat: 'crown',
+    glasses: 'none',
+    headphones: false,
+    bowTie: false,
+    shading: 'plastic',
+    greeting: 'Powering automated solar drip lines during peak sunlight hours.',
+    badge: 'Solar Irrigation',
+  },
+  {
+    id: 'guddu',
+    name: 'Guddu',
+    role: 'Jeevamrit & Organic Brew',
+    type: 'blob',
+    face: 'mouth',
+    hat: 'none',
+    glasses: 'shades',
+    headphones: false,
+    bowTie: true,
+    shading: 'fabric',
+    greeting: 'Brewing native cow dung jeevamrit, neem extracts, and rich compost cultures.',
+    badge: 'Bio Feeds',
+  },
+  {
+    id: 'boond',
+    name: 'Boond',
+    role: 'Micro-Drip Conservation',
+    type: 'drop',
+    face: 'mouth',
+    hat: 'beret',
+    glasses: 'none',
+    headphones: true,
+    bowTie: false,
+    shading: 'fabric',
+    greeting: 'Preserving water drop by drop across 12 km of vineyard drip lines.',
+    badge: 'Water Saver',
+  },
 ];
 
 interface BotAvatarRosterProps {
   selectedAgentId?: string;
   onSelectAgent?: (agent: FarmAgent) => void;
   size?: number;
+  shading?: BotAvatarShading;
 }
 
 export const BotAvatarRoster: React.FC<BotAvatarRosterProps> = ({
   selectedAgentId,
   onSelectAgent,
   size = 64,
+  shading,
 }) => {
   const [activeId, setActiveId] = useState<string>(selectedAgentId || FARM_DIRECT_AGENTS[0].id);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [agentShadings, setAgentShadings] = useState<Record<string, BotAvatarShading>>(() => {
+    const map: Record<string, BotAvatarShading> = {};
+    FARM_DIRECT_AGENTS.forEach((a) => {
+      map[a.id] = a.shading;
+    });
+    return map;
+  });
+
+  const toggleShading = (agentId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAgentShadings((prev) => ({
+      ...prev,
+      [agentId]: prev[agentId] === 'fabric' ? 'plastic' : 'fabric',
+    }));
+  };
 
   const handleSelect = (agent: FarmAgent) => {
     setActiveId(agent.id);
-    onSelectAgent?.(agent);
+    onSelectAgent?.({ ...agent, shading: agentShadings[agent.id] || agent.shading });
   };
 
   return (
@@ -193,7 +294,7 @@ export const BotAvatarRoster: React.FC<BotAvatarRosterProps> = ({
                 glasses={agent.glasses}
                 headphones={agent.headphones}
                 bowTie={agent.bowTie}
-                shading={agent.shading}
+                shading={shading || agentShadings[agent.id] || agent.shading}
                 size={size}
               />
             </div>
@@ -202,20 +303,40 @@ export const BotAvatarRoster: React.FC<BotAvatarRosterProps> = ({
               {agent.name}
             </div>
 
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: isSelected ? '#047857' : '#6B7280',
-                background: isSelected ? '#DCFCE7' : '#F3F4F6',
-                padding: '2px 7px',
-                borderRadius: 100,
-                marginBottom: 6,
-                letterSpacing: 0.3,
-              }}
-            >
-              {agent.badge}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: isSelected ? '#047857' : '#6B7280',
+                  background: isSelected ? '#DCFCE7' : '#F3F4F6',
+                  padding: '2px 7px',
+                  borderRadius: 100,
+                  letterSpacing: 0.3,
+                }}
+              >
+                {agent.badge}
+              </span>
+
+              {/* Shading Toggle Pill: Plastic <-> Fabric */}
+              <button
+                type="button"
+                onClick={(e) => toggleShading(agent.id, e)}
+                title="Click to toggle between Plastic and Fabric shading"
+                style={{
+                  fontSize: 9.5,
+                  fontWeight: 650,
+                  color: (shading || agentShadings[agent.id] || agent.shading) === 'fabric' ? '#92400E' : '#1E40AF',
+                  background: (shading || agentShadings[agent.id] || agent.shading) === 'fabric' ? '#FEF3C7' : '#DBEAFE',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  padding: '1px 6px',
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                }}
+              >
+                {(shading || agentShadings[agent.id] || agent.shading) === 'fabric' ? '🧸 Fabric' : '✨ Plastic'}
+              </button>
+            </div>
 
             <span style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.3 }}>
               {agent.role}
