@@ -7,6 +7,7 @@ import { Footer } from '../components/layout/Footer';
 import { SoftwareStatusBar } from '../components/layout/SoftwareStatusBar';
 import { Sidebar } from '../components/layout/Sidebar';
 import { SmartScrollRestoration } from '../components/common/SmartScrollRestoration';
+import { LiquidBotSpeedDial } from '../components/common/LiquidBotSpeedDial';
 import '../styles/variables.css';
 import '../styles/global.css';
 import '../styles/typography.css';
@@ -33,6 +34,7 @@ const AppLayout: React.FC = () => {
       </main>
       {isMarketingPage ? <Footer /> : <SoftwareStatusBar />}
       <Sidebar />
+      <LiquidBotSpeedDial />
     </div>
   );
 };
