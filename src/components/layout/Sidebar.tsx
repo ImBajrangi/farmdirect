@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Home, Store, ShoppingBag, PackageCheck, Tractor, ShieldCheck, Sparkles, X, MessageSquare, Activity, ChevronRight } from 'lucide-react';
 import { BotAvatar } from 'bot-avatars';
 import { ThinkingOrb, OrbState } from 'thinking-orbs';
+import { BorderBeam } from 'border-beam';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useCart } from '../../features/cart/CartContext';
 import { useAuth } from '../../features/auth/AuthContext';
@@ -178,10 +179,11 @@ export const Sidebar: React.FC = () => {
 
   const renderAgentCard = (agent: FarmAgent) => {
     const status = agentStatuses[agent.id] || 'default';
+    const isWorking = status === 'working';
     const activityText = AGENT_ACTIVITIES[agent.id]?.[status] || agent.greeting;
 
-    return (
-      <div key={agent.id} className="farm-agent-sidebar-card">
+    const cardContent = (
+      <div className={`farm-agent-sidebar-card ${isWorking ? 'working-active' : ''}`}>
         <div className="farm-agent-card-top-row">
           <div
             className="farm-agent-avatar-box"
@@ -221,7 +223,7 @@ export const Sidebar: React.FC = () => {
             onClick={(e) => cycleStatus(agent.id, e)}
             title="Click to cycle status: working ⇄ ready ⇄ sleeping"
           >
-            {status === 'working' ? (
+            {isWorking ? (
               <ThinkingOrb
                 state={AGENT_ORB_STATES[agent.id] || 'working'}
                 size={20}
@@ -238,7 +240,7 @@ export const Sidebar: React.FC = () => {
                 }}
               />
             )}
-            {status === 'working' ? 'Working' : status === 'default' ? 'Ready' : 'Sleeping'}
+            {isWorking ? 'Working' : status === 'default' ? 'Ready' : 'Sleeping'}
           </button>
 
           {/* Shading Toggle Pill: Plastic <-> Fabric */}
@@ -260,6 +262,24 @@ export const Sidebar: React.FC = () => {
             <span>Ask</span>
           </button>
         </div>
+      </div>
+    );
+
+    return (
+      <div key={agent.id} style={{ position: 'relative' }}>
+        {isWorking ? (
+          <BorderBeam
+            size="md"
+            colorVariant="colorful"
+            strength={0.7}
+            theme="light"
+            borderRadius={12}
+          >
+            {cardContent}
+          </BorderBeam>
+        ) : (
+          cardContent
+        )}
       </div>
     );
   };

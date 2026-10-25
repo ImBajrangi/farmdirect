@@ -295,7 +295,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
       {/* ── Kisan AI Assistant Interactive Modal Drawer ── */}
       {modalOpen && (
         <div className="bot-assistant-overlay" onClick={() => setModalOpen(false)}>
-          <BorderBeam size="md" colorVariant="forest" strength={0.75} theme="light" borderRadius={28}>
+          <BorderBeam size="md" colorVariant="forest" strength={0.65} theme="light" borderRadius={24}>
             <div
               className="bot-assistant-card"
               onClick={(e) => e.stopPropagation()}
@@ -314,7 +314,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
                   headphones={currentAgent.headphones}
                   bowTie={currentAgent.bowTie}
                   shading={assistantShading}
-                  size={96}
+                  size={44}
                   state={botState}
                   className="bot-avatar-hero-canvas"
                 />
@@ -347,13 +347,13 @@ export const LiquidBotSpeedDial: React.FC = () => {
                 onClick={() => setModalOpen(false)}
                 aria-label="Close Assistant"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
             {/* Specialist AI Agent Switcher Bar */}
             <div className="bot-state-bar">
-              <div className="bot-state-tabs" style={{ overflowX: 'auto', maxWidth: '78%' }}>
+              <div className="bot-state-tabs">
                 {FARM_DIRECT_AGENTS.map((ag) => (
                   <button
                     key={ag.id}
@@ -367,7 +367,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
               </div>
 
               <div className="bot-cache-indicator" title="Fast local response caching active">
-                <Zap size={11} />
+                <Zap size={10} />
                 <span>Cached L1</span>
               </div>
             </div>
@@ -396,43 +396,54 @@ export const LiquidBotSpeedDial: React.FC = () => {
               ))}
               {isTyping && (
                 <div className="bot-message-row assistant">
-                  {!streamingText ? (
-                    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <ThinkingOrb state="searching" size={64} color="#15803D" />
-                    </div>
-                  ) : (
-                    <BotAvatar
-                      type={currentAgent.type}
-                      face={currentAgent.face}
-                      hat={currentAgent.hat}
-                      glasses={currentAgent.glasses}
-                      headphones={currentAgent.headphones}
-                      bowTie={currentAgent.bowTie}
-                      shading={assistantShading}
-                      size={28}
-                      state="working"
-                    />
-                  )}
-                  <div className="bot-message-bubble assistant bot-streaming-bubble">
-                    <div className="bot-streaming-header">
-                      <ThinkingOrb
-                        state={streamingText ? 'composing' : 'searching'}
-                        size={20}
-                        color="#16a34a"
-                      />
-                      <span className="bot-streaming-agent-name">{currentAgent.name}</span>
-                      <span className="bot-streaming-pill">
-                        {streamingText ? 'Composing' : 'Searching telemetry...'}
-                      </span>
-                    </div>
-                    <div className="bot-streaming-content">
-                      {streamingText || (
-                        <span className="bot-streaming-placeholder">
-                          Querying live Nashik & Pune farmgate network...
-                        </span>
-                      )}
-                      <span className="bot-streaming-cursor" />
-                    </div>
+                  <BotAvatar
+                    type={currentAgent.type}
+                    face={currentAgent.face}
+                    hat={currentAgent.hat}
+                    glasses={currentAgent.glasses}
+                    headphones={currentAgent.headphones}
+                    bowTie={currentAgent.bowTie}
+                    shading={assistantShading}
+                    size={28}
+                    state="working"
+                  />
+                  <div style={{ flex: 1, maxWidth: '82%' }}>
+                    <BorderBeam
+                      size="md"
+                      colorVariant="colorful"
+                      strength={0.75}
+                      borderRadius={18}
+                      theme="light"
+                      active={true}
+                    >
+                      <div className="bot-message-bubble assistant bot-streaming-bubble">
+                        <div className="bot-streaming-header">
+                          <ThinkingOrb
+                            state={streamingText ? 'composing' : 'searching'}
+                            size={20}
+                            color="#15803D"
+                          />
+                          <span className="bot-streaming-agent-name">{currentAgent.name}</span>
+                          <span className="bot-streaming-pill">
+                            {streamingText ? 'Composing...' : 'Thinking...'}
+                          </span>
+                        </div>
+                        <div className="bot-streaming-content">
+                          {streamingText ? (
+                            <>
+                              {streamingText}
+                              <span className="bot-streaming-cursor" />
+                            </>
+                          ) : (
+                            <div className="bot-streaming-skeleton">
+                              <div className="bot-skeleton-line short" />
+                              <div className="bot-skeleton-line long" />
+                              <div className="bot-skeleton-line medium" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </BorderBeam>
                   </div>
                 </div>
               )}
@@ -467,14 +478,14 @@ export const LiquidBotSpeedDial: React.FC = () => {
               </button>
             </div>
 
-            {/* Chat Input Bar Wrapped in BorderBeam While Generating */}
+            {/* Chat Input Bar Wrapped in Rotational BorderBeam for Input Words */}
             <div className="bot-chat-input-wrapper">
               <BorderBeam
-                size="line"
-                colorVariant="forest"
-                strength={0.85}
-                active={isTyping}
-                borderRadius={18}
+                size="md"
+                colorVariant="colorful"
+                strength={inputQuery.trim().length > 0 || isTyping ? 0.8 : 0.25}
+                active={inputQuery.trim().length > 0 || isTyping}
+                borderRadius={16}
                 theme="light"
               >
                 <div className={`bot-chat-input-bar ${isTyping ? 'is-generating' : ''}`}>
@@ -483,7 +494,7 @@ export const LiquidBotSpeedDial: React.FC = () => {
                     className="bot-input-field"
                     placeholder={
                       isTyping
-                        ? `${currentAgent.name} is streaming response...`
+                        ? `${currentAgent.name} is thinking & streaming...`
                         : "Ask about crops, orders, or harvests..."
                     }
                     value={inputQuery}

@@ -491,3 +491,34 @@
   color: var(--color-text-muted, #536f61);
 }
 
+/* ─── Slide To Confirm Mobile Experience ─────────────────────────────────── */
+.checkout-confirm-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.checkout-slide-confirm-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 4px 0;
+}
+
+.checkout-desktop-btn-only {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  /* On mobile screens, SlideToConfirm is the hero confirmation gesture */
+  .checkout-slide-confirm-container {
+    display: flex;
+  }
+  .checkout-desktop-btn-only {
+    display: none;
+  }
+}
+
+

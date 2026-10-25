@@ -528,19 +528,18 @@
 .product-card-b {
   border-radius: 34px;
   padding: 10px 10px 18px 10px;
-  border: 1px solid rgba(15, 46, 34, 0.08);
+  border: none;
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.22s ease;
   position: relative;
   overflow: hidden;
 }
 
 .product-card-b:hover {
-  border-color: rgba(15, 46, 34, 0.16);
-  box-shadow: 0 16px 36px -4px rgba(15, 46, 34, 0.08);
+  box-shadow: 0 18px 40px -4px rgba(15, 46, 34, 0.12);
 }
 
 /* Inner Canvas Frame (Card B) */
@@ -571,14 +570,14 @@
   transform: scale(1.04);
 }
 
-/* Curved Olive Bottom Ribbon (Exact Card B: "Free Delivery · Harvest ...") */
+/* Curved Organic Bottom Ribbon ("Free Delivery · Harvest ...") */
 .product-canvas-ribbon-b {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   font-size: 0.72rem;
-  font-weight: 550;
+  font-weight: 600;
   text-align: center;
   padding: 9px 14px;
   letter-spacing: 0.01em;
@@ -588,6 +587,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  border: none;
+  outline: none;
 }
 
 /* ─── Harmonious Synchronized Card Footer (Google / Apple Quality) ────────── */
@@ -819,60 +820,44 @@
   flex-shrink: 0;
 }
 
-/* Default Order Now Pill Button */
+/* Harmonious Synchronized Order Now Pill Button */
 .product-order-btn-b {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  background: #006044;
+  background: #15803D;
   color: #FFFFFF;
   border-radius: 9999px;
   height: 36px;
   width: 104px;
-  padding: 0 12px;
+  padding: 0 10px;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 650;
   border: none;
   cursor: pointer;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 96, 68, 0.22);
-  transition: background-color 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+  transition: opacity 0.15s ease, filter 0.15s ease, box-shadow 0.18s ease;
   box-sizing: border-box;
 }
 
 .product-order-btn-b:hover {
-  background: #0A4330;
-  box-shadow: 0 6px 16px rgba(0, 96, 68, 0.28);
+  filter: brightness(0.92);
 }
 
-.product-order-btn-b:active {
-  transform: scale(0.97);
-}
-
-.product-order-btn-b .order-btn-arrow {
-  transition: transform 0.18s ease;
-}
-
-.product-order-btn-b:hover .order-btn-arrow {
-  transform: translateX(2.5px);
-}
-
-/* Synchronized Stepper Pill: Exact Same 104px Dimension & Emerald Theme */
+/* Synchronized Stepper Pill: Exact Same 104px Dimension & Theme Matching */
 .product-stepper-b {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  background: #006044;
+  background: #15803D;
   color: #FFFFFF;
   border-radius: 9999px;
   height: 36px;
   width: 104px;
   padding: 2px 4px;
   box-sizing: border-box;
-  box-shadow: 0 4px 12px rgba(0, 96, 68, 0.22);
-  transition: all 0.16s ease;
+  transition: filter 0.15s ease, box-shadow 0.18s ease;
 }
 
 .stepper-btn-b {

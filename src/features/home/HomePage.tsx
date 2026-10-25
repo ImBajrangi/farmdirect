@@ -14,6 +14,8 @@ import {
 import { productService } from '../products/product.service';
 import { Product } from '../products/product.types';
 import { FruitBasketsLogoIcon } from '../../components/common/FruitBasketsLogoIcon';
+import { BorderBeam } from 'border-beam';
+import { ActionNode } from '../../components/common/ActionNode';
 import './home.css';
 
 export { FruitBasketsLogoIcon };
@@ -159,6 +161,22 @@ export const HomePage: React.FC = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [tonnageIndex, setTonnageIndex] = useState<number>(0);
   const tonnages = [120, 240, 360, 480];
+  const [nodeToast, setNodeToast] = useState<string | null>(null);
+
+  const handleNodeAction = (actionId: string) => {
+    if (actionId === 'link') {
+      navigator.clipboard?.writeText(window.location.origin + '/marketplace');
+      setNodeToast('Direct catalog link copied to clipboard!');
+    } else if (actionId === 'add') {
+      setNodeToast('Added to live harvest dispatch watchlist!');
+    } else if (actionId === 'copy') {
+      navigator.clipboard?.writeText('Harvest Node #07: 100% Zero-Residue Certified Produce from Nashik & Dindori growers.');
+      setNodeToast('Harvest batch specs copied to clipboard!');
+    } else if (actionId === 'settings') {
+      setNodeToast('Cold-chain telemetry & dispatch settings updated.');
+    }
+    setTimeout(() => setNodeToast(null), 3000);
+  };
 
   // Auto-advance vertical farming carousel every 3.8s when playing and not hovered
   useEffect(() => {
@@ -280,11 +298,12 @@ export const HomePage: React.FC = () => {
           <div className="xfarm-innovation-card">
             <div className="xfarm-polka-bg" />
 
-            <div
-              className="xfarm-phone-frame"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
+            <BorderBeam size="md" colorVariant="colorful" strength={0.7} borderRadius={36}>
+              <div
+                className="xfarm-phone-frame"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
               {/* Speaker Notch */}
               <div className="xfarm-phone-notch" />
 
@@ -379,6 +398,7 @@ export const HomePage: React.FC = () => {
                 </Link>
               </div>
             </div>
+          </BorderBeam>
           </div>
         </div>
 
@@ -484,12 +504,14 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Tile 6: Botanical Emblem Card */}
-            <div className="xfarm-bento-blueprint-card">
-              <div className="xfarm-blueprint-grid">
-                <FruitBasketsLogoIcon size={38} color="#006044" />
-                <span className="xfarm-blueprint-text">Fruit Baskets</span>
-              </div>
+            {/* Tile 6: Live Farmgate Dispatch Action Node */}
+            <div className="xfarm-bento-node-tile">
+              <ActionNode
+                nodeId="Harvest Node #07"
+                description="Reads Nashik lot data, validates zero-residue lab passes, and schedules automated cold-chain dispatch."
+                corner={20}
+                onAction={handleNodeAction}
+              />
             </div>
 
             {/* Tile 7: Aeroponic Strawberries Card */}
@@ -613,6 +635,12 @@ export const HomePage: React.FC = () => {
             </Link>
           </div>
         </section>
+
+        {nodeToast && (
+          <div className="xfarm-node-toast-pill" role="status">
+            <span>✓</span> {nodeToast}
+          </div>
+        )}
       </div>
     </div>
   );

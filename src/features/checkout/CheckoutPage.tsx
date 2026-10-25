@@ -19,6 +19,7 @@ import { RazorpayModal } from '../payments/RazorpayModal';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { Address } from '../../types';
+import { SlideToConfirm } from '../../components/common/SlideToConfirm';
 import './checkout.css';
 
 export const CheckoutPage: React.FC = () => {
@@ -410,15 +411,30 @@ export const CheckoutPage: React.FC = () => {
               <span className="total-amount">{formatPaise(finalTotalPaise)}</span>
             </div>
 
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              isLoading={isProcessing}
-              onClick={handlePlaceOrder}
-            >
-              Place Order ({formatPaise(finalTotalPaise)})
-            </Button>
+            <div className="checkout-confirm-actions">
+              <div className="checkout-slide-confirm-container">
+                <SlideToConfirm
+                  width={280}
+                  corner={28}
+                  speed={50}
+                  label={isProcessing ? "Processing..." : "Slide to confirm order"}
+                  confirmedLabel="Order Confirmed!"
+                  onConfirm={handlePlaceOrder}
+                />
+              </div>
+
+              <div className="checkout-desktop-btn-only">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  isLoading={isProcessing}
+                  onClick={handlePlaceOrder}
+                >
+                  Place Order ({formatPaise(finalTotalPaise)})
+                </Button>
+              </div>
+            </div>
 
             <div className="checkout-trust-banner">
               <ShieldCheck size={16} color="var(--color-primary)" />

@@ -53,7 +53,6 @@ export const Header: React.FC = () => {
           </span>
           <Link to="/marketplace" className="xfarm-announcement-link">
             <span>{language === 'hi' ? 'खरेदी करा' : 'Order Now'}</span>
-            <ArrowRight size={13} />
           </Link>
         </div>
       </div>
